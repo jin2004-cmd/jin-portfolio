@@ -1,0 +1,982 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>带货文案合规审查工具 · 作品说明</title>
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--line:#e3e6ea;--txt:#1f2328;--dim:#656d76;
+--l1:#8a6d00;--l2:#b3261e;--l3:#7a4a00;--ok:#1a7f37;--okbg:#e8f5ec;--l2bg:#ffeceb;--l3bg:#fff3e0;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);
+font:15px/1.7 -apple-system,"Segoe UI","Microsoft YaHei",Roboto,sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 70px}
+header{background:linear-gradient(135deg,#1f6feb,#123a7a);color:#fff;padding:38px 16px 30px;margin-bottom:22px}
+header .inner{max-width:900px;margin:0 auto}
+header h1{margin:0 0 8px;font-size:26px}
+header p{margin:0;opacity:.9;font-size:14px}
+header .tags{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+header .tags span{background:rgba(255,255,255,.16);border-radius:20px;padding:4px 12px;font-size:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:20px;margin-bottom:16px}
+.card h2{font-size:17px;margin:0 0 12px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.card h3{font-size:14px;margin:16px 0 6px}
+.card h3:first-child{margin-top:0}
+p{margin:9px 0}
+.lead{font-size:16px}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:11px 0}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#eef0f3;font-weight:600}
+code{background:#eef0f3;padding:1px 6px;border-radius:4px;
+font-family:ui-monospace,Consolas,monospace;font-size:13px}
+.kpi{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}
+.kpi div{flex:1;min-width:130px;background:#f6f7f9;border-radius:9px;padding:13px;text-align:center}
+.kpi b{display:block;font-size:22px;color:#1f6feb;line-height:1.3}
+.kpi span{font-size:12px;color:var(--dim)}
+.warn{background:var(--l3bg);border-radius:8px;padding:12px 14px;font-size:14px;margin:11px 0}
+.good{background:var(--okbg);border-radius:8px;padding:12px 14px;font-size:14px;margin:11px 0}
+.bad{background:var(--l2bg);border-radius:8px;padding:12px 14px;font-size:14px;margin:11px 0}
+/* ---- 工具本体样式 ---- */
+.tool{background:#fff;border:2px solid #1f6feb;border-radius:11px;padding:18px;margin-bottom:16px}
+.tool h2{margin:0 0 4px;font-size:17px;border:0;padding:0}
+.tool .hint2{color:var(--dim);font-size:13px;margin-bottom:14px}
+label{display:block;font-weight:600;font-size:14px;margin:0 0 6px}
+textarea,select{width:100%;padding:10px;border:1px solid var(--line);border-radius:7px;
+font:inherit;background:#fff;color:var(--txt)}
+textarea{min-height:100px;resize:vertical}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.row>div{flex:1;min-width:190px}
+.quals{margin-top:10px}
+.quals .qlabel{font-weight:600;font-size:14px;margin:12px 0 4px}
+.quals label{display:flex;align-items:flex-start;gap:7px;font-weight:400;margin:5px 0;font-size:13px;cursor:pointer}
+.quals input{margin-top:3px;flex:none}
+button{margin-top:14px;width:100%;padding:12px;border:0;border-radius:8px;
+background:#1f6feb;color:#fff;font-size:16px;font-weight:600;cursor:pointer}
+button:hover{background:#1a5fd0}
+button.ghost{background:#fff;color:var(--txt);border:1px solid var(--line);font-size:14px;padding:9px;margin-top:8px}
+.verdict{padding:15px;border-radius:9px;font-size:19px;font-weight:700;margin-bottom:14px}
+.v-PASS{background:var(--okbg);color:var(--ok)}
+.v-REVISE{background:var(--l3bg);color:var(--l3)}
+.v-REJECT{background:var(--l2bg);color:var(--l2)}
+.v-BLOCKED{background:#333;color:#fff}
+.stats{color:var(--dim);font-size:13px;font-weight:400;margin-top:5px}
+.grp{border:1px solid var(--line);border-radius:9px;padding:13px;margin-bottom:11px}
+.grp h3{margin:0 0 3px;font-size:15px}
+.grp .law{color:var(--dim);font-size:12px;margin-bottom:9px}
+.hit{background:#f6f7f9;border-left:3px solid var(--dim);border-radius:0 6px 6px 0;
+padding:9px 11px;margin:8px 0;font-size:14px}
+.hit .w{background:#ffe9a8;padding:1px 6px;border-radius:4px;font-weight:700}
+.hit .fix{color:var(--ok);margin-top:5px}
+.hit .note{color:var(--dim);margin-top:5px;font-size:13px}
+.hit.lv-L1{border-left-color:#c9a227}
+.hit.lv-L2{border-left-color:#b3261e}
+.hit.lv-L3{border-left-color:#d97706}
+.disc{background:var(--l2bg);border-radius:7px;padding:10px 12px;font-size:14px;margin:7px 0}
+.disc.ok{background:var(--okbg)}
+.qualrow{display:flex;gap:9px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.qualrow:last-child{border:0}
+.qualrow .mark{flex:none;width:20px}
+.box{background:#f6f7f9;border-radius:7px;padding:11px;font-size:14px;white-space:pre-wrap;
+word-break:break-word;margin-top:8px}
+details{margin-top:9px}
+summary{cursor:pointer;color:var(--dim);font-size:13px}
+.meta{color:var(--dim);font-size:12px;margin-top:24px;text-align:center;line-height:1.8}
+</style>
+</head>
+<body>
+<header>
+  <div class="inner">
+    <h1>带货文案合规审查工具</h1>
+    <p>把「广告法违禁词表匹配」升级为「三级风险分级 + 资质判定」的本地审查工具</p>
+    <div class="tags">
+      <span>零依赖</span><span>零联网</span><span>单文件</span>
+      <span>15 条规则</span><span>14 个品类</span>
+      <span>14 条回归用例</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="tool">
+    <h2>▶ 直接试（这是一个能用的工具，不是截图）</h2>
+    <div class="hint2">内容只在你的浏览器里计算，不上传、不联网。</div>
+    <label for="sc_txt">要审查的文案</label>
+    <textarea id="sc_txt" placeholder="例：这款肠胃贴一贴根治，专家推荐，销量第一，全家适用"></textarea>
+    <div class="row" style="margin-top:12px">
+      <div><label for="sc_cat">商品品类</label><select id="sc_cat"></select></div>
+      <div><label for="sc_plat">投放平台</label><select id="sc_plat">
+        <option>抖音/千川</option><option>快手</option><option>淘宝/天猫</option>
+        <option>京东</option><option>小红书</option><option>拼多多</option>
+      </select></div>
+    </div>
+    <div class="quals">
+      <div class="qlabel">这个商品有哪些资质？<span style="color:#b3261e;font-weight:400">（不勾＝没有，会判为缺资质）</span></div>
+      <div id="sc_qualBox"></div>
+      <label><input type="checkbox" id="sc_patent"> 已标明专利号与专利种类</label>
+    </div>
+    <button onclick="scRun()">开始审查</button>
+    <button class="ghost" onclick="scDemo()">填入一条含风险的示例文案</button>
+  </div>
+
+  <div id="sc_out"></div>
+
+  <div class="card">
+    <h2>这个工具解决什么问题</h2>
+    <p class="lead"><b>一句话：</b>市面上多数「违禁词检测」判断的是<b>有没有命中词表</b>，而这个工具判断的是<b>这句话能不能说</b>——后者取决于你有没有资质。</p>
+    <p>举个例子：文案里写「缓解胃胀」。</p>
+    <table>
+      <tr><th>只查词表的工具</th><th>本工具</th></tr>
+      <tr>
+        <td>「缓解」不在违禁词表里 → <b>判定合规</b></td>
+        <td>「缓解胃胀」是功效宣称，需要医疗器械注册证/备案凭证<br>
+            没有批文 → <b class="bad">判定不可发布</b>，并列出要准备的资质文件</td>
+      </tr>
+    </table>
+    <div class="bad"><b>为什么这个区别重要：</b>只查词表的工具会让人以为「没报错就是合规了」。这是虚假的安全感——比不检查更危险。依法条，广告主可能面临 20 万至 100 万元罚款。</div>
+  </div>
+
+  <div class="card">
+    <h2>三级风险分级</h2>
+    <table>
+      <tr><th>级别</th><th>含义</th><th>工具的处置</th><th>规则数</th></tr>
+      <tr><td><b>L1</b> 可替换违规词</td><td>词本身违法，换掉即可</td><td>直接给出替换话术</td><td>5</td></tr>
+      <tr><td><b>L2</b> 需资质或必须删除</td><td><b>换词无效</b>。要么出示资质，要么整句删除</td><td>按商品持证情况判定，列出所需资质</td><td>6</td></tr>
+      <tr><td><b>L3</b> 需加限定词</td><td>表述可用，但缺条件</td><td>给出限定要求或出处要求</td><td>4</td></tr>
+    </table>
+    <div class="warn"><b>L2 是核心。</b>它的判断依据不是「词」，而是「资质」。同一句「缓解胃胀」，有批文就能说，没有就不能说。<br>
+    另外，<b>禁止性规定不走资质门</b>——例如医疗、保健类广告不得利用代言人推荐（《广告法》第 16、38 条），这条是无条件的，靠换词解决不了。</div>
+  </div>
+
+  <div class="card">
+    <h2>效果（都可复现）</h2>
+    <div class="kpi">
+      <div><b>15</b><span>规则条数</span></div>
+      <div><b>14/14</b><span>回归用例通过</span></div>
+      <div><b>5 → 10</b><span>同一文案识别风险数</span></div>
+      <div><b>&lt;30ms</b><span>单条审查耗时</span></div>
+    </div>
+    <p>取一条同时包含多种风险的真实文案，对比结果：</p>
+    <table>
+      <tr><th></th><th>只做词表匹配</th><th>本工具</th></tr>
+      <tr><td>识别风险数</td><td>5 处</td><td><b>10 处</b></td></tr>
+      <tr><td>「专家推荐」</td><td>替换成「获得专业认可」，判为已解决</td><td>识别为<b>禁止性规定</b>，强制删除，且不提供替换</td></tr>
+      <tr><td>「医用级」</td><td>未识别</td><td>识别为<b>资质等级宣称</b>，需资质文件</td></tr>
+      <tr><td>「全家适用」</td><td>未识别</td><td>识别为<b>适用范围过宽</b>，需补禁忌说明</td></tr>
+      <tr><td>「根治 → 缓解」</td><td>替换后判合规</td><td>「缓解」仍按<b>功效宣称</b>处理，无批文即阻断</td></tr>
+    </table>
+    <div class="good"><b>关于测试：</b>14 条回归用例中<b>包含反例</b>——验证正常文案不会被误判（例如「新鲜」不是绝对化用语）。<b>只会报违规的工具是不能用的</b>，误判会让人不敢用。</div>
+  </div>
+
+  <div class="card">
+    <h2>技术实现</h2>
+    <table>
+      <tr><th>模块</th><th>实现</th></tr>
+      <tr><td>规则引擎</td><td>纯 JavaScript（约 130 行），无第三方依赖；同一实现在网页版和命令行版复用</td></tr>
+      <tr><td>规则数据</td><td>15 条规则外置为 JSON，改规则不用改代码</td></tr>
+      <tr><td>资质判定</td><td>按商品品类映射所需资质，与已持证清单求交</td></tr>
+      <tr><td>回归测试</td><td>14 条用例，含反例；网页版与命令行版跑同一套用例</td></tr>
+      <tr><td>判断依据</td><td>每条命中都标注《广告法》具体条号</td></tr>
+    </table>
+    <h3>文件构成</h3>
+    <pre style="background:#f6f7f9;border-radius:8px;padding:12px;font-size:13px;overflow:auto">合规审查工具.html      ← 单文件工具，双击即用
+spf/ui/engine.js        ← 规则引擎（唯一真源）
+spf/ui/engine.selftest.js ← 回归测试
+spf/ui/build.js         ← 构建工具 HTML
+skills/spf/data/        ← 规则与品类数据（JSON）
+skills/spf/scripts/     ← 命令行版（合规检查 / 批次审计 / 多格式导出）
+spf/eval/               ← 回归用例与对照实验</pre>
+  </div>
+
+  <div class="card">
+    <h2>使用范围</h2>
+    <table>
+      <tr><th>能</th><th>不能</th></tr>
+      <tr>
+        <td>单条文案快速自查<br>判断某句话「能不能说」<br>列出该品类需要哪几份资质文件<br>生成仅替换 L1 后的改写稿</td>
+        <td>核实你提供的资质文件是否真实有效<br>一次性批量处理多条文案<br>自动跟踪法规更新（规则为 2021-04-29 版）<br>替代法律意见</td>
+      </tr>
+    </table>
+    <div class="warn"><b>说明：</b>本工具是<b>辅助筛查</b>，不是合规保证。未命中不等于绝对安全——例如功效表述必须有资质支撑，而工具无法核实资质真伪。涉及真实投放前，请以法务意见和最新官方法规为准。</div>
+  </div>
+
+  <div class="card">
+    <h2>规则来源</h2>
+    <p>《中华人民共和国广告法》（主席令第 81 号，2021-04-29 施行），覆盖：绝对化用语、权威性暗示、虚假承诺、诱导性表述、迷信与歧视性内容、专利宣称、品类特殊限制（医疗/保健/食品/化妆品/金融/教育/房地产/酒类/烟草/母婴）、广告标识、代言人规则、数据引用、未成年人保护，以及六个电商平台的常见违规与处罚。</p>
+    <p>违禁词清单改编自开源项目 <code>kuanghs/agent-skills</code>（MIT），法条条号已逐条核对。</p>
+  </div>
+
+  <div class="meta">
+    单文件 · 零依赖 · 数据不外传<br>
+    生成于 2026-09-12
+  </div>
+</div>
+
+<script>
+const RULES = {
+  "version": "2.0",
+  "description": "短视频脚本合规风险三级分类规则。与旧版（compliance_rules-v1-legacy.json）的关键差异：旧版只有「正则匹配 + 词替换」两层，会把「根治→缓解」这类替换当成合规，但缓解胃胀对无批文产品仍是功效宣称。本规则引入 L2「需资质」层处理这类问题。",
+  "legalBasis": {
+    "law": "中华人民共和国广告法",
+    "decree": "主席令第81号",
+    "effectiveFrom": "2021-04-29",
+    "note": "规则为筛查辅助，不构成法律意见；法规更新需人工复核"
+  },
+  "levels": {
+    "L1": {
+      "name": "可替换违规词",
+      "meaning": "词本身违法，替换话术后即可使用，无需额外资质",
+      "action": "replace",
+      "legalRisk": "20万-100万罚款（第57条）"
+    },
+    "L2": {
+      "name": "需资质或必须删除",
+      "meaning": "换词不能解决。该类表述要么出示对应资质文件，要么整句删除。这是旧版完全缺失的层级。",
+      "action": "qualify-or-remove",
+      "legalRisk": "20万-200万罚款，医疗类最高"
+    },
+    "L3": {
+      "name": "需加限定词",
+      "meaning": "表述本身可用，但缺限定条件时存在虚假宣传风险",
+      "action": "append-qualifier",
+      "legalRisk": "10万-50万罚款"
+    }
+  },
+  "rules": [
+    {
+      "id": "abs-superlative-zui",
+      "level": "L1",
+      "category": "绝对化用语",
+      "scope": "all",
+      "law": "第9条第3项",
+      "pattern": "最(好|佳|低|高|大|强|优|先进|新款|新|多|快|安全|专业|受欢迎|值得信赖|低价)",
+      "message": "绝对化用语",
+      "replacements": {
+        "最好": "广受好评",
+        "最佳": "优质之选",
+        "最低": "价格实惠",
+        "最高": "较高",
+        "最大": "规模领先",
+        "最强": "性能出色",
+        "最优": "品质优良",
+        "最先进": "技术前沿",
+        "最新": "近期推出",
+        "最多": "较多",
+        "最快": "很快",
+        "最安全": "安全可靠",
+        "最专业": "专业团队",
+        "最受欢迎": "深受用户喜爱",
+        "最值得信赖": "值得信赖",
+        "最低价": "价格实惠"
+      }
+    },
+    {
+      "id": "abs-first",
+      "level": "L1",
+      "category": "绝对化用语",
+      "scope": "all",
+      "law": "第9条第3项",
+      "pattern": "(销量|排名|行业|全国|全球|世界)第一|第一品牌|第一选择|首选|销量冠军|全网首发|遥遥领先|行业标杆|霸榜|零差评",
+      "message": "绝对化/暗示第一",
+      "replacements": {
+        "销量第一": "销量领先",
+        "排名第一": "名列前茅",
+        "行业第一": "行业领先",
+        "全国第一": "全国知名",
+        "全球第一": "全球知名",
+        "世界第一": "全球知名",
+        "第一品牌": "知名品牌",
+        "第一选择": "优质选择",
+        "首选": "推荐选择",
+        "销量冠军": "销量领先",
+        "全网首发": "新品上市",
+        "遥遥领先": "表现领先",
+        "行业标杆": "行业知名",
+        "霸榜": "热销",
+        "零差评": "好评如潮"
+      }
+    },
+    {
+      "id": "abs-authority",
+      "level": "L1",
+      "category": "权威性暗示",
+      "scope": "all",
+      "law": "第9条第2项",
+      "pattern": "国家级(认证|产品|标准)?|世界级|特供|专供|政府专用|国宴专用|免检(产品|企业)|国家领导人推荐",
+      "message": "变相使用国家机关名义",
+      "replacements": {
+        "国家级认证": "通过权威机构认证",
+        "国家级产品": "高品质产品",
+        "国家级": "权威",
+        "世界级": "国际水准",
+        "特供": "精选",
+        "专供": "定制",
+        "政府专用": "官方渠道",
+        "国宴专用": "高品质",
+        "免检产品": "质量合格",
+        "免检企业": "信誉企业",
+        "国家领导人推荐": "广受认可"
+      }
+    },
+    {
+      "id": "fake-cure",
+      "level": "L1",
+      "category": "医疗功效夸大",
+      "scope": "all",
+      "law": "第4条、第28条",
+      "pattern": "根治|治愈|痊愈|药到病除|断根|包治百病|包治|永不复发|永不再犯|一贴见效|三天见效|当天见效|立即见效|一次根治|100%有效|百分百有效|告别所有",
+      "message": "医疗功效绝对化承诺",
+      "replacements": {
+        "根治": "有助于缓解",
+        "治愈": "有助于改善",
+        "痊愈": "有助于恢复",
+        "药到病除": "缓解不适",
+        "断根": "有助于改善",
+        "包治百病": "有助于日常调理",
+        "包治": "有助于调理",
+        "永不复发": "长期坚持调理",
+        "永不再犯": "长期坚持调理",
+        "一贴见效": "温和使用",
+        "三天见效": "坚持使用",
+        "当天见效": "坚持使用",
+        "立即见效": "坚持使用",
+        "一次根治": "坚持使用改善",
+        "100%有效": "多数用户反馈有效",
+        "百分百有效": "多数用户反馈有效",
+        "告别所有": "缓解大部分"
+      }
+    },
+    {
+      "id": "fake-safe",
+      "level": "L1",
+      "category": "绝对化安全承诺",
+      "scope": "all",
+      "law": "第4条、第28条",
+      "pattern": "无副作用|无毒副作用|纯天然无添加|绝对安全|100%安全|绝对有效|绝不反弹|永不反弹|零风险|无风险|稳赚不赔|保证赚钱|保证有效|保证不反弹",
+      "message": "绝对化安全或收益承诺",
+      "replacements": {
+        "无副作用": "成分温和",
+        "无毒副作用": "成分温和",
+        "纯天然无添加": "成分温和",
+        "绝对安全": "安全有保障",
+        "100%安全": "安全有保障",
+        "绝对有效": "效果显著",
+        "绝不反弹": "效果因人而异",
+        "永不反弹": "效果因人而异",
+        "零风险": "风险可控",
+        "无风险": "风险可控",
+        "稳赚不赔": "投资有风险",
+        "保证赚钱": "投资有风险",
+        "保证有效": "多数用户反馈有效",
+        "保证不反弹": "效果因人而异"
+      }
+    },
+    {
+      "id": "fake-induced",
+      "level": "L3",
+      "category": "诱导性表述",
+      "scope": "all",
+      "law": "第28条",
+      "pattern": "仅剩最后|最后\\s*\\d+\\s*件|限时特惠最后|不买就亏|错过再等一年|抢完即止|手慢无",
+      "message": "需有真实库存或期限依据，否则构成虚假诱导",
+      "qualifier": "（须确保库存/期限真实，并在话术中给出可核实依据）"
+    },
+    {
+      "id": "med-endorser",
+      "level": "L2",
+      "category": "医疗类禁止代言",
+      "scope": "medical",
+      "law": "第16条、第38条",
+      "pattern": "专家推荐|医生推荐|医生都说好|医院推荐|医师推荐|某某医院|名医|中医世家|祖传秘方|药师推荐",
+      "message": "医疗、保健、医疗器械广告不得利用代言人作推荐、证明。这是禁止性规定：换成「获得专业认可」等模糊说法仍然构成变相代言，不能靠替换解决。",
+      "action": "remove",
+      "substitutionBlocked": true,
+      "reason": "替换话术无法消除违法性"
+    },
+    {
+      "id": "med-efficacy-general",
+      "level": "L2",
+      "category": "功效宣称需资质",
+      "scope": "medical",
+      "law": "第16条、第18条",
+      "pattern": "缓解|改善|调理|治疗|止痛|消炎|降(血压|血糖|血脂)|助眠|祛湿|驱寒|暖宫|养胃|通便|增强免疫|提高免疫",
+      "message": "功效类表述。若无医疗器械/药品/保健食品批文，此类表述即便用词温和也仍是功效宣称，存在被认定虚假宣传的风险。",
+      "requiresQualification": "medical-device-registration OR health-food-blue-hat OR drug-approval",
+      "action": "qualify-or-remove",
+      "note": "这一条正是旧版最大的漏洞：旧版把「根治」替换成「缓解」后就报「合规通过」。"
+    },
+    {
+      "id": "med-grade-claim",
+      "level": "L2",
+      "category": "资质等级宣称",
+      "scope": "all",
+      "law": "第12条、第28条",
+      "pattern": "医用级|医疗级|药妆|械字号|药械级|食品级|母婴级|婴幼儿级",
+      "message": "等级类宣称需有对应资质文件或标准依据，否则构成虚假宣传。",
+      "requiresQualification": "any-documented-standard",
+      "action": "qualify-or-remove"
+    },
+    {
+      "id": "med-patent-claim",
+      "level": "L2",
+      "category": "专利宣称",
+      "scope": "all",
+      "law": "第12条",
+      "pattern": "专利技术|独家专利|专利配方|国家专利",
+      "message": "宣称专利必须标明专利号和专利种类，否则违法。",
+      "requiresQualification": "patent-number-disclosed",
+      "action": "qualify-or-remove"
+    },
+    {
+      "id": "finance-guarantee",
+      "level": "L2",
+      "category": "金融收益承诺",
+      "scope": "all",
+      "law": "第25条",
+      "pattern": "保本|保息|保收益|预计收益|投资回报率|稳定盈利|躺赚|躺着赚钱|躺着赚|包赚",
+      "message": "金融广告不得对未来收益作保证性承诺，且必须包含风险提示。",
+      "requiresQualification": "finance-license",
+      "action": "qualify-or-remove",
+      "note": "scope 设为 all：非金融商品若出现收益承诺，属于超范围宣称，同样违规。"
+    },
+    {
+      "id": "edu-promise",
+      "level": "L2",
+      "category": "教育通过率承诺",
+      "scope": "education",
+      "law": "第24条",
+      "pattern": "保过|包过|100%通过|升学率|押题|命题专家|包拿证|包就业|一次上岸",
+      "message": "教育、培训广告不得对升学、通过考试、获得学位学历作保证性承诺。",
+      "action": "remove",
+      "substitutionBlocked": true,
+      "reason": "禁止性规定，无合规替代"
+    },
+    {
+      "id": "undefined-audience",
+      "level": "L3",
+      "category": "适用范围表述",
+      "scope": "all",
+      "law": "第28条",
+      "pattern": "全家适用|任何人(都)?适用|所有人群|人人适用|任何肤质",
+      "message": "适用范围表述过宽，缺少禁忌说明时存在虚假宣传风险。",
+      "qualifier": "（须补充禁忌人群说明，如孕妇、婴幼儿、皮肤破损者等）"
+    },
+    {
+      "id": "vague-qualification",
+      "level": "L3",
+      "category": "资质表述模糊",
+      "scope": "all",
+      "law": "第11条",
+      "pattern": "已通过相关资质|通过相关认证|具备相关资质|符合国家标准|经过严格检测",
+      "message": "资质表述不可核验，应写明具体资质名称与编号。",
+      "qualifier": "（须写明具体资质名称与编号，否则属不可核验表述）"
+    },
+    {
+      "id": "data-no-source",
+      "level": "L3",
+      "category": "数据未标出处",
+      "scope": "all",
+      "law": "第11条",
+      "pattern": "\\d+%\\s*(的)?(用户|人|消费者)|累计服务\\s*\\d+|突破\\s*\\d+\\s*万",
+      "message": "引用数据必须标明出处，否则违法。",
+      "qualifier": "（须标注数据来源与统计口径）"
+    }
+  ],
+  "requiredDisclaimers": {
+    "medical": [
+      "本品为日常用品，不能代替药物，如有不适请及时就医",
+      "效果因人而异，请按说明使用"
+    ],
+    "health-food": [
+      "本品不能代替药物"
+    ],
+    "finance": [
+      "投资有风险，入市需谨慎"
+    ]
+  },
+  "formChecks": [
+    {
+      "id": "ad-label",
+      "law": "第14条",
+      "message": "广告应使消费者能辨明其为广告；短视频/直播需标明广告或推广性质"
+    },
+    {
+      "id": "endorser-used",
+      "law": "第38条",
+      "message": "代言人不得为其未使用过的商品作推荐"
+    },
+    {
+      "id": "minor-endorser",
+      "law": "第38条",
+      "message": "不得利用不满十周岁的未成年人作代言人"
+    },
+    {
+      "id": "compare-ads",
+      "law": "第13条",
+      "message": "不得贬低其他生产经营者的商品或服务"
+    }
+  ]
+};
+const CATEGORIES = {
+  "version": "2.0",
+  "description": "商品品类 → 作用域（scope）与资质要求的映射。合规引擎据此决定每条 L2 规则对当前商品是否生效。",
+  "scopeAliases": {
+    "医疗保健": "medical",
+    "医疗器械": "medical",
+    "药品": "medical",
+    "保健食品": "health-food",
+    "食品饮料": "food",
+    "食品": "food",
+    "化妆品": "cosmetic",
+    "美妆个护": "cosmetic",
+    "金融理财": "finance",
+    "金融": "finance",
+    "教育培训": "education",
+    "教育": "education",
+    "房地产": "realestate",
+    "房产": "realestate",
+    "母婴": "baby",
+    "母婴用品": "baby",
+    "酒类": "alcohol",
+    "烟草": "tobacco",
+    "3C数码": "digital",
+    "数码": "digital",
+    "家电": "appliance",
+    "服饰": "apparel",
+    "家居": "home"
+  },
+  "scopes": {
+    "medical": {
+      "displayName": "医疗保健",
+      "extraActiveRules": [
+        "med-efficacy-general",
+        "med-endorser"
+      ],
+      "qualifications": [
+        {
+          "id": "medical-device-registration",
+          "name": "医疗器械注册证/备案凭证",
+          "note": "宣称具体功效前必须具备"
+        },
+        {
+          "id": "health-food-blue-hat",
+          "name": "保健食品批准证书（蓝帽子）",
+          "note": "允许宣称获批的保健功能"
+        },
+        {
+          "id": "drug-approval",
+          "name": "药品批准文号",
+          "note": "仅药品可宣称治疗作用"
+        }
+      ],
+      "requiredDisclaimers": [
+        "medical"
+      ],
+      "notes": "医疗保健是处罚高发区。没有上述任何一个批文时，任何功效类表述（含「缓解」「调理」）都应判定为 L2。"
+    },
+    "health-food": {
+      "displayName": "保健食品",
+      "extraActiveRules": [
+        "med-efficacy-general"
+      ],
+      "qualifications": [
+        {
+          "id": "health-food-blue-hat",
+          "name": "保健食品批准证书（蓝帽子）",
+          "note": ""
+        }
+      ],
+      "requiredDisclaimers": [
+        "health-food",
+        "medical"
+      ],
+      "notes": "必须标注「本品不能代替药物」；不得与药品比较。"
+    },
+    "food": {
+      "displayName": "食品",
+      "qualifications": [
+        {
+          "id": "food-production-license",
+          "name": "食品生产许可证（SC）",
+          "note": ""
+        }
+      ],
+      "requiredDisclaimers": [],
+      "notes": "不得含预防/治疗功能表述。"
+    },
+    "cosmetic": {
+      "displayName": "化妆品",
+      "qualifications": [
+        {
+          "id": "cosmetic-special-approval",
+          "name": "特殊用途化妆品批件",
+          "note": "宣称美白/防晒/染发/烫发/祛斑等需此批件"
+        }
+      ],
+      "requiredDisclaimers": [],
+      "notes": "普通化妆品不得宣称美白、祛斑；不得含医疗效果。"
+    },
+    "finance": {
+      "displayName": "金融理财",
+      "extraActiveRules": [
+        "finance-guarantee"
+      ],
+      "qualifications": [
+        {
+          "id": "finance-license",
+          "name": "金融业务许可证",
+          "note": ""
+        }
+      ],
+      "requiredDisclaimers": [
+        "finance"
+      ],
+      "notes": "必须包含风险提示；不得承诺收益。"
+    },
+    "education": {
+      "displayName": "教育培训",
+      "extraActiveRules": [
+        "edu-promise"
+      ],
+      "qualifications": [
+        {
+          "id": "education-license",
+          "name": "办学许可证",
+          "note": ""
+        }
+      ],
+      "requiredDisclaimers": [],
+      "notes": "不得承诺通过率、升学、就业。"
+    },
+    "realestate": {
+      "displayName": "房地产",
+      "qualifications": [
+        {
+          "id": "presale-permit",
+          "name": "商品房预售许可证",
+          "note": ""
+        }
+      ],
+      "requiredDisclaimers": [],
+      "notes": "必须标明建筑面积与套内面积、预售许可证号。"
+    },
+    "baby": {
+      "displayName": "母婴/婴幼儿",
+      "qualifications": [],
+      "requiredDisclaimers": [],
+      "notes": "不得宣传替代母乳或优于母乳。"
+    },
+    "alcohol": {
+      "displayName": "酒类",
+      "qualifications": [],
+      "requiredDisclaimers": [],
+      "notes": "不得诱导饮酒、不得出现饮酒动作。"
+    },
+    "tobacco": {
+      "displayName": "烟草",
+      "qualifications": [],
+      "requiredDisclaimers": [],
+      "blocked": true,
+      "notes": "禁止在大众传播媒介发布烟草广告，无合规路径。"
+    },
+    "digital": {
+      "displayName": "3C数码",
+      "qualifications": [
+        {
+          "id": "ccc-certification",
+          "name": "3C 强制性产品认证",
+          "note": ""
+        }
+      ],
+      "requiredDisclaimers": [],
+      "notes": "性能参数（降噪深度、续航、重量）须与实测一致，否则构成虚假宣传。"
+    },
+    "appliance": {
+      "displayName": "家电",
+      "qualifications": [],
+      "requiredDisclaimers": [],
+      "notes": ""
+    },
+    "apparel": {
+      "displayName": "服饰",
+      "qualifications": [],
+      "requiredDisclaimers": [],
+      "notes": ""
+    },
+    "home": {
+      "displayName": "家居",
+      "qualifications": [],
+      "requiredDisclaimers": [],
+      "notes": ""
+    }
+  },
+  "fallbackScope": "general",
+  "platformRules": {
+    "抖音/千川": {
+      "strictOn": [
+        "虚假功效",
+        "违禁表述",
+        "极限词"
+      ],
+      "penalty": "限流、封号、扣保证金"
+    },
+    "快手": {
+      "strictOn": [
+        "虚假功效",
+        "违禁品类"
+      ],
+      "penalty": "限流、封号"
+    },
+    "淘宝/天猫": {
+      "strictOn": [
+        "极限词",
+        "虚假宣传",
+        "盗图"
+      ],
+      "penalty": "扣分、下架、罚款"
+    },
+    "京东": {
+      "strictOn": [
+        "极限词",
+        "虚假比较",
+        "价格欺诈"
+      ],
+      "penalty": "下架、扣分"
+    },
+    "小红书": {
+      "strictOn": [
+        "虚假种草",
+        "未标广告",
+        "夸大效果"
+      ],
+      "penalty": "限流、封号"
+    },
+    "拼多多": {
+      "strictOn": [
+        "虚假折扣",
+        "极限词",
+        "低俗营销"
+      ],
+      "penalty": "下架、罚款"
+    }
+  }
+};
+
+// SPF 合规引擎 —— 本文件是 HTML 版引擎的唯一真源。
+// 校验：node spf/ui/engine.selftest.js  （读取同目录 rules.json）
+// 生成 HTML 时把 ENGINE + RULES 内联进去，保证"网页版"和"命令行版"同一套逻辑。
+
+function spfScopeOf(category, categories) {
+  if (!category) return categories.fallbackScope;
+  if (categories.scopeAliases[category]) return categories.scopeAliases[category];
+  if (categories.scopes[category]) return category;
+  return categories.fallbackScope;
+}
+
+function spfCheck(content, product, rules, categories, ownedQualifications, platform) {
+  const quals = ownedQualifications || [];
+  const scope = spfScopeOf(product && product.category, categories);
+  const scopeInfo = categories.scopes[scope] || null;
+
+  const activeExtra = (scopeInfo && scopeInfo.extraActiveRules) ? scopeInfo.extraActiveRules : [];
+  const findings = [];
+
+  for (const rule of rules.rules) {
+    let applies = false;
+    if (rule.scope === 'all') applies = true;
+    else if (rule.scope === scope) applies = true;
+    else if (activeExtra.indexOf(rule.id) >= 0) applies = true;
+    if (!applies) continue;
+
+    const re = new RegExp(rule.pattern, 'gi');
+    let m;
+    while ((m = re.exec(content)) !== null) {
+      const word = m[0];
+      if (word === '') { re.lastIndex++; continue; }
+
+      // 资质判定
+      let required = rule.requiresQualification || null;
+      let qualified = true;
+      const blocked = rule.substitutionBlocked === true;
+      if (required) {
+        const candidates = required.split(/\s+OR\s+/).map(s => s.trim());
+        qualified = candidates.some(c => quals.indexOf(c) >= 0);
+        if (required === 'any-documented-standard') qualified = quals.length > 0;
+        if (required === 'patent-number-disclosed') qualified = quals.indexOf('patent-number-disclosed') >= 0;
+      }
+      // 禁止性规定不走资质门
+      if (blocked) { required = null; qualified = false; }
+
+      let substitution = null;
+      if (rule.replacements && rule.replacements[word]) substitution = rule.replacements[word];
+
+      let note = '';
+      if (rule.level === 'L2' && qualified) {
+        note = '已提供对应资质，该表述可保留；建议在话术中给出可核验依据';
+      } else if (rule.level === 'L2' && rule.action === 'remove') {
+        note = '禁止性规定：' + (rule.reason || '') + '；不能靠替换解决，须删除';
+      } else if (rule.level === 'L2') {
+        note = '缺少资质：' + required + '；替换话术不能消除违法性，须出示资质或删除该表述';
+      } else if (rule.level === 'L3') {
+        note = rule.qualifier || '';
+      }
+
+      findings.push({
+        level: rule.level, ruleId: rule.id, category: rule.category, law: rule.law,
+        word: word, index: m.index, message: rule.message,
+        substitution: substitution, note: note, qualified: qualified,
+      });
+    }
+  }
+
+  // 必需声明
+  const requiredDisclaimers = [];
+  if (scopeInfo && scopeInfo.requiredDisclaimers) {
+    for (const key of scopeInfo.requiredDisclaimers) {
+      const list = rules.requiredDisclaimers[key];
+      if (list) for (const d of list) requiredDisclaimers.push(d);
+    }
+  }
+  const missingDisclaimers = requiredDisclaimers.filter(d => content.indexOf(d) < 0);
+
+  // 需准备的资质
+  const neededQualifications = [];
+  if (scopeInfo && scopeInfo.qualifications) {
+    for (const q of scopeInfo.qualifications) {
+      neededQualifications.push({ id: q.id, name: q.name, note: q.note, owned: quals.indexOf(q.id) >= 0 });
+    }
+  }
+
+  const l1 = findings.filter(f => f.level === 'L1');
+  const l2 = findings.filter(f => f.level === 'L2' && !f.qualified);
+  const l2Retained = findings.filter(f => f.level === 'L2' && f.qualified);
+  const l3 = findings.filter(f => f.level === 'L3');
+
+  let verdict = 'PASS';
+  if (scopeInfo && scopeInfo.blocked) verdict = 'BLOCKED';
+  else if (l2.length > 0 || missingDisclaimers.length > 0) verdict = 'REJECT';
+  else if (l1.length > 0 || l3.length > 0) verdict = 'REVISE';
+
+  // 只做 L1 替换（L2/L3 需要人决策）
+  let rewritten = content;
+  for (const f of l1) if (f.substitution) rewritten = rewritten.split(f.word).join(f.substitution);
+
+  return {
+    verdict: verdict, scope: scope,
+    scopeName: scopeInfo ? scopeInfo.displayName : scope,
+    product: product ? product.name : '(未指定)',
+    platform: platform || '',
+    l1Count: l1.length, l2Count: l2.length, l2RetainedCount: l2Retained.length, l3Count: l3.length,
+    findings: findings, l1: l1, l2: l2, l2Retained: l2Retained, l3: l3,
+    missingDisclaimers: missingDisclaimers,
+    neededQualifications: neededQualifications,
+    rewritten: rewritten,
+  };
+}
+
+
+
+function scEsc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+function scBuildQuals(){
+  const box = document.getElementById('sc_qualBox');
+  const cat = document.getElementById('sc_cat').value;
+  const scope = spfScopeOf(cat, CATEGORIES);
+  const info = CATEGORIES.scopes[scope];
+  const qs = (info && info.qualifications) ? info.qualifications : [];
+  box.innerHTML = qs.length
+    ? qs.map(q=>'<label><input type="checkbox" value="'+scEsc(q.id)+'"> '+scEsc(q.name)+
+        (q.note?'<span style="color:#656d76">（'+scEsc(q.note)+'）</span>':'')+'</label>').join('')
+    : '<div style="color:#656d76;font-size:13px">该品类无强制资质要求</div>';
+}
+function scOwned(){
+  const out=[];
+  document.querySelectorAll('#sc_qualBox input:checked').forEach(i=>out.push(i.value));
+  if(document.getElementById('sc_patent').checked) out.push('patent-number-disclosed');
+  return out;
+}
+function scRun(){
+  const text=document.getElementById('sc_txt').value.trim();
+  if(!text){alert('先把要审查的文案贴进来');return;}
+  const cat=document.getElementById('sc_cat').value;
+  const v=spfCheck(text,{name:cat,category:cat},RULES,CATEGORIES,scOwned(),document.getElementById('sc_plat').value);
+  scRender(v,text);
+}
+function scVerdict(v){return {PASS:'✅ 可发布',REVISE:'⚠️ 修改后可发布',REJECT:'❌ 不可发布',BLOCKED:'⛔ 该品类禁止在大众媒介投放'}[v.verdict];}
+function scGroup(level,title,list,showFix){
+  if(!list.length) return '';
+  let h='<div class="grp"><h3>'+title+'（'+list.length+' 处）</h3>';
+  for(const f of list){
+    h+='<div class="hit lv-'+f.level+'"><div>命中 <span class="w">'+scEsc(f.word)+'</span> · '+scEsc(f.category)+'</div>';
+    h+='<div class="law" style="margin:4px 0 0">依据 '+scEsc(f.law)+'</div>';
+    if(showFix&&f.substitution) h+='<div class="fix">→ 替换为：'+scEsc(f.substitution)+'</div>';
+    if(showFix&&f.level==='L1'&&!f.substitution) h+='<div class="fix">→ 需人工改写（词库无对应替换）</div>';
+    if(f.note) h+='<div class="note">'+scEsc(f.note)+'</div>';
+    h+='</div>';
+  }
+  return h+'</div>';
+}
+function scRender(v,input){
+  const p=[];
+  p.push('<div class="verdict v-'+v.verdict+'">'+scVerdict(v)+
+    '<div class="stats">L1 可替换 '+v.l1Count+' · L2 需资质 '+v.l2Count+
+    ' · L2 已有资质可保留 '+v.l2RetainedCount+' · L3 需加限定 '+v.l3Count+'</div></div>');
+  p.push(scGroup('L2','需资质 / 必须删除',v.l2,true));
+  if(v.l2Retained.length){
+    p.push('<div class="grp"><h3>已提供资质，可保留（'+v.l2Retained.length+' 处）</h3>'+
+      '<div class="law">在你勾选的资质范围内可保留，建议在话术中给出可核验依据</div>'+
+      v.l2Retained.map(f=>'<div class="hit lv-L2"><div><span class="w">'+scEsc(f.word)+'</span> · '+
+      scEsc(f.category)+' · 依据 '+scEsc(f.law)+'</div></div>').join('')+'</div>');
+  }
+  p.push(scGroup('L1','可替换违规词',v.l1,true));
+  p.push(scGroup('L3','需加限定词',v.l3,false));
+  if(v.missingDisclaimers.length){
+    p.push('<div class="grp"><h3>缺失的强制声明（'+v.missingDisclaimers.length+' 条）</h3>'+
+      '<div class="law">依法必须出现在广告中，缺了就是违法</div>'+
+      v.missingDisclaimers.map(d=>'<div class="disc">❌ 必须补上：'+scEsc(d)+'</div>').join('')+'</div>');
+  } else if(['medical','health-food','finance'].indexOf(v.scope)>=0){
+    p.push('<div class="grp"><h3>强制声明</h3><div class="disc ok">✅ 该品类所需声明已在文案中找到</div></div>');
+  }
+  if(v.neededQualifications.length){
+    p.push('<div class="grp"><h3>该品类需要的资质文件</h3>'+
+      '<div class="law">这些是判断「能不能这么说」的依据</div>'+
+      v.neededQualifications.map(q=>'<div class="qualrow"><span class="mark">'+(q.owned?'✅':'⬜')+
+      '</span><div>'+scEsc(q.name)+' <span style="color:#656d76">('+scEsc(q.id)+')</span>'+
+      (q.note?'<div style="color:#656d76;font-size:13px">'+scEsc(q.note)+'</div>':'')+'</div></div>').join('')+'</div>');
+  }
+  if(v.rewritten!==input){
+    p.push('<div class="grp"><h3>只替换 L1 后的结果</h3>'+
+      '<div class="law">L2 需资质或删除、L3 需补限定，由你决定，工具不自动改</div>'+
+      '<div class="box">'+scEsc(v.rewritten)+'</div></div>');
+  }
+  if(v.findings.length){
+    const rows=v.findings.map(f=>'<tr><td>'+scEsc(f.level)+'</td><td>'+scEsc(f.word)+'</td><td>'+
+      scEsc(f.category)+'</td><td>'+scEsc(f.law)+'</td></tr>').join('');
+    p.push('<details><summary>查看全部 '+v.findings.length+' 条命中明细</summary>'+
+      '<div class="box" style="padding:0;overflow:auto"><table style="font-size:13px">'+
+      '<tr style="background:#eef0f3"><th align="left">级别</th><th align="left">命中</th>'+
+      '<th align="left">类别</th><th align="left">依据</th></tr>'+rows+'</table></div></details>');
+  }
+  if(v.findings.length===0&&!v.missingDisclaimers.length){
+    p.push('<div class="grp"><div class="disc ok">✅ 未发现风险表述。注意：没命中不等于绝对安全。</div></div>');
+  }
+  document.getElementById('sc_out').innerHTML=p.join('');
+  document.getElementById('sc_out').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function scDemo(){
+  document.getElementById('sc_txt').value='这款草本温灸肠胃贴一贴根治，三天见效，专家推荐，销量第一，零差评，全家适用，采用医用级无纺布，最好用的肠胃贴';
+  document.getElementById('sc_cat').value='医疗保健';
+  scBuildQuals();
+  scRun();
+}
+(function(){
+  const sel=document.getElementById('sc_cat');
+  for(const n of Object.keys(CATEGORIES.scopeAliases)){
+    const o=document.createElement('option'); o.textContent=n; sel.appendChild(o);
+  }
+  sel.value='医疗保健';
+  sel.addEventListener('change',scBuildQuals);
+  scBuildQuals();
+})();
+</script>
+</body>
+</html>
