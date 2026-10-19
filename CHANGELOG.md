@@ -2,6 +2,20 @@
 
 All notable changes to this portfolio hub are documented here.
 
+## 2026-10-19 — v1.0.2
+
+### Fixed
+
+- **A number on the hub page did not survive a click-through.** The ecom-script-agent card claimed
+  "4 大类违禁词校验 + **27 条自动替换**". In the repository, `27` is the **unit-test count**
+  (`27 个单元测试覆盖`), not a count of replacement rules, and the README documents two rule layers
+  (generic absolute-claim detection, medical-category checks) rather than four categories.
+  The card now states what the repository actually contains: absolute-claim detection, medical
+  mandatory checks, auto-rewrite of fixable phrasing, a library of 19 real viral scripts, and
+  27 unit tests — with the "model writes, rules block" framing the README uses.
+  This mattered because the same number is quoted on the resume; an interviewer opening the repo
+  would have found a different meaning for it.
+
 ## 2026-10-19 — v1.0.1
 
 ### Added
