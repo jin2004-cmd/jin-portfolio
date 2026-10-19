@@ -2,19 +2,34 @@
 
 All notable changes to this portfolio hub are documented here.
 
+## 2026-10-19 — v1.0.3
+
+### Fixed
+
+- **v1.0.2 removed a number that was actually correct.** Re-reading `data/compliance_rules.json`
+  in `ecom-script-agent` directly: `banned_words` holds **4 rules** (`ads_absolute` / `medical_cure`
+  / `medical_absolute` / `common_exaggeration`) and `auto_fix` holds **27 replacement entries**.
+  So the original card text — "4 大类违禁词校验 + 27 条自动替换" — was right, and `27` appears
+  **twice in this project with two different meanings**: 27 auto-replacements and 27 unit tests.
+  Both are real. The v1.0.2 edit had treated one meaning as evidence that the other was fabricated.
+  The card now reads: "4 条违禁词规则（通用 2 + 医疗 2）+ 27 条可修复表述自动替换表 +
+  医疗合规提示语；19 条真实爆款脚本库，27 个单元测试覆盖".
+
 ## 2026-10-19 — v1.0.2
 
 ### Fixed
 
-- **A number on the hub page did not survive a click-through.** The ecom-script-agent card claimed
-  "4 大类违禁词校验 + **27 条自动替换**". In the repository, `27` is the **unit-test count**
-  (`27 个单元测试覆盖`), not a count of replacement rules, and the README documents two rule layers
-  (generic absolute-claim detection, medical-category checks) rather than four categories.
-  The card now states what the repository actually contains: absolute-claim detection, medical
-  mandatory checks, auto-rewrite of fixable phrasing, a library of 19 real viral scripts, and
-  27 unit tests — with the "model writes, rules block" framing the README uses.
-  This mattered because the same number is quoted on the resume; an interviewer opening the repo
-  would have found a different meaning for it.
+- **A number on the hub page did not survive a click-through (later corrected — see v1.0.3).**
+  The ecom-script-agent card claimed "4 大类违禁词校验 + **27 条自动替换**". This entry assumed
+  `27` referred only to the unit-test count and rewrote the card accordingly. That assumption was
+  wrong: the repository does contain 27 auto-replacement entries. The correction is recorded in
+  v1.0.3 above rather than being silently reverted, so the reasoning stays auditable.
+
+### Verified in this pass
+
+- 19 original scripts (6 pain / 6 reverse / 7 scenario) — counted from
+  `data/original_scripts/*.json` in `ecom-script-agent`.
+- 27 unit tests — counted `def test_` across the four files in `技术源码/tests/`.
 
 ## 2026-10-19 — v1.0.1
 
