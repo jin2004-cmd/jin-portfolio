@@ -2,6 +2,32 @@
 
 All notable changes to this portfolio hub are documented here.
 
+## 2026-10-21 — v1.0.4
+
+### Added
+
+- **社交预览标签（og / twitter）补到 7 个页面。** 此前整站只有 `ai-video-portfolio.html`
+  带 og 标签，其余 7 个页面（含入口 `index.html`）一个都没有。把链接发到微信、飞书、
+  Slack、Twitter 时，这些页面转出来是一块没有标题、没有描述、没有图的空白卡片。
+  现在补上 `og:type` / `og:title` / `og:description` / `og:url` / `og:image` 与对应的
+  twitter 字段，并给每个页面写了各自的 `description` 和 `twitter:card`。
+  封面图直接复用仓库已有的 `shots/*.jpg`，不引入新资源。
+
+### Verified in this pass
+
+- 改动方式为**字节级插入**：只在 `</title>` 之后追加一段 meta，文件其余部分
+  与改动前逐字节一致（9 个文件全部做了「删掉插入块后是否等于原文件」的校验）。
+- 每个 `og:image` / `og:url` 都用 HTTP 请求实测过，返回 200。
+- GitHub Pages 状态 `built`。
+
+### Note
+
+- **此前记录的「`ai-video-portfolio.html` 的 `og:image` 是畸形 base64 拼接」已经不成立。**
+  本次实查远程 `main`，该文件的 `og:image` 是正确的
+  `https://jin2004-cmd.github.io/ai-video-portfolio/assets/dragon-v3.jpg`。该问题在
+  2026-10-19 那轮已修复，这条记录留在这里是为了避免以后再当作未修项反复处理。
+- 仓库已有 `README.md` 与 `LICENSE`（早期记录中的「缺 README / 无 LICENSE」同样已不成立）。
+
 ## 2026-10-19 — v1.0.3
 
 ### Fixed
