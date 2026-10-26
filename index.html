@@ -15,124 +15,137 @@
 <meta name="twitter:title" content="金佳信 · 项目作品集">
 <meta name="twitter:description" content="10 个作品页 + 5 个可直接试用的工具 + 4 份流程文档，全部自包含单文件，双击即用，不需要联网和部署。">
 <style>
-  :root{--bg:#0f1115;--card:#161a21;--line:#242a34;--txt:#e6e9ef;--dim:#98a2b3;--acc:#43d6f7}
+  :root{
+    --bg:#0e1014;--card:#151922;--line:#232936;--txt:#e9edf4;--dim:#96a1b3;--acc:#43d6f7;
+    --max:1320px;--gap:26px;
+  }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{margin:0;background:var(--bg);color:var(--txt);
        font-family:"PingFang SC","Microsoft YaHei",-apple-system,"Segoe UI",sans-serif;
-       line-height:1.7;padding:28px 20px 56px}
-  .wrap{max-width:1180px;margin:0 auto}
+       line-height:1.7;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
 
-  /* ── 首屏 ───────────────────────────── */
-  .hero{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);gap:34px;
-        align-items:start;border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:6px}
-  .kicker{font-size:11px;letter-spacing:2.4px;color:var(--acc);margin-bottom:7px}
-  h1{margin:0 0 6px;font-size:27px;letter-spacing:.5px}
-  h1 em{font-style:normal;font-size:14px;color:var(--dim);font-weight:400;
-        letter-spacing:.8px;margin-left:9px}
-  .role{margin:0 0 11px;font-size:13.5px;color:var(--dim)}
+  /* ── 首屏：满幅电影感 ─────────────────────────── */
+  .hero{border-bottom:1px solid var(--line);
+        background:radial-gradient(1100px 420px at 10% 25%,rgba(67,214,247,.07),transparent 72%)}
+  .hero-in{display:grid;grid-template-columns:minmax(0,470px) minmax(0,1fr);
+           gap:clamp(28px,3.6vw,58px);align-items:center;
+           max-width:var(--max);margin:0 auto;padding:clamp(44px,6vw,88px) 28px}
+  .hero-copy{min-width:0}
+  .role{max-width:34em}
+  .hero-fig{margin:0;border-radius:14px;overflow:hidden;border:1px solid var(--line);
+            background:#0a0c10;box-shadow:0 26px 64px rgba(0,0,0,.5);
+            transition:border-color .2s,transform .2s}
+  .hero-fig:hover{border-color:var(--acc);transform:translateY(-3px)}
+  .hero-fig a{display:block}
+  .hero-fig img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
+  .hero-cap{padding:11px 16px 13px;font-size:11.5px;color:#6f7b8c;letter-spacing:.3px;
+            border-top:1px solid var(--line);background:#111520}
+  .ava{display:inline-block;font-size:12.5px;letter-spacing:.4px;color:var(--acc);
+       border:1px solid rgba(67,214,247,.42);background:rgba(67,214,247,.08);
+       border-radius:999px;padding:4px 14px;margin-bottom:16px}
+  h1{margin:0;font-size:clamp(34px,5vw,72px);line-height:1.04;letter-spacing:-1px;font-weight:700}
+  h1 em{font-style:normal;display:block;font-size:clamp(13px,1.4vw,17px);color:var(--dim);
+        font-weight:400;letter-spacing:2.5px;margin-top:12px}
+  .role{margin:20px 0 0;font-size:clamp(14.5px,1.5vw,17px);color:#c3ccda;max-width:46em;line-height:1.75}
   .role b{color:var(--txt);font-weight:600}
-  .pitch{margin:0 0 12px;font-size:14.5px;line-height:1.78;max-width:35em}
-  .pitch b{color:var(--acc);font-weight:600}
-  .contact{font-size:12.5px;color:var(--dim);margin-bottom:13px}
-  .contact a{color:var(--acc);text-decoration:none;border-bottom:1px dotted rgba(67,214,247,.45)}
-  .stats{display:flex;flex-wrap:wrap;gap:8px}
-  .stats span{font-size:12.5px;color:var(--dim);background:#151a20;border:1px solid var(--line);
-              border-radius:999px;padding:3px 12px}
-  .stats b{color:var(--txt);font-weight:600}
+  .chainline{margin:14px 0 0;font-size:13px;color:var(--dim);letter-spacing:.3px}
+  .chainline span{color:var(--acc)}
+  .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+  .btn{display:inline-block;font-size:14px;padding:11px 26px;border-radius:9px;
+       text-decoration:none;border:1px solid var(--acc);color:var(--acc);transition:.16s;font-weight:500}
+  .btn:hover{background:var(--acc);color:#0e1014}
+  .btn.ghost{border-color:#3d4658;color:#c3ccda}
+  .btn.ghost:hover{border-color:var(--txt);color:var(--txt);background:transparent}
+  .meta{margin-top:26px;font-size:12.5px;color:var(--dim)}
+  .meta a{color:var(--acc);text-decoration:none;border-bottom:1px dotted rgba(67,214,247,.45)}
 
-  /* ── 五站链路 ───────────────────────── */
-  .chain{background:#131820;border:1px solid var(--line);border-radius:12px;padding:14px 16px 12px}
-  .chain-h{font-size:12.5px;color:var(--txt);font-weight:600;letter-spacing:.3px;margin-bottom:2px}
-  .chain-h span{color:var(--dim);font-weight:400;font-size:11.5px;margin-left:6px}
-  .steps{position:relative;padding-left:16px;margin-top:6px}
-  .steps::before{content:"";position:absolute;left:4px;top:9px;bottom:9px;width:1px;
-                 background:linear-gradient(180deg,rgba(67,214,247,.6),rgba(36,42,52,.9))}
-  .step{position:relative;display:grid;grid-template-columns:22px 40px minmax(0,1fr);
-        gap:6px;align-items:baseline;padding:5px 6px 5px 4px;border-radius:7px;
-        text-decoration:none;color:inherit;transition:.15s}
-  .step::before{content:"";position:absolute;left:-16px;top:10px;width:9px;height:9px;
-                border-radius:50%;background:#131820;border:1.5px solid var(--acc)}
-  .step:hover{background:#1a212b}
-  .step:hover em{color:var(--txt)}
-  .step i{font-style:normal;font-size:11px;color:var(--acc);letter-spacing:.6px;
-          font-variant-numeric:tabular-nums}
-  .step b{font-size:12.5px;font-weight:600}
-  .step em{font-style:normal;font-size:12px;color:var(--dim);line-height:1.55;transition:.15s}
-  .fresh{margin-top:10px;padding-top:9px;border-top:1px dashed var(--line);
-         font-size:11.5px;color:var(--dim)}
-  .fresh b{color:var(--txt);font-weight:600}
+  /* ── 细信息条 ─────────────────────────────────── */
+  .strip{max-width:var(--max);margin:0 auto;padding:18px 28px 0;
+         display:flex;flex-wrap:wrap;gap:10px 26px;align-items:center;font-size:13px;color:var(--dim)}
+  .strip b{color:var(--txt);font-weight:600}
+  .strip .upd{margin-left:auto;opacity:.8}
 
-  /* ── 筛选 ───────────────────────────── */
-  .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;
-           position:sticky;top:0;z-index:5;background:var(--bg);
-           padding:12px 0 12px;border-bottom:1px solid var(--line);margin-bottom:18px}
-  .f{font:inherit;font-size:12.5px;color:var(--dim);background:#151a20;
-     border:1px solid var(--line);border-radius:999px;padding:4px 14px;cursor:pointer;
-     transition:.15s;display:inline-flex;gap:6px;align-items:center}
-  .f b{font-weight:600;font-size:11.5px;color:#6f7b8c;transition:.15s}
-  .f:hover{color:var(--txt);border-color:#3a4351}
-  .f.on{color:#0f1115;background:var(--acc);border-color:var(--acc)}
-  .f.on b{color:rgba(15,17,21,.6)}
-  .hint{font-size:11.5px;color:#5d6878;margin-left:auto}
+  /* ── 筛选：给足呼吸 ───────────────────────────── */
+  .filters{position:sticky;top:0;z-index:5;background:var(--bg);
+           border-bottom:1px solid var(--line);margin-top:clamp(22px,3vw,34px)}
+  .filters-in{max-width:var(--max);margin:0 auto;padding:18px 28px;
+              display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  .f{font:inherit;font-size:14px;color:#cdd5e0;background:#171c26;
+     border:1px solid #39414f;border-radius:999px;padding:9px 24px;cursor:pointer;
+     transition:.16s;display:inline-flex;gap:8px;align-items:center;line-height:1.5;min-height:40px}
+  .f b{font-weight:600;font-size:12px;color:#6f7b8c;transition:.16s}
+  .f:hover{color:var(--txt);border-color:#465063}
+  .f.on{color:var(--acc);background:rgba(67,214,247,.14);border-color:var(--acc);font-weight:600}
+  .f.on b{color:var(--acc);opacity:.7}
+  .hint{font-size:12px;color:#5d6878;margin-left:auto}
 
-  /* ── 卡片 ───────────────────────────── */
-  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;
-        overflow:hidden;transition:border-color .18s,transform .18s,box-shadow .3s;
+  /* ── 分区：作品 / 工具 / 文档 ─────────────────── */
+  .gridwrap{max-width:var(--max);margin:0 auto;padding:clamp(20px,3vw,34px) 28px 0}
+  #grid{scroll-margin-top:86px}
+  .sec{padding-top:clamp(34px,5vw,58px)}
+  .sec[hidden]{display:none}
+  .sec-h{display:grid;grid-template-columns:auto minmax(0,1fr);
+         column-gap:clamp(13px,1.45vw,20px);
+         padding-bottom:18px;margin-bottom:26px;border-bottom:1px solid var(--line)}
+  .sec-n{grid-column:1;grid-row:1/3;align-self:baseline;
+         font-size:clamp(34px,3.6vw,52px);font-weight:800;line-height:.82;letter-spacing:-2px;
+         color:rgba(67,214,247,.34);
+         font-variant-numeric:tabular-nums;user-select:none}
+  .sec-t{grid-column:2;grid-row:1;font-size:clamp(17px,1.7vw,21px);font-weight:600;
+         margin:0;letter-spacing:.4px}
+  .sec-t i{font-style:normal;font-size:11.5px;color:#5d6878;letter-spacing:1.6px;
+           margin-left:9px;font-weight:400}
+  .sec-d{grid-column:2;grid-row:2;margin:5px 0 0;font-size:13.5px;color:#b4becd;max-width:56em}
+
+  /* ── 作品网格：两栏大图 ───────────────────────── */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(430px,1fr));gap:var(--gap)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+        overflow:hidden;transition:border-color .2s,transform .2s,box-shadow .3s;
         display:flex;flex-direction:column;animation:fade .3s ease both}
   @keyframes fade{from{opacity:0}}
   .card[hidden]{display:none}
-  @media (min-width:1001px){.card.tailsolo{grid-column:2}}
-  .card:hover{border-color:var(--acc);transform:translateY(-3px)}
-  .card.flash{border-color:var(--acc);box-shadow:0 0 0 2px rgba(67,214,247,.55),0 0 30px rgba(67,214,247,.2)}
-  .thumb{display:block;height:150px;overflow:hidden;background:#0a0c10;flex:none}
-  .thumb img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
-  .body{padding:13px 15px 15px;display:flex;flex-direction:column;flex:1}
-  .tag{display:inline-block;font-size:11.5px;color:var(--acc);border:1px solid var(--acc);
-       border-radius:999px;padding:0 8px;margin-bottom:7px}
-  .t{font-size:15.5px;font-weight:600;margin:0 0 6px;line-height:1.4}
-  .d{color:var(--dim);font-size:12.5px;line-height:1.65;margin:0 0 10px}
-  .chips{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 11px}
+  .card:hover{border-color:var(--acc);transform:translateY(-4px)}
+  .card.flash{border-color:var(--acc);box-shadow:0 0 0 2px rgba(67,214,247,.55),0 0 34px rgba(67,214,247,.18)}
+  .thumb{display:block;aspect-ratio:16/9;overflow:hidden;background:#0a0c10;flex:none}
+  .thumb img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;
+             transition:transform .4s ease}
+  .card:hover .thumb img{transform:scale(1.03)}
+  .body{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1}
+  .tag{display:inline-block;font-size:11.5px;color:var(--acc);border:1px solid rgba(67,214,247,.5);
+       border-radius:999px;padding:1px 10px;margin-bottom:9px}
+  .t{font-size:17px;font-weight:600;margin:0 0 8px;line-height:1.4}
+  .d{color:var(--dim);font-size:13.5px;line-height:1.7;margin:0 0 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
   .chips span{font-size:11.5px;line-height:1.5;color:var(--dim);background:#1b212a;
-              border:1px solid var(--line);border-radius:5px;padding:1px 7px}
-  .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
-  .btn{display:inline-block;font-size:12.5px;padding:5px 13px;border-radius:7px;
-       text-decoration:none;border:1px solid var(--acc);color:var(--acc);transition:.15s}
-  .btn:hover{background:var(--acc);color:#0f1115}
-  .btn.ghost{border-color:var(--dim);color:var(--dim)}
-  .btn.ghost:hover{border-color:var(--txt);color:var(--txt);background:transparent}
+              border:1px solid var(--line);border-radius:6px;padding:2px 9px}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto}
+  .btn.sm{font-size:13px;padding:7px 17px;border-radius:8px}
 
-  .note{margin-top:24px;background:#151a20;border:1px dashed var(--line);border-radius:10px;
-        padding:14px 16px;color:var(--dim);font-size:13px}
+  /* 收尾不落单：三栏居中，两栏拉成横幅 */
+  @media (min-width:1101px){.card.tailsolo{grid-column:2}}
+  .card.tailwide{grid-column:1/-1}
+  .card.tailwide .thumb{aspect-ratio:21/9}
+
+  .note{max-width:var(--max);margin:clamp(34px,5vw,56px) auto 0;padding:0 28px}
+  .note-in{background:#151922;border:1px dashed var(--line);border-radius:12px;
+           padding:18px 22px;color:var(--dim);font-size:13.5px;line-height:1.8}
   .note b{color:var(--txt)}
   .note a{color:var(--acc);text-decoration:none;border-bottom:1px dotted var(--acc)}
 
-  @media (max-width:1000px){
-    .grid{grid-template-columns:repeat(2,1fr)}
-  }
-  @media (max-width:820px){
-    .hero{grid-template-columns:1fr;gap:20px}
-    .steps{display:grid;grid-template-columns:1fr 1fr;gap:3px 16px;padding-left:0}
-    .steps::before,.step::before{display:none}
-    .step{grid-template-columns:20px 34px minmax(0,1fr);padding-left:2px}
-    .step:last-child{grid-column:1/-1}
-  }
-  @media (max-width:640px){
-    .grid{grid-template-columns:1fr}
-    .thumb{height:180px}
+  @media (max-width:900px){
     .hint{display:none}
-    .steps{grid-template-columns:1fr}
-    .step:last-child{grid-column:auto}
+    .strip .upd{margin-left:0}
+    .hero-in{grid-template-columns:1fr;gap:clamp(26px,4vw,40px);padding-top:clamp(34px,6vw,52px)}
+    .hero-fig{order:-1}
+    .hero-copy{order:1}
   }
-  @media (max-width:430px){
-    body{padding:20px 14px 44px}
-    h1{font-size:23px}
-    h1 em{font-size:12.5px;margin-left:7px}
-    .pitch{font-size:13.5px}
-    .f{font-size:12px;padding:3px 11px}
-    .step{grid-template-columns:18px 32px minmax(0,1fr);gap:4px}
-    .step em{font-size:11.5px}
+  @media (max-width:700px){
+    .hero-in,.strip,.filters-in,.gridwrap,.note{padding-left:18px;padding-right:18px}
+    .grid{grid-template-columns:1fr}
+    .card.tailwide .thumb{aspect-ratio:16/9}
+    .filters-in{padding-top:14px;padding-bottom:14px;gap:10px}
   }
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
@@ -141,59 +154,60 @@
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <header class="hero">
-    <div>
-      <div class="kicker">项目作品集 · 2026 秋招</div>
-      <h1>金佳信 <em>Jackson Jin</em></h1>
-      <p class="role">2027 届 · 教育技术学 · 求职方向：<b>AI 内容运营 / AIGC 运营</b></p>
-      <p class="pitch">把内容生产从「凭手感」变成「填参数」——<b>选题、脚本、制作、发布、沉淀</b>，
-        每一站都留下能交接的东西：规范、工具、或者一条能点开就看的片子。</p>
-      <div class="contact">
-        邮箱 <a href="mailto:13606553104@163.com">13606553104@163.com</a> ·
-        GitHub <a href="https://github.com/jin2004-cmd">github.com/jin2004-cmd</a>
+<header class="hero">
+  <div class="hero-in">
+    <div class="hero-copy">
+      <div class="ava">在找 AI 内容运营 / AIGC 运营 岗位 · 2026 秋招</div>
+      <h1>金佳信<em>JACKSON JIN</em></h1>
+      <p class="role">2027 届 · 教育技术学 · 我做的事是<b>把内容生产从「凭手感」变成「填参数」</b>——
+        选题、脚本、制作、发布、沉淀，每一站都留下能交接的东西，而不是做完就散。</p>
+      <p class="chainline">选题 <span>→</span> 脚本 <span>→</span> 制作 <span>→</span> 发布 <span>→</span> 沉淀</p>
+      <div class="cta">
+        <a class="btn" href="#grid">看作品 ↓</a>
+        <a class="btn ghost" href="mailto:13606553104@163.com">发邮件</a>
       </div>
-      <div class="stats">
-        <span><b>10</b> 个作品页</span>
-        <span><b>5</b> 个可直接试用的工具</span>
-        <span><b>4</b> 份流程文档</span>
-        <span>双击即开 · 不需联网部署</span>
+      <div class="meta">
+        邮箱 <a href="mailto:13606553104@163.com">13606553104@163.com</a> ·
+        GitHub <a href="https://github.com/jin2004-cmd" target="_blank" rel="noopener">github.com/jin2004-cmd</a>
       </div>
     </div>
+    <figure class="hero-fig">
+      <a href="ai-video-portfolio.html">
+        <img src="shots/hero-dragon.jpg" alt="《中国龙》V3 主视觉">
+      </a>
+      <figcaption class="hero-cap">《中国龙》V3 · Remotion 程序化生成 · 120 秒 · 2K 母版</figcaption>
+    </figure>
+  </div>
+</header>
 
-    <aside class="chain">
-      <div class="chain-h">一条内容走完的五站 <span>点站名，看那一站的证据</span></div>
-      <div class="steps">
-        <a class="step" href="#note">
-          <i>01</i><b>选题</b><em>拆同行的爆款结构，先想清楚「为什么这条能跑」</em>
-        </a>
-        <a class="step" href="#c-sop-sb" data-goto="c-sop-sb">
-          <i>02</i><b>脚本</b><em>六段式分镜，换人执行不漂移</em>
-        </a>
-        <a class="step" href="#c-loop" data-goto="c-loop">
-          <i>03</i><b>制作</b><em>3D 场景和声音自己搭，不买素材</em>
-        </a>
-        <a class="step" href="#c-sop-sub" data-goto="c-sop-sub">
-          <i>04</i><b>发布</b><em>字号坐标写死，字幕不靠手感</em>
-        </a>
-        <a class="step" href="#c-ecom" data-goto="c-ecom">
-          <i>05</i><b>沉淀</b><em>把流程做成能跑的工具，而不只是一份文档</em>
-        </a>
-      </div>
-      <div class="fresh"><b>最近更新 · 2026-10-26</b>　新增 C-Loop Night Test、字幕规范 SOP、分镜脚本规范 SOP</div>
-    </aside>
-  </header>
+<div class="strip">
+  <span><b>10</b> 个作品页</span>
+  <span><b>5</b> 个可直接试用的工具</span>
+  <span><b>4</b> 份流程文档</span>
+  <span class="upd">最近更新 2026-10-26 · 新增 C-Loop Night Test、字幕规范 SOP、分镜脚本规范 SOP</span>
+</div>
 
-  <nav class="filters" id="filters">
+<nav class="filters" id="filters">
+  <div class="filters-in">
     <button class="f on" data-cat="all">全部 <b>10</b></button>
     <button class="f" data-cat="video">视频作品 <b>2</b></button>
     <button class="f" data-cat="sop">SOP · 过程文档 <b>3</b></button>
     <button class="f" data-cat="tool">可试用工具 <b>5</b></button>
     <span class="hint">按 1 – 4 键快速切换</span>
-  </nav>
+  </div>
+</nav>
 
-  <div class="grid" id="grid">
+<div class="gridwrap">
+  <div id="grid">
+
+    <section class="sec" data-cat="video">
+      <div class="sec-h">
+        <span class="sec-n">01</span>
+        <h2 class="sec-t">成片<i>WORK</i></h2>
+        <p class="sec-d">能直接点开看的片子。一条是全程序化生成的，一条是 AIGC 与投流素材的合集。</p>
+      </div>
+      <div class="grid">
 
     <div class="card" id="c-loop" data-cat="video">
       <a class="thumb" href="c-loop.html">
@@ -202,11 +216,11 @@
       <div class="body">
         <span class="tag">新作 · 程序化影像</span>
         <p class="t">C-LOOP Night Test</p>
-        <p class="d">16 秒程序化汽车短片：车在 C 形钢构坡道上倒挂悬停、冷气反推、180° 横滚。Three.js 搭场景、SVG 做光学层、WebCodecs 编码，480 帧确定性渲染，零外部素材，声音 14 层原创合成。</p>
-        <div class="chips"><span>Three.js</span><span>480 帧确定性渲染</span><span>100% 程序化</span><span>vibecoding</span></div>
+        <p class="d">16 秒全程序化短片：倒挂悬停、冷气反推、180° 横滚。480 帧确定性渲染，零外部素材，声音 14 层原创合成。</p>
+        <div class="chips"><span>Three.js</span><span>480 帧确定性渲染</span><span>14 层原创声音</span><span>vibecoding</span></div>
         <div class="btns">
-          <a class="btn" href="c-loop.html">看这条片子</a>
-          <a class="btn ghost" href="C-Loop_OnePager_A4.pdf" target="_blank" rel="noopener">一页式案例</a>
+          <a class="btn sm" href="c-loop.html">看这条片子</a>
+          <a class="btn sm ghost" href="C-Loop_OnePager_A4.pdf" target="_blank" rel="noopener">一页式案例</a>
         </div>
       </div>
     </div>
@@ -216,16 +230,27 @@
         <img src="shots/ai-video.jpg" alt="《中国龙》V3 水墨龙画面" loading="lazy">
       </a>
       <div class="body">
-        <span class="tag">主打</span>
+        <span class="tag">合集 · 4 类素材</span>
         <p class="t">AI 视频作品集</p>
-        <p class="d">程序化影像《中国龙》V3、AIGC 短片《候》《悟空》、千川投流素材、剪辑练习。全部离线可看封面，联网可播成片。</p>
+        <p class="d">《中国龙》V3、AIGC 短片《候》《悟空》、千川投流素材与剪辑练习。离线可看封面，联网可播成片。</p>
         <div class="chips"><span>千川投流素材</span><span>AIGC 短片</span><span>离线可看封面</span></div>
         <div class="btns">
-          <a class="btn" href="ai-video-portfolio.html">打开作品集</a>
-          <a class="btn ghost" href="https://jin2004-cmd.github.io/ai-video-portfolio/" target="_blank" rel="noopener">在线版</a>
+          <a class="btn sm" href="ai-video-portfolio.html">打开作品集</a>
+          <a class="btn sm ghost" href="https://jin2004-cmd.github.io/ai-video-portfolio/" target="_blank" rel="noopener">在线版</a>
         </div>
       </div>
     </div>
+
+      </div>
+    </section>
+
+    <section class="sec" data-cat="tool">
+      <div class="sec-h">
+        <span class="sec-n">02</span>
+        <h2 class="sec-t">可试用工具<i>TOOLS</i></h2>
+        <p class="sec-d">不是截图，是能点进去真的用一次的页面。都是我把一段重复劳动拆成流程之后做出来的。</p>
+      </div>
+      <div class="grid">
 
     <div class="card" id="c-talkcal" data-cat="tool">
       <a class="thumb" href="TalkCal/index.html">
@@ -234,11 +259,11 @@
       <div class="body">
         <span class="tag">新作 · 可实操</span>
         <p class="t">TalkCal · 自然语言日历</p>
-        <p class="d">说一句「后天下午面试」就自动排进日历，带 LLM 输出质量门（不合格自动打回重试、全程留痕）。可直接试用。</p>
+        <p class="d">说一句「后天下午面试」就自动排进日历。带 LLM 输出质量门：不合格自动打回重试，全程留痕。</p>
         <div class="chips"><span>LLM 输出质量门</span><span>自动打回重试</span><span>全程留痕</span></div>
         <div class="btns">
-          <a class="btn" href="TalkCal/index.html">打开</a>
-          <a class="btn ghost" href="https://jin2004-cmd.github.io/talkcal/" target="_blank" rel="noopener">在线版</a>
+          <a class="btn sm" href="TalkCal/index.html">打开</a>
+          <a class="btn sm ghost" href="https://jin2004-cmd.github.io/talkcal/" target="_blank" rel="noopener">在线版</a>
         </div>
       </div>
     </div>
@@ -250,10 +275,10 @@
       <div class="body">
         <span class="tag">自研 Agent · 可实操</span>
         <p class="t">电商爆款脚本生成 Agent</p>
-        <p class="d">从 0 到 1 定义需求与流程，内置合规引擎：4 条违禁词规则（通用 2 + 医疗 2）+ 27 条可修复表述自动替换表 + 医疗合规提示语；19 条真实爆款脚本库，35 个单元测试覆盖，模型写、规则拦，出稿即过校验。</p>
+        <p class="d">模型写、规则拦：19 条真实爆款脚本库 + 4 条违禁词规则 + 27 条可修复表述自动替换表，35 个单元测试覆盖，出稿即过校验。</p>
         <div class="chips"><span>合规引擎</span><span>27 条替换表</span><span>19 条脚本库</span><span>35 个单测</span></div>
         <div class="btns">
-          <a class="btn" href="ecom-script-agent.html">一键出稿试用</a>
+          <a class="btn sm" href="ecom-script-agent.html">一键出稿试用</a>
         </div>
       </div>
     </div>
@@ -265,11 +290,11 @@
       <div class="body">
         <span class="tag">可实操</span>
         <p class="t">DayPilot 日航 · AI 每日规划与复盘</p>
-        <p class="d">说一句自动排日程，带 LLM 输出质量门（不合格自动打回重试、全程留痕）。可直接试用。</p>
+        <p class="d">说一句自动排日程，晚上自动复盘。同样带 LLM 输出质量门：不合格打回重试，全程留痕。</p>
         <div class="chips"><span>LLM 输出质量门</span><span>每日复盘</span><span>全程留痕</span></div>
         <div class="btns">
-          <a class="btn" href="daypilot.html">打开</a>
-          <a class="btn ghost" href="https://jin2004-cmd.github.io/daypilot/" target="_blank" rel="noopener">在线版</a>
+          <a class="btn sm" href="daypilot.html">打开</a>
+          <a class="btn sm ghost" href="https://jin2004-cmd.github.io/daypilot/" target="_blank" rel="noopener">在线版</a>
         </div>
       </div>
     </div>
@@ -281,10 +306,10 @@
       <div class="body">
         <span class="tag">合规</span>
         <p class="t">广告合规审查工具</p>
-        <p class="d">不止查违禁词，判断这句话能不能发：三级风险判定 + 资质校验。</p>
+        <p class="d">不止查违禁词，判断这句话能不能发：三级风险判定 + 资质校验，输出可执行的修改建议。</p>
         <div class="chips"><span>三级风险</span><span>资质校验</span><span>违禁词</span></div>
         <div class="btns">
-          <a class="btn" href="ad-compliance.html">打开</a>
+          <a class="btn sm" href="ad-compliance.html">打开</a>
         </div>
       </div>
     </div>
@@ -296,13 +321,24 @@
       <div class="body">
         <span class="tag">可实操</span>
         <p class="t">OfferAgent · Offer 决策助手</p>
-        <p class="d">多维度给 offer 打分对比，避免凭感觉拍板。可直接试用。</p>
+        <p class="d">把薪资、成长、稳定性、通勤拆成维度打分，多个 offer 并排对比，避免凭感觉拍板。</p>
         <div class="chips"><span>多维打分</span><span>offer 对比</span></div>
         <div class="btns">
-          <a class="btn" href="offeragent.html">打开</a>
+          <a class="btn sm" href="offeragent.html">打开</a>
         </div>
       </div>
     </div>
+
+      </div>
+    </section>
+
+    <section class="sec" data-cat="sop">
+      <div class="sec-h">
+        <span class="sec-n">03</span>
+        <h2 class="sec-t">过程文档<i>PROCESS</i></h2>
+        <p class="sec-d">把「凭手感」写成「填参数」的规范。目标是换一个人来执行，产出也不漂移。</p>
+      </div>
+      <div class="grid">
 
     <div class="card" id="c-hou" data-cat="sop">
       <a class="thumb" href="hou-storyboard.html">
@@ -311,10 +347,10 @@
       <div class="body">
         <span class="tag">过程</span>
         <p class="t">《候》分镜脚本</p>
-        <p class="d">展示一条 AI 短片从文字分镜到成片的推演过程。</p>
+        <p class="d">一条 AI 短片从文字分镜到成片的完整推演：每一秒写什么、为什么这么写，都留了依据。</p>
         <div class="chips"><span>文字分镜</span><span>成片推演</span></div>
         <div class="btns">
-          <a class="btn" href="hou-storyboard.html">打开</a>
+          <a class="btn sm" href="hou-storyboard.html">打开</a>
         </div>
       </div>
     </div>
@@ -326,10 +362,10 @@
       <div class="body">
         <span class="tag">流程文档 · 实习期</span>
         <p class="t">字幕规范 SOP</p>
-        <p class="d">把「凭手感调字幕」变成「填参数」：三种版式的字号 / 缩放 / 坐标全固定，中上英下层序、阴影恒定 30%，附剪映落地五步与交付前清单。</p>
+        <p class="d">把「凭手感调字幕」变成「填参数」：三种版式的字号 / 缩放 / 坐标全固定，附剪映落地五步与交付前清单。</p>
         <div class="chips"><span>横板双/单语</span><span>竖版双语</span><span>剪映参数表</span><span>交付清单</span></div>
         <div class="btns">
-          <a class="btn" href="sop-subtitle.html">打开规范</a>
+          <a class="btn sm" href="sop-subtitle.html">打开规范</a>
         </div>
       </div>
     </div>
@@ -341,51 +377,71 @@
       <div class="body">
         <span class="tag">流程文档 · 实习期</span>
         <p class="t">分镜脚本规范 SOP</p>
-        <p class="d">六段式结构让脚本可交接：制作方向 / 时长 / 音乐方向 / 分镜时间轴 / 剪辑节奏。含数据驱动式与情绪对比式两种真实范式的逐秒拆解。</p>
+        <p class="d">六段式结构让脚本可交接：制作方向 / 时长 / 音乐方向 / 分镜时间轴 / 剪辑节奏，附两种叙事范式的逐秒拆解。</p>
         <div class="chips"><span>六段式结构</span><span>两种叙事范式</span><span>时间轴闭合</span><span>复用防串稿</span></div>
         <div class="btns">
-          <a class="btn" href="sop-storyboard.html">打开规范</a>
+          <a class="btn sm" href="sop-storyboard.html">打开规范</a>
         </div>
       </div>
     </div>
 
+      </div>
+    </section>
+
   </div>
 
-  <div class="note" id="note">
-    <b>使用说明：</b>本文件夹内每个文件都是自包含的，双击即可用浏览器打开，不需要联网、不需要部署。
-    作品集里的<b>视频</b>为了控制体积放在云端（国内镜像，无需翻墙），<b>联网时点开即可播放</b>，离线状态下显示封面和说明文字。
-    标了「可实操」的是真实可用的工具，不是截图。<br>
-    <b>附 · 流程文档：</b>《千川爆款复刻方法论》
-    <span>（PDF 版随打包件单独提供）</span> ·
-    《千川素材生产流程规范》
-    <span>（PDF 版随打包件单独提供）</span> ·
-    《字幕规范 SOP》<a href="sop-subtitle.html">打开</a> ·
-    《分镜脚本规范 SOP》<a href="sop-storyboard.html">打开</a><br>
-    <span style="opacity:.75">前两份是实习期间给素材组定的产出 SOP；后两份是把客户侧的字幕标准与分镜脚本写法整理成可交接的规范，目标是换人执行也不漂移。</span>
+  <div class="note">
+    <div class="note-in" id="note">
+      <b>使用说明：</b>本文件夹内每个文件都是自包含的，双击即可用浏览器打开，不需要联网、不需要部署。
+      作品集里的<b>视频</b>为了控制体积放在云端（国内镜像，无需翻墙），<b>联网时点开即可播放</b>，离线状态下显示封面和说明文字。
+      标了「可实操」的是真实可用的工具，不是截图。<br>
+      <b>附 · 流程文档：</b>《千川爆款复刻方法论》
+      <span>（PDF 版随打包件单独提供）</span> ·
+      《千川素材生产流程规范》
+      <span>（PDF 版随打包件单独提供）</span> ·
+      《字幕规范 SOP》<a href="sop-subtitle.html">打开</a> ·
+      《分镜脚本规范 SOP》<a href="sop-storyboard.html">打开</a><br>
+      <span style="opacity:.75">前两份是实习期间给素材组定的产出 SOP；后两份是把客户侧的字幕标准与分镜脚本写法整理成可交接的规范，目标是换人执行也不漂移。</span>
+    </div>
   </div>
-
 </div>
 
 <script>
 (function(){
-  var cards = [].slice.call(document.querySelectorAll('.card'));
+  var secs  = [].slice.call(document.querySelectorAll('.sec'));
   var tabs  = [].slice.call(document.querySelectorAll('.f'));
   var CATS  = ['all','video','sop','tool'];
 
+  function cols(grid){
+    var n = getComputedStyle(grid).gridTemplateColumns.split(' ').filter(function(s){ return s; }).length;
+    return n > 1 ? n : 1;
+  }
+
+  // 收尾不落单：三栏时居中，两栏时把最后一张拉成横幅（按分区各自算）
+  function tails(){
+    secs.forEach(function(sec){
+      if (sec.hidden) return;
+      var grid  = sec.querySelector('.grid');
+      var cards = [].slice.call(grid.querySelectorAll('.card'));
+      cards.forEach(function(c){ c.classList.remove('tailsolo', 'tailwide'); });
+      var n = cols(grid), rest = cards.length % n;
+      if (cards.length > n && rest === 1) {
+        var last = cards[cards.length - 1];
+        if (n === 3) last.classList.add('tailsolo');
+        else last.classList.add('tailwide');
+      }
+    });
+  }
+
   function apply(cat, remember){
     if (CATS.indexOf(cat) < 0) cat = 'all';
-    cards.forEach(function(c){
-      c.hidden = (cat !== 'all' && c.getAttribute('data-cat') !== cat);
+    secs.forEach(function(s){
+      s.hidden = (cat !== 'all' && s.getAttribute('data-cat') !== cat);
     });
     tabs.forEach(function(t){
       t.classList.toggle('on', t.getAttribute('data-cat') === cat);
     });
-    // 三列下剩一张时居中，避免最后一行孤零零吊在左边
-    var shown = cards.filter(function(c){ return !c.hidden; });
-    cards.forEach(function(c){ c.classList.remove('tailsolo'); });
-    if (shown.length > 1 && shown.length % 3 === 1) {
-      shown[shown.length - 1].classList.add('tailsolo');
-    }
+    tails();
     if (remember) {
       try { history.replaceState(null, '', '#' + cat); } catch (e) {}
     }
@@ -398,16 +454,13 @@
   var init = (location.hash || '').replace('#','');
   apply(CATS.indexOf(init) > -1 ? init : 'all', false);
 
-  [].slice.call(document.querySelectorAll('[data-goto]')).forEach(function(el){
-    el.addEventListener('click', function(e){
-      e.preventDefault();
-      apply('all', true);
-      var t = document.getElementById(el.getAttribute('data-goto'));
-      if (!t) return;
-      t.scrollIntoView({behavior:'smooth', block:'center'});
-      t.classList.add('flash');
-      setTimeout(function(){ t.classList.remove('flash'); }, 1900);
-    });
+  var tid;
+  window.addEventListener('resize', function(){
+    clearTimeout(tid);
+    tid = setTimeout(function(){
+      var on = tabs.filter(function(x){ return x.classList.contains('on'); })[0];
+      apply(on ? on.getAttribute('data-cat') : 'all', false);
+    }, 120);
   });
 
   document.addEventListener('keydown', function(e){
