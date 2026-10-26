@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>秋招为什么这么难 · 纯代码科普短片 · 金佳信</title>
+<meta name="description" content="81 秒纯代码科普短片：把「27 届秋招为什么这么难」拆成 人 × 岗 × 时间 的乘法。2430 帧确定性逐帧渲染，33 个卡点全落在 120 BPM 网格上，零生成模型。">
+<style>
+  :root{
+    --bg:#0f1115; --card:#161a21; --line:#242a34; --txt:#e6e9ef; --dim:#98a2b3;
+    --acc:#43d6f7; --mono:"SFMono-Regular",Consolas,"Cascadia Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+       font-family:"PingFang SC","Microsoft YaHei",-apple-system,"Segoe UI",sans-serif;
+       line-height:1.75;font-size:15px}
+  .wrap{max-width:940px;margin:0 auto;padding:30px 22px 80px}
+
+  .backlink{display:inline-block;margin-bottom:16px;font-size:13px;color:var(--acc);text-decoration:none}
+  .backlink:hover{text-decoration:underline}
+
+  header{margin-bottom:26px}
+  .kicker{font-size:12.5px;color:var(--acc);letter-spacing:2px;margin:0 0 10px}
+  h1{margin:0 0 10px;font-size:30px;line-height:1.25;letter-spacing:.3px}
+  h1 span{display:block;font-size:17px;color:var(--dim);font-weight:400;margin-top:8px}
+  .sub{color:var(--dim);font-size:14.5px;margin:0}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .meta span{font-size:12.5px;color:var(--dim);background:#151a20;border:1px solid var(--line);
+             border-radius:999px;padding:3px 12px}
+  .meta b{color:var(--txt);font-weight:600}
+
+  /* 播放器 */
+  .player{position:relative;background:#07090c;border:1px solid var(--line);border-radius:14px;
+          overflow:hidden;margin:22px 0}
+  .player video{display:block;width:100%;height:auto;background:#07090c}
+  .playhint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+            pointer-events:none}
+  .playhint i{width:66px;height:66px;border-radius:50%;background:rgba(67,214,247,.92);
+              display:flex;align-items:center;justify-content:center;font-style:normal;
+              box-shadow:0 8px 30px rgba(0,0,0,.5)}
+  .playhint i::after{content:"";border-left:19px solid #0f1115;border-top:12px solid transparent;
+                     border-bottom:12px solid transparent;margin-left:5px}
+
+  h2{font-size:19px;margin:40px 0 4px;padding-left:12px;border-left:3px solid var(--acc);line-height:1.4}
+  h3{font-size:15.5px;margin:22px 0 6px}
+  p{margin:10px 0}
+  .dim{color:var(--dim)}
+  .lead{color:var(--dim);font-size:14px;margin:0 0 16px}
+  b,strong{color:#fff;font-weight:600}
+  code{font-family:var(--mono);font-size:12.5px;background:#1b212a;border:1px solid var(--line);
+       border-radius:4px;padding:1px 5px;color:#cfe9f3}
+
+  /* 事实条 */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}
+  .facts div{background:var(--card);border:1px solid var(--line);border-radius:10px;
+             padding:12px 14px;text-align:center}
+  .facts .v{font-family:var(--mono);font-size:17px;color:var(--acc);display:block;line-height:1.3}
+  .facts .k{font-size:11.5px;color:var(--dim)}
+
+  /* 关键帧 */
+  .kfs{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:18px 0}
+  .kf{background:var(--card);border:1px solid var(--line);border-radius:11px;overflow:hidden}
+  .kf.wide{grid-column:1/-1}
+  .kf img{display:block;width:100%;height:auto}
+  .kf .c{padding:10px 13px;font-size:12.5px;color:var(--dim);border-top:1px solid var(--line)}
+  .kf .c b{display:block;color:var(--txt);font-size:13.5px;margin-bottom:2px}
+
+  /* 技术点 */
+  .tech{display:grid;gap:12px;margin:18px 0}
+  .t{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+     border-radius:0 10px 10px 0;padding:13px 17px}
+  .t .h{font-size:14px;margin:0 0 5px}
+  .t .h em{font-style:normal;font-family:var(--mono);font-size:11.5px;color:var(--acc);
+           border:1px solid var(--acc);border-radius:4px;padding:0 6px;margin-right:8px}
+  .t p{margin:0;font-size:13.5px;color:var(--dim)}
+
+  .why{background:linear-gradient(180deg,#151b23,#12161c);border:1px solid var(--line);
+       border-radius:12px;padding:18px 20px;margin:20px 0}
+  .why p{margin:8px 0;font-size:14px}
+  .why .h{font-size:13px;color:var(--acc);letter-spacing:.5px;margin:0 0 8px}
+
+  /* 分镜表 */
+  .tbl{width:100%;border-collapse:collapse;margin:16px 0;font-size:12.8px}
+  .tbl th,.tbl td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+  .tbl th{background:#151a20;color:var(--txt);font-weight:600;font-size:12.5px}
+  .tbl td.n{font-family:var(--mono);color:var(--acc);white-space:nowrap}
+  .tbl tr:nth-child(even) td{background:#131720}
+
+  .btns{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0}
+  .btn{display:inline-block;font-size:13px;padding:7px 16px;border-radius:8px;text-decoration:none;
+       border:1px solid var(--acc);color:var(--acc);transition:.15s}
+  .btn:hover{background:var(--acc);color:#0f1115}
+  .btn.ghost{border-color:var(--dim);color:var(--dim)}
+  .btn.ghost:hover{border-color:var(--txt);color:var(--txt);background:transparent}
+
+  .foot{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);
+        color:var(--dim);font-size:12.5px;line-height:1.9}
+  .foot b{color:var(--txt)}
+
+  @media (max-width:720px){
+    .facts{grid-template-columns:repeat(2,1fr)}
+    .kfs{grid-template-columns:1fr}
+    .kf.wide{grid-column:auto}
+    h1{font-size:24px}
+    .tbl{font-size:12px}
+    .tbl th,.tbl td{padding:6px 7px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<a class="backlink" href="index.html">← 返回项目作品集</a>
+
+<header>
+  <p class="kicker">DATA FILM · 2026</p>
+  <h1>秋招为什么这么难
+    <span>纯代码科普短片 · 81 秒 · 2430 帧逐帧渲染</span>
+  </h1>
+  <p class="sub">一个「人人有体感、却说不清」的现象，最容易被讲成情绪。这支片子把它讲成一条可验证的因果链：前 7 秒用四个数字反差立住钩子，再从<b>人（供给）</b>、<b>岗（需求结构）</b>、<b>时间（名额前置）</b>三端递进，最后用一条乘法收束 —— 难度 = 人 × 岗 × 时间，任一环变形都会被另外两环放大，这就是<b>结构性错配</b>。</p>
+  <div class="meta">
+    <span>画面 <b>Canvas 逐帧渲染</b></span>
+    <span>出帧 <b>Playwright</b></span>
+    <span>声音 <b>numpy 合成</b></span>
+    <span>生成模型 <b>0 个</b></span>
+  </div>
+</header>
+
+<div class="player">
+  <video controls preload="none" poster="shots/qiuzhao.jpg" playsinline>
+    <source src="media/qiuzhao-why-hard_1080p30.mp4" type="video/mp4">
+    你的浏览器不支持内联视频，可直接打开 <code>media/qiuzhao-why-hard_1080p30.mp4</code>。
+  </video>
+  <div class="playhint" id="ph"><i></i></div>
+</div>
+<p class="dim" style="font-size:13px;margin-top:-6px">81.0s / 1080p30 / H.264 + AAC 立体声。全片无口播，信息全部由画面内排版承担 —— 建议全屏观看。视频为本地文件，不需要联网。</p>
+
+<div class="facts">
+  <div><span class="v">81.000s</span><span class="k">时长</span></div>
+  <div><span class="v">2430</span><span class="k">总帧数</span></div>
+  <div><span class="v">1920×1080</span><span class="k">30 fps</span></div>
+  <div><span class="v">120 BPM</span><span class="k">33 个卡点全在网格上</span></div>
+</div>
+
+<h2>这条片子是怎么做出来的</h2>
+<p class="lead">没有拍摄、没有素材库、没有调用任何生成模型。画面是一帧一帧用代码画出来的，声音是用 numpy 算出来的。</p>
+
+<div class="tech">
+
+  <div class="t">
+    <p class="h"><em>01</em>确定性渲染：每一帧是时间的纯函数</p>
+    <p>八个片段各自独立出片，每帧画面都是时刻 <code>t</code> 的纯函数 —— 代码里禁用 <code>requestAnimationFrame</code>、<code>Date.now()</code> 和 <code>Math.random()</code>。给定任意 <code>t</code> 就能算出这一帧的完整画面，由 Playwright 逐帧截图后送 FFmpeg 编码。<b>任意一帧都能精确重绘</b>；改一段只重跑那一段，不存在「剪到一半发现某镜头要重拍」。</p>
+  </div>
+
+  <div class="t">
+    <p class="h"><em>02</em>跨段连续运动：硬切切在一直运动的背景上</p>
+    <p>粒子、光带、网格、辉光、推镜全部按<b>全片时间</b> <code>t + G0</code> 计算，而不是按各自片段的本地时间。所以八个硬切点（0 / 7 / 14 / 26 / 40 / 53 / 62 / 74 s）落在一个始终在动的背景上，观感是「一镜到底被节奏切开」，而不是「八段拼起来」。</p>
+  </div>
+
+  <div class="t">
+    <p class="h"><em>03</em>低成本辉光：缩到 480×270 再模糊</p>
+    <p>整帧缩到 480×270、做 5px 高斯模糊后叠加回原图做 bloom。<b>单帧成本约 40 ms</b>，比全分辨率实时模糊省一个数量级，在逐帧渲染的管线里这个差距会被放大 2430 倍。</p>
+  </div>
+
+  <div class="t">
+    <p class="h"><em>04</em>节拍工程：110.651 BPM 拉到 120 BPM，音高不变</p>
+    <p>先用 onset 谱通量 + 全局网格搜索 + 最小二乘给配乐测速，锁定 <b>110.651 BPM / 拍长 542.243 ms</b>；画面按 120 BPM（拍长 500 ms）排，于是 <code>atempo = 542.243 / 500 = 1.084487</code>，音高不变变速后实测网格相位误差 6 ms。变速后轨长不够，取末段做卷积混响补尾，接缝样本跳变 0.0024（文件常态 0.0029）。成片音画校验：<b>33 个关键视觉点全部落在 0.5 s 网格上</b>（偏移 −6 ~ +24 ms）。</p>
+  </div>
+
+</div>
+
+<h2>七个关键帧</h2>
+<p class="lead">全片八个段落，叙事骨架集中在这几帧上 —— 从「门变窄了」到「机会正在流向哪里」。</p>
+
+<div class="kfs">
+  <div class="kf">
+    <img src="shots/qz-01-hook.jpg" alt="钩子段：门，变窄了">
+    <div class="c"><b>01 · 钩子：门，变窄了</b>前 7 秒用四个数字反差立住：稳定的入口在收窄，AI 岗在扩招，但多数企业全年只招 5 人以内。收束句 —— 「它变窄的方式，和你想的不一样」。</div>
+  </div>
+  <div class="kf">
+    <img src="shots/qz-02-supply.jpg" alt="人·供给段：存量叠加">
+    <div class="c"><b>02 · 人 · 供给：分母不止一届</b>求职池里同时泡着好几届人 —— 应届毕业生、往届未就业、海归回流、考研失利。「你不是在和一届人竞争，是在和好几届人竞争」。</div>
+  </div>
+  <div class="kf">
+    <img src="shots/qz-03-demand.jpg" alt="岗·需求段：稳定入口收窄">
+    <div class="c"><b>03 · 岗 · 需求：稳定的入口正在收窄</b>四大行校招计划 7.76 → 7.15 → 6.40 万；国考招录 39,721 → 38,119 → 35,691。两年少了 1.36 万个名额，且更集中 —— 税务系统占 67.28%。</div>
+  </div>
+  <div class="kf">
+    <img src="shots/qz-04-ai-shift.jpg" alt="岗·需求段：预算转向 AI">
+    <div class="c"><b>04 · 岗 · 需求（下）：预算只是换了地方</b>阿里巴巴 2027 校招 AI 相关岗位占 80%，字节跳动技术与产品岗占 70%+（产品岗过半为 AI）。但这些 AI 岗是「碎」的 —— 集中到少数公司、少数岗位上。</div>
+  </div>
+  <div class="kf">
+    <img src="shots/qz-05-timing.jpg" alt="时间·节奏段：名额被预订掉">
+    <div class="c"><b>05 · 时间 · 节奏：名额是被预订掉的</b>岗位池在正式批开放前已被预订掉 7/10，正式批的竞争只在剩下的 3/10 上发生。所以「提前」不是鸡汤，是结构决定的。</div>
+  </div>
+  <div class="kf">
+    <img src="shots/qz-06-thesis.jpg" alt="收束段：结构性错配">
+    <div class="c"><b>06 · 收束：结构性错配</b>难度 = 人 × 岗 × 时间 —— 相乘不是相加。任一环变形，都会被另外两环放大。这就是「结构性错配 / STRUCTURAL MISMATCH」。</div>
+  </div>
+  <div class="kf wide">
+    <img src="shots/qz-07-action.jpg" alt="行动段：机会正在流向哪里">
+    <div class="c"><b>07 · 行动：别问难不难，问机会流向哪里</b>① 提前一年进入「预售市场」，用暑期实习、专项计划在正式批之前拿到一次真实评估；② 把能力做成「可验证的作品」—— 企业正从看学历转向看能力；③ 盯结构不盯总量，别问「这个行业招多少人」，问「这个部门的这个岗，缺不缺人」。</div>
+  </div>
+</div>
+
+<h2>分镜与节奏</h2>
+<p class="lead">全片 120 BPM，1 拍 0.5 s、1 小节 2 s。段落内部的硬切也全部落在 0.5 s 网格上。</p>
+
+<table class="tbl">
+  <thead>
+    <tr><th>段</th><th>时间</th><th>内容</th><th>停留</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="n">s1</td><td class="n">0–7 s</td><td>钩子：四个数字反差 → 大字「门，变窄了」</td><td>每个数字 1.0 s，收束 2.9 s</td></tr>
+    <tr><td class="n">s2</td><td class="n">7–14 s</td><td>概念：秋招不是考试，是一次<b>匹配</b>；人 / 岗 / 时间三端</td><td>3.7 s</td></tr>
+    <tr><td class="n">s3</td><td class="n">14–26 s</td><td>知识点 1 · 人：上海 25.9 万、全国千万级 → 存量叠加</td><td>每半段 6 s</td></tr>
+    <tr><td class="n">s4</td><td class="n">26–40 s</td><td>知识点 2 · 岗：四大行与国考收窄 → 预算转向 AI，但岗位是碎的</td><td>每半段 7 s</td></tr>
+    <tr><td class="n">s5</td><td class="n">40–53 s</td><td>知识点 3 · 时间：3–5 月实习 / 6–8 月提前批 / 9–10 月正式批 / 11 月补录 → 名额被预订掉</td><td>每半段 6.5 s</td></tr>
+    <tr><td class="n">s6</td><td class="n">53–62 s</td><td>收束：难度 = 人 × 岗 × 时间 → 点题「结构性错配」</td><td>公式 4 s，点题 4.5 s</td></tr>
+    <tr><td class="n">s7</td><td class="n">62–74 s</td><td>行动：三条建议 → 「问机会流向哪里」</td><td>每条 1.7 s，收束 5 s</td></tr>
+    <tr><td class="n">s8</td><td class="n">74–81 s</td><td>数据来源与免责声明</td><td>7 s，末 1 s 淡出</td></tr>
+  </tbody>
+</table>
+
+<div class="why">
+  <p class="h">这条片子和「内容运营」有什么关系</p>
+  <p>一个「人人有体感、却说不清」的话题，最容易被做成情绪宣泄。这里的做法是先定<b>验收标准</b>：信息要可验证（三个公开来源交叉核对，示意数据在片尾单独声明），每屏字数按停留时间反推 —— 最短 1.7 s，重点段 4 s 以上。后一条直接导致了 <b>50 s → 81 s 的第二次改版</b>：不是加料，是原来太快的屏根本读不完。</p>
+  <p>这和我做内容运营的动作是同一套：<b>先定标准，再选工具，最后把过程固化成可复用的流程</b>。区别只是这次的「素材」是代码，「成片」是 81 秒。</p>
+</div>
+
+<h2>关于制作方式，说清楚</h2>
+<p>这条片子是 <b>vibecoding</b> 完成的：代码由 AI 模型生成，但<b>脚本与结构、视觉系统、动画编程、节拍分析与混音、数据核对与事实标注</b>——这些是人的判断。模型负责把它写出来，我负责决定写成什么。</p>
+<p>其中事实标注这一步不能让渡：全片数据来自三个公开来源交叉验证，而 s5 里「7/10 名额被预订」是<b>概念示意、非实际比例</b>，片尾已单独声明。做内容的人得自己守这条线 —— 模型不会替你判断哪句话能不能发。</p>
+<p class="dim">这也是我认为 AI 内容生产的正确姿势：不是「让 AI 做一条片子」，而是「我说清楚要什么，AI 帮我把它造出来，我验收」。验收标准在我这边。</p>
+
+<div class="btns">
+  <a class="btn" href="media/qiuzhao-why-hard_1080p30.mp4" target="_blank" rel="noopener">全屏看成片</a>
+  <a class="btn ghost" href="Qiuzhao-OnePager-A4.pdf" target="_blank" rel="noopener">一页式案例 PDF</a>
+</div>
+
+<div class="foot">
+  <b>项目事实</b>：81.000 s · 2430 帧 · 1920×1080 · 30 fps · H.264 High / yuv420p / bt709 · AAC-LC 48 kHz 立体声 · 120 BPM · 33 个卡点全落在 0.5 s 网格（偏移 −6 ~ +24 ms）。<br>
+  <b>技术栈</b>：HTML Canvas · Playwright（逐帧出图）· FFmpeg（编码 / 音高不变变速 / mux）· Python + numpy（音效合成、节拍检测、混音）。<br>
+  <b>素材来源</b>：画面 100% 代码渲染，零生成模型；配乐《千年之后》由用户提供，已按 120 BPM 音高不变对齐至画面鼓点；数据来自三个公开来源（36 氪 / 上观新闻·文汇报 / 前程无忧），示意数据已在片尾单独声明。<br>
+  <b>分发版本</b>：本页内嵌为网络分发压缩版（<b>H.264 CRF 25，12.9 MB</b>；原片 58 MB 保留在项目源目录）。实测与原片 SSIM 0.9887，分辨率、帧率、时长一致，未裁切、未改帧率。<br>
+  <b>制作日期</b>：2026 年 10 月。
+</div>
+
+</div>
+<script>
+(function(){
+  var v = document.querySelector('.player video'), ph = document.getElementById('ph');
+  if(!v) return;
+  function hide(){ if(ph) ph.style.display='none'; }
+  v.addEventListener('play', hide);
+  v.addEventListener('click', hide);
+})();
+</script>
+</body>
+</html>
