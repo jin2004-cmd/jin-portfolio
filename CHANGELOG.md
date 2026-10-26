@@ -2,6 +2,40 @@
 
 All notable changes to this portfolio hub are documented here.
 
+## 2026-10-26 — v1.1.1
+
+### Fixed
+
+- **全站 12 个视频 + 3 个「在线版」按钮指向 `*.workers.dev`，国内直连全部超时。**
+  实测：`talkcal / daypilot / ai-video-portfolio.jinjiaxin2004.workers.dev` 三个子域
+  在境内 DNS 被污染（解析到 173.255.213.90 / 31.13.96.195 / 67.228.235.91 等无关 IP），
+  不挂代理 SYN 超时。受影响的是 `ai-video-portfolio.html` 里 **12 条成片**
+  （《中国龙》《候》《悟空》千川素材与剪辑练习）——面试官点开一个都播不了。
+  已全部换成 `jin2004-cmd.github.io/ai-video-portfolio/assets/...`，
+  实测 184–698 ms 全部 200。
+- **`TalkCal/index.html` 的「国内镜像」是死链。** `gh-proxy.com` 只代理 raw/release，
+  不代理 `*.github.io` 子域，该链接返回 404。改为直接链 `jin2004-cmd.github.io/talkcal/`。
+- **`ai-video-portfolio.html` 的 JSON-LD 英文名 `Jin Jiaxin` → `Jackson Jin`。**
+  Jackson Jin 是 2026-10-16 起确定的统一口径，旧名已作废。
+- 9 个 `target="_blank"` 外链补 `rel="noopener"`。
+
+### Verified
+
+三轮审查全部复跑通过：
+
+1. **链接轮**：11 个页面 65 条本地相对链接，死链 0；大小写敏感性 0（Pages 跑在 Linux 上，
+   Windows 本地不区分大小写，这类 bug 只在线上炸）；本地绝对路径泄漏 0；
+   18 条外链**直连（绕过本机代理）实测全 200**。
+2. **结构轮**：11 个页面标签配平、重复 id、锚点目标、`data-goto` 目标、
+   图片 alt、`<title>`、viewport、内联脚本语法，全部 0 问题。
+3. **内容轮**：10 / 5 / 4 / 35 / 27 / 19 / 4 / 15 各只有一个取值；
+   英文名两处均为 Jackson Jin；镜像总站与入口页归一化后逐行一致（仅少 meta 块）。
+
+### Note
+
+`offeragent.html` 里出现的 `82%` 是表单示例文案（"过审率约58%→82%，方法被团队沿用"），
+不是业绩声明；`undefined` / `NaN` / `xxx` 的命中全部来自 JS 代码与 base64 poster，非占位残留。
+
 ## 2026-10-26 — v1.1.0
 
 ### Added
