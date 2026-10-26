@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>分镜脚本规范 SOP · 六段式结构与两种范式 · 金佳信</title>
+<meta name="description" content="把分镜脚本从「想到哪写到哪」变成可交接的六段式文档：制作方向、时长、音乐方向、分镜时间轴、剪辑节奏，附数据驱动式与情绪对比式两种范式的真实案例。">
+<style>
+  :root{
+    --bg:#0f1115; --card:#161a21; --line:#242a34; --txt:#e6e9ef; --dim:#98a2b3;
+    --acc:#43d6f7; --warn:#ffb020; --bad:#ff6b6b; --good:#43d6a0;
+    --mono:"SFMono-Regular",Consolas,"Cascadia Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--txt);
+       font-family:"PingFang SC","Microsoft YaHei",-apple-system,"Segoe UI",sans-serif;
+       line-height:1.75;font-size:15px}
+  .wrap{max-width:880px;margin:0 auto;padding:34px 22px 80px}
+
+  header{border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:30px}
+  .kicker{font-size:12.5px;color:var(--acc);letter-spacing:2px;margin:0 0 10px}
+  h1{margin:0 0 10px;font-size:29px;line-height:1.3;letter-spacing:.3px}
+  .sub{color:var(--dim);font-size:14px;margin:0}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .meta span{font-size:12.5px;color:var(--dim);background:#151a20;border:1px solid var(--line);
+             border-radius:999px;padding:3px 12px}
+  .meta b{color:var(--txt);font-weight:600}
+
+  h2{font-size:20px;margin:44px 0 4px;padding-left:12px;border-left:3px solid var(--acc);line-height:1.4}
+  h3{font-size:16px;margin:26px 0 8px}
+  p{margin:10px 0}
+  .dim{color:var(--dim)}
+  b,strong{color:#fff;font-weight:600}
+  code{font-family:var(--mono);font-size:12.5px;background:#1b212a;border:1px solid var(--line);
+       border-radius:4px;padding:1px 5px;color:#cfe9f3}
+  .lead{color:var(--dim);font-size:14px;margin:0 0 18px}
+
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  thead th{background:#1b212a;font-weight:600;font-size:13px}
+  tbody tr:nth-child(even){background:#13171d}
+  td.n{font-family:var(--mono);color:var(--acc);white-space:nowrap;font-size:12.5px}
+
+  .rule{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+        border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0}
+  .rule .h{font-size:13px;color:var(--acc);margin:0 0 6px;letter-spacing:.5px}
+  .rule p{margin:4px 0;font-size:14px}
+
+  /* 六段式结构图 */
+  .stack{display:grid;gap:10px;margin:20px 0}
+  .seg{display:grid;grid-template-columns:64px 1fr;gap:14px;background:var(--card);
+       border:1px solid var(--line);border-radius:10px;padding:13px 16px}
+  .seg .no{font-family:var(--mono);font-size:19px;color:var(--acc);line-height:1.2;
+           border-right:1px solid var(--line);padding-right:10px}
+  .seg .nm{font-size:14.5px;font-weight:600;margin:0 0 3px}
+  .seg .ds{font-size:13px;color:var(--dim);margin:0}
+  .seg .must{font-size:12px;color:var(--warn);margin-top:5px}
+
+  /* 时间轴 */
+  .tl{background:var(--card);border:1px solid var(--line);border-radius:12px;
+      padding:16px 18px;margin:16px 0}
+  .tl h4{margin:0 0 4px;font-size:14.5px}
+  .tl .who{font-size:12.5px;color:var(--dim);margin:0 0 12px}
+  .bar{display:flex;height:34px;border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+  .bar div{display:flex;align-items:center;justify-content:center;font-size:11.5px;
+           color:#0f1115;font-weight:600;white-space:nowrap;overflow:hidden}
+  .bar .c1{background:var(--acc);flex:3}
+  .bar .c2{background:#7fd9ef;flex:7}
+  .bar .c3{background:#a9e6f5;flex:7}
+  .bar .c4{background:#7fd9ef;flex:8}
+  .bar .c5{background:var(--acc);flex:5}
+  .ticks{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);
+         font-family:var(--mono);margin-top:5px}
+
+  .cmp{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+  .cmp .box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 15px}
+  .cmp .box.badbox{border-left:3px solid var(--bad)}
+  .cmp .box.goodbox{border-left:3px solid var(--good)}
+  .cmp .h{font-size:12.5px;margin:0 0 7px;letter-spacing:.5px}
+  .cmp .badbox .h{color:var(--bad)} .cmp .goodbox .h{color:var(--good)}
+  .cmp ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--dim)}
+  .cmp li{margin:4px 0}
+  .cmp li b{color:var(--txt)}
+
+  ol,ul{padding-left:22px}
+  ol li,ul li{margin:6px 0}
+  .check{list-style:none;padding-left:0}
+  .check li{position:relative;padding-left:26px;margin:9px 0;font-size:14px}
+  .check li::before{content:"";position:absolute;left:0;top:.45em;width:13px;height:13px;
+      border:1.5px solid var(--acc);border-radius:3px}
+
+  .foot{margin-top:54px;padding-top:20px;border-top:1px solid var(--line);
+        color:var(--dim);font-size:12.5px;line-height:1.9}
+  .foot b{color:var(--txt)}
+  .backlink{display:inline-block;margin-bottom:18px;font-size:13px;color:var(--acc);text-decoration:none}
+  .backlink:hover{text-decoration:underline}
+
+  @media (max-width:640px){
+    .cmp{grid-template-columns:1fr}
+    h1{font-size:23px} h2{font-size:18px}
+    table{font-size:12.5px} th,td{padding:7px 8px}
+    .seg{grid-template-columns:46px 1fr;gap:10px}
+    .bar{font-size:10px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<a class="backlink" href="index.html">← 返回项目作品集</a>
+
+<header>
+  <p class="kicker">SOP · 02</p>
+  <h1>分镜脚本规范 SOP<br><span style="font-size:18px;color:var(--dim);font-weight:400">六段式结构 · 两种叙事范式</span></h1>
+  <p class="sub">一份脚本如果只有「画面内容」，那它是笔记；能交接的脚本必须写明时长、节奏和音乐方向。</p>
+  <div class="meta">
+    <span>结构 <b>六段固定</b></span>
+    <span>范式 <b>数据驱动 / 情绪对比</b></span>
+    <span>单条时长 <b>15–30s</b></span>
+    <span>可交接 <b>换人照着就能剪</b></span>
+  </div>
+</header>
+
+<h2>为什么脚本要定结构</h2>
+<p class="lead">分镜脚本最常见的失败不是写得不好，而是<b>写得别人看不懂</b>：剪辑师拿到一页「车辆穿行、扬起尘土、很有力量」的描述，只能靠猜去选素材、定时长、铺音乐。返工的成本远高于写脚本的时间。</p>
+<p>所以这份规范把脚本固定成六段——<b>每一段都对应剪辑环节的一个决策</b>。六段齐了，剪辑师不需要再问任何问题；缺一段，就一定会来问。</p>
+
+<h2>六段式结构</h2>
+
+<div class="stack">
+  <div class="seg">
+    <div class="no">01</div>
+    <div>
+      <p class="nm">标题</p>
+      <p class="ds">项目名 + 片名 + 「视频剪辑脚本」，一行说清这是给哪支片子写的。</p>
+      <p class="must">必填 · 写明产品型号与片名，避免同名不同片</p>
+    </div>
+  </div>
+  <div class="seg">
+    <div class="no">02</div>
+    <div>
+      <p class="nm">制作方向</p>
+      <p class="ds">一段话讲清<b>核心表达</b>和<b>实现手法</b>：这支片子要让观众记住什么，用什么手段做到。</p>
+      <p class="must">必填 · 必须出现「以…为核心」的判断句，不能只描述画面</p>
+    </div>
+  </div>
+  <div class="seg">
+    <div class="no">03</div>
+    <div>
+      <p class="nm">时长</p>
+      <p class="ds">给出区间或定值（<code>15s</code> / <code>15–30s</code>）。</p>
+      <p class="must">必填 · 时长决定分镜能切几刀，先定时长再排分镜</p>
+    </div>
+  </div>
+  <div class="seg">
+    <div class="no">04</div>
+    <div>
+      <p class="nm">音乐方向</p>
+      <p class="ds">写情绪，不写曲名。需要分段就写清「前段什么情绪、后段什么情绪」。</p>
+      <p class="must">必填 · 只说情绪和转折点，具体曲目由剪辑师选</p>
+    </div>
+  </div>
+  <div class="seg">
+    <div class="no">05</div>
+    <div>
+      <p class="nm">分镜时间轴</p>
+      <p class="ds">按 <code>0–3s / 3–10s / …</code> 逐段写：画面内容 + 字幕或数据 + 补充说明。</p>
+      <p class="must">必填 · 时间段首尾相接、不留空档，总和等于总时长</p>
+    </div>
+  </div>
+  <div class="seg">
+    <div class="no">06</div>
+    <div>
+      <p class="nm">剪辑节奏</p>
+      <p class="ds">收尾再讲一遍整片的节奏逻辑：哪里快、哪里慢、情绪怎么走。</p>
+      <p class="must">必填 · 这一段是剪辑师的施工图，不是重复第 2 段</p>
+    </div>
+  </div>
+</div>
+
+<h2>分镜时间轴的写法</h2>
+<p class="lead">时间轴是整份脚本里最容易被写坏的部分。三条要求：</p>
+<ol>
+  <li><b>时间必须闭合。</b>上一段的结束就是下一段的开始，全片不留空档。总和与第 3 段写的时长一致。</li>
+  <li><b>每段只讲一件事。</b>一段里塞两个卖点，剪辑师只能二选一，等于白写。</li>
+  <li><b>有字幕或数据就写进对应段。</b>不要统一放在文末「字幕内容」里——那样就对不上时间了。</li>
+</ol>
+
+<h2>两种叙事范式</h2>
+<p class="lead">同一批产品素材，两种完全不同的排法。选错范式，画面再好也留不住人。</p>
+
+<h3>范式 A · 数据驱动式 —— 用具体数字建立「可靠」</h3>
+<div class="tl">
+  <h4>《UT6 Now You Know》· 30s · 5 段</h4>
+  <p class="who">结构：疑问开场 → 三段数据+画面 → 回收疑问</p>
+  <div class="bar">
+    <div class="c1">疑问</div><div class="c2">马力</div><div class="c3">容量</div><div class="c4">牵引</div><div class="c5">回收</div>
+  </div>
+  <div class="ticks"><span>0s</span><span>3s</span><span>10s</span><span>17s</span><span>25s</span><span>30s</span></div>
+</div>
+<table>
+  <thead><tr><th style="width:16%">时间</th><th>画面</th><th style="width:26%">文字 / 数据</th></tr></thead>
+  <tbody>
+    <tr><td class="n">0–3s</td><td>静态整车</td><td>跳出 <b>Did You Know That?</b></td></tr>
+    <tr><td class="n">3–10s</td><td>车轮细节 → 行驶动力</td><td>马力 <b>44hp</b></td></tr>
+    <tr><td class="n">10–17s</td><td>货舱细节 → 装载</td><td>货箱容量 <b>385L</b></td></tr>
+    <tr><td class="n">17–25s</td><td>前脸细节 → 牵引拖拽</td><td>牵引力 <b>700kg（1543lb）</b></td></tr>
+    <tr><td class="n">25–30s</td><td>行驶收尾</td><td>跳出 <b>Now You Know!</b></td></tr>
+  </tbody>
+</table>
+<p class="dim">这个范式成立的关键：<b>开场的问题必须在结尾被回答</b>。疑问和答案是同一句话的两半，观众才会觉得「这一趟没白看」。每段「细节 → 数据 → 实跑画面」的三拍结构，是把参数翻译成可信感的标准动作。</p>
+
+<h3>范式 B · 情绪对比式 —— 用前后反差建立「活力」</h3>
+<div class="tl">
+  <h4>《夏日转场》· 15s · 3 段</h4>
+  <p class="who">结构：平静铺垫 → 转场爆发 → 豪迈收尾</p>
+  <div class="bar">
+    <div class="c1" style="flex:6">平静 · 燥热</div>
+    <div class="c3" style="flex:3">转场 · 爆发</div>
+    <div class="c4" style="flex:6">豪迈 · 自由</div>
+  </div>
+  <div class="ticks"><span>0s</span><span>6s</span><span>9s</span><span>15s</span></div>
+</div>
+<table>
+  <thead><tr><th style="width:16%">时间</th><th>画面</th><th style="width:30%">说明</th></tr></thead>
+  <tbody>
+    <tr><td class="n">0–6s</td><td>夏日大景，穿插闪过车辆片段</td><td>车辆出现频率<b>逐渐升高</b></td></tr>
+    <tr><td class="n">6–9s</td><td>水 / 尘土 / 泥覆盖画面 → 切回行驶</td><td>用遮挡做转场，前一秒还是静止</td></tr>
+    <tr><td class="n">9–15s</td><td>车辆豪迈行驶</td><td>节奏放到最快，收在动势上</td></tr>
+  </tbody>
+</table>
+<p class="dim">这个范式成立的关键：<b>前段必须「闷」够</b>。前 6 秒如果不够燥、不够静，后面 9 秒的爆发就没有落差。音乐也随之分两段——转场前平静枯燥，转场后活力轻快。</p>
+
+<h2>复用模板时最容易犯的错</h2>
+<div class="rule">
+  <p class="h">串稿：改了标题，忘了改正文</p>
+  <p>拿上一支片子的脚本当模板改，最容易出现的情况是<b>标题已经是新片名，正文里的型号、卖点、数据还是上一支的</b>。这种错误在校对时极易漏过——因为读起来通顺，看不出矛盾。</p>
+  <p class="dim">防线只有一条：交付前逐段核一遍<b>型号是否全片统一</b>，所有出现型号、参数的位置都要过一遍，不能只改开头。</p>
+</div>
+<p class="dim">这类错误的代价不在于文案本身，而在于它会被当成「不专业」的证据——剪辑师照着一份自相矛盾的脚本剪到一半才发现，返工的是整条片子。</p>
+
+<h2>交付前检查清单</h2>
+<ul class="check">
+  <li>六段是否齐全：标题 / 制作方向 / 时长 / 音乐方向 / 分镜时间轴 / 剪辑节奏</li>
+  <li>时间轴首尾是否闭合，各段总和是否等于标注时长</li>
+  <li>每段是否只承载一个信息点</li>
+  <li>字幕、数据是否写在对应时间段内，而不是堆在文末</li>
+  <li>全片<b>型号/产品名是否统一</b>，有无沿用上一版残留</li>
+  <li>制作方向是否写出了「以…为核心」的判断，而不是画面罗列</li>
+  <li>音乐方向只写情绪与转折点，没有擅自指定曲目</li>
+  <li>剪辑节奏段是否讲清了快慢与情绪走向，而非重复制作方向</li>
+  <li>若需外部素材，是否标明了素材位置或获取方式</li>
+</ul>
+
+<div class="foot">
+  <b>适用范围</b>：15–30 秒产品短片、混剪与转场类短视频的分镜脚本撰写；长片与剧情片不适用本结构。<br>
+  <b>数据来源</b>：六段式结构与两个案例的时间轴、数据、画面描述，来自实习期间撰写的客户分镜脚本原件；「串稿」一节的教训来自实际交付前核对时发现的模板复用问题。<br>
+  <b>整理说明</b>：把原本只存在于单份脚本里的隐性写法，整理成可复用的结构、两种范式与交付前清单，让脚本可以被不同剪辑师接手而不失真。客户内部素材与未公开规划不在本文件范围内。
+</div>
+
+</div>
+</body>
+</html>

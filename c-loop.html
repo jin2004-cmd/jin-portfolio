@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C-LOOP Night Test · 程序化汽车短片 · 金佳信</title>
+<meta name="description" content="16 秒程序化汽车短片：Three.js 搭夜间测试场，车在 C 形钢构坡道上倒挂悬停、冷气反推、180° 横滚。零外部素材，480 帧确定性渲染，原创 14 层声音设计。">
+<style>
+  :root{
+    --bg:#0f1115; --card:#161a21; --line:#242a34; --txt:#e6e9ef; --dim:#98a2b3;
+    --acc:#43d6f7; --mono:"SFMono-Regular",Consolas,"Cascadia Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+       font-family:"PingFang SC","Microsoft YaHei",-apple-system,"Segoe UI",sans-serif;
+       line-height:1.75;font-size:15px}
+  .wrap{max-width:940px;margin:0 auto;padding:30px 22px 80px}
+
+  .backlink{display:inline-block;margin-bottom:16px;font-size:13px;color:var(--acc);text-decoration:none}
+  .backlink:hover{text-decoration:underline}
+
+  header{margin-bottom:26px}
+  .kicker{font-size:12.5px;color:var(--acc);letter-spacing:2px;margin:0 0 10px}
+  h1{margin:0 0 10px;font-size:30px;line-height:1.25;letter-spacing:.3px}
+  h1 span{display:block;font-size:17px;color:var(--dim);font-weight:400;margin-top:8px}
+  .sub{color:var(--dim);font-size:14.5px;margin:0}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .meta span{font-size:12.5px;color:var(--dim);background:#151a20;border:1px solid var(--line);
+             border-radius:999px;padding:3px 12px}
+  .meta b{color:var(--txt);font-weight:600}
+
+  /* 播放器 */
+  .player{position:relative;background:#07090c;border:1px solid var(--line);border-radius:14px;
+          overflow:hidden;margin:22px 0}
+  .player video{display:block;width:100%;height:auto;background:#07090c}
+  .playhint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+            pointer-events:none}
+  .playhint i{width:66px;height:66px;border-radius:50%;background:rgba(67,214,247,.92);
+              display:flex;align-items:center;justify-content:center;font-style:normal;
+              box-shadow:0 8px 30px rgba(0,0,0,.5)}
+  .playhint i::after{content:"";border-left:19px solid #0f1115;border-top:12px solid transparent;
+                     border-bottom:12px solid transparent;margin-left:5px}
+
+  h2{font-size:19px;margin:40px 0 4px;padding-left:12px;border-left:3px solid var(--acc);line-height:1.4}
+  h3{font-size:15.5px;margin:22px 0 6px}
+  p{margin:10px 0}
+  .dim{color:var(--dim)}
+  .lead{color:var(--dim);font-size:14px;margin:0 0 16px}
+  b,strong{color:#fff;font-weight:600}
+  code{font-family:var(--mono);font-size:12.5px;background:#1b212a;border:1px solid var(--line);
+       border-radius:4px;padding:1px 5px;color:#cfe9f3}
+
+  /* 事实条 */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}
+  .facts div{background:var(--card);border:1px solid var(--line);border-radius:10px;
+             padding:12px 14px;text-align:center}
+  .facts .v{font-family:var(--mono);font-size:17px;color:var(--acc);display:block;line-height:1.3}
+  .facts .k{font-size:11.5px;color:var(--dim)}
+
+  /* 关键帧 */
+  .kfs{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:18px 0}
+  .kf{background:var(--card);border:1px solid var(--line);border-radius:11px;overflow:hidden}
+  .kf img{display:block;width:100%;height:auto}
+  .kf .c{padding:10px 13px;font-size:12.5px;color:var(--dim);border-top:1px solid var(--line)}
+  .kf .c b{display:block;color:var(--txt);font-size:13.5px;margin-bottom:2px}
+
+  /* 技术点 */
+  .tech{display:grid;gap:12px;margin:18px 0}
+  .t{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+     border-radius:0 10px 10px 0;padding:13px 17px}
+  .t .h{font-size:14px;margin:0 0 5px}
+  .t .h em{font-style:normal;font-family:var(--mono);font-size:11.5px;color:var(--acc);
+           border:1px solid var(--acc);border-radius:4px;padding:0 6px;margin-right:8px}
+  .t p{margin:0;font-size:13.5px;color:var(--dim)}
+
+  .why{background:linear-gradient(180deg,#151b23,#12161c);border:1px solid var(--line);
+       border-radius:12px;padding:18px 20px;margin:20px 0}
+  .why p{margin:8px 0;font-size:14px}
+  .why .h{font-size:13px;color:var(--acc);letter-spacing:.5px;margin:0 0 8px}
+
+  .btns{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0}
+  .btn{display:inline-block;font-size:13px;padding:7px 16px;border-radius:8px;text-decoration:none;
+       border:1px solid var(--acc);color:var(--acc);transition:.15s}
+  .btn:hover{background:var(--acc);color:#0f1115}
+  .btn.ghost{border-color:var(--dim);color:var(--dim)}
+  .btn.ghost:hover{border-color:var(--txt);color:var(--txt);background:transparent}
+
+  .foot{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);
+        color:var(--dim);font-size:12.5px;line-height:1.9}
+  .foot b{color:var(--txt)}
+
+  @media (max-width:720px){
+    .facts{grid-template-columns:repeat(2,1fr)}
+    .kfs{grid-template-columns:1fr}
+    h1{font-size:24px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<a class="backlink" href="index.html">← 返回项目作品集</a>
+
+<header>
+  <p class="kicker">PROCEDURAL FILM · 2026</p>
+  <h1>C-LOOP Night Test
+    <span>程序化汽车短片 · 16 秒 · 零外部素材</span>
+  </h1>
+  <p class="sub">夜间测试场，一辆白色 Roadster 冲上巨型 C 形钢构坡道，在倒置顶点被车底风扇吸住倒挂悬停一秒，随后冷气反推缓降、完成 180° 横滚、白雾缓冲、四轮接地。</p>
+  <div class="meta">
+    <span>Three.js <b>r170</b></span>
+    <span>渲染 <b>WebCodecs</b></span>
+    <span>声音 <b>14 层 DSP</b></span>
+    <span>素材 <b>100% 程序化</b></span>
+  </div>
+</header>
+
+<div class="player">
+  <video controls preload="none" poster="shots/c-loop.jpg" playsinline>
+    <source src="media/C-Loop_Night_Test_1080p30.mp4" type="video/mp4">
+    你的浏览器不支持内联视频，可直接打开 <code>media/C-Loop_Night_Test_1080p30.mp4</code>。
+  </video>
+  <div class="playhint" id="ph"><i></i></div>
+</div>
+<p class="dim" style="font-size:13px;margin-top:-6px">16.0s / 1080p30 / H.264 + AAC 立体声。点播放即看，视频为本地文件，不需要联网。</p>
+
+<div class="facts">
+  <div><span class="v">16.000s</span><span class="k">时长</span></div>
+  <div><span class="v">480</span><span class="k">总帧数</span></div>
+  <div><span class="v">1920×1080</span><span class="k">30 fps</span></div>
+  <div><span class="v">−16.1 LUFS</span><span class="k">真峰值 −1.3 dBTP</span></div>
+</div>
+
+<h2>这条片子是怎么做出来的</h2>
+<p class="lead">没有拍摄、没有素材库、没有外部模型或音效文件。整个场景、光学效果和声音，都是代码一行一行生成出来的。</p>
+
+<div class="tech">
+
+  <div class="t">
+    <p class="h"><em>01</em>场景：从零搭一个夜间测试场</p>
+    <p>C 形钢构坡道、5 组工业泛光灯、粒子尘雾、62k 三角面的车身，全部在 Three.js 里用几何体和材质堆出来。没有导入任何外部模型、贴图或视频素材——所以它可以在任何分辨率下重渲，永远不会有「素材不够用」的问题。</p>
+  </div>
+
+  <div class="t">
+    <p class="h"><em>02</em>渲染管线：确定性逐帧</p>
+    <p>设计了一条 <code>renderFrame(t)</code> 时间轴，给定任意时刻 t 就能算出该帧的完整画面。配合 headless Chrome 逐帧合成截图，再用 WebCodecs 编码封装成 H.264/AAC。<b>480 帧约 3 分钟出片</b>，改一处参数整片重渲，不存在「剪到一半发现某镜头要重拍」。</p>
+  </div>
+
+  <div class="t">
+    <p class="h"><em>03</em>光学层：SVG 做镜头语言</p>
+    <p>变形光斑、鬼影、镜头污渍、直播式 HUD，全部用 SVG 绘制后叠在 3D 画面上。这一步决定了它「像实拍」而不是「像游戏录屏」——真实镜头的瑕疵（污渍、眩光、色散）才是可信感的来源。</p>
+  </div>
+
+  <div class="t">
+    <p class="h"><em>04</em>声音：14 层原创设计</p>
+    <p>风扇低频、冷气脉冲、轮胎落地、金属共振等 14 层音效由 DSP 合成，母带混到 <b>−16.1 LUFS / 真峰值 −1.3 dBTP / 0 削波</b>。没有任何一段来自音效库。</p>
+  </div>
+
+</div>
+
+<h2>四个关键镜头</h2>
+<p class="lead">整片的技术难点集中在这四个瞬间——每一个都是「物理上要成立」才敢剪进去的。</p>
+
+<div class="kfs">
+  <div class="kf">
+    <img src="shots/c-loop-01_inverted_hold.jpg" alt="倒挂悬停关键帧">
+    <div class="c"><b>01 · 倒挂悬停</b>车底风扇吸住钢构，整车倒置静止 1 秒。全片唯一完全静止的镜头，用静止制造失重感。</div>
+  </div>
+  <div class="kf">
+    <img src="shots/c-loop-02_gas_roll.jpg" alt="冷气反推与横滚关键帧">
+    <div class="c"><b>02 · 冷气反推 + 180° 横滚</b>脱离吸附后喷口持续喷白气减速，同时靠数次冷气脉冲把车身推着转回正。</div>
+  </div>
+  <div class="kf">
+    <img src="shots/c-loop-03_fog_touchdown.jpg" alt="白雾缓冲与四轮接地关键帧">
+    <div class="c"><b>03 · 白雾缓冲 + 四轮接地</b>贴地前喷出白雾压住冲击感，避震压缩回弹，落地的重量感靠这一帧交代。</div>
+  </div>
+  <div class="kf">
+    <img src="shots/c-loop-04_approach.jpg" alt="冲入 C 形坡道关键帧">
+    <div class="c"><b>04 · 冲入 C 形坡道</b>长焦跟拍 + 直播 HUD 的视角，让「这是现场直播」的设定从第一秒就成立。</div>
+  </div>
+</div>
+
+<div class="why">
+  <p class="h">这条片子和「内容运营」有什么关系</p>
+  <p>它不是靠素材堆出来的片子，而是<b>把一个内容需求拆成可执行的技术方案</b>：要什么画面 → 用什么方式生成 → 怎么保证每一帧可控 → 怎么让声音和画面咬合。</p>
+  <p>这和我做内容运营时的动作是同一套逻辑：<b>先定验收标准，再选工具，最后把过程固化成可复用的流程</b>。区别只是这次的「素材」是代码，「成片」是 16 秒。</p>
+</div>
+
+<h2>关于制作方式，说清楚</h2>
+<p>这条片子是 <b>vibecoding</b> 完成的：代码由 AI 模型（DeepSeek-V4.1-Flash·1017）生成，<b>但每一个镜头要什么、节奏多快、光从哪来、声音分几层、哪一版不对要返工</b>——这些是人的判断。模型负责把它写出来，我负责决定写成什么。</p>
+<p class="dim">这也是我认为 AI 内容生产的正确姿势：不是「让 AI 做一条片子」，而是「我说清楚要什么，AI 帮我把它造出来，我验收」。验收标准在我这边，这是不能被让渡的部分。</p>
+
+<div class="btns">
+  <a class="btn" href="media/C-Loop_Night_Test_1080p30.mp4" target="_blank">全屏看成片</a>
+  <a class="btn ghost" href="C-Loop_OnePager_A4.pdf" target="_blank">一页式案例 PDF</a>
+</div>
+
+<div class="foot">
+  <b>项目事实</b>：16.000 s · 1920×1080 · 30 fps · 480 帧 · H.264 High + AAC-LC 48 kHz 立体声 · 响度 −16.1 LUFS · 真峰值 −1.3 dBTP · 0 削波。<br>
+  <b>技术栈</b>：Three.js r170 · 原生 SVG · WebCodecs · headless Chrome · Node.js · Python（DSP）。<br>
+  <b>素材来源</b>：100% 程序化生成，无任何外部模型、贴图、视频或音效文件。<br>
+  <b>分发版本</b>：本页内嵌为网上分发压缩版（H.264 CRF 28，4.8 MB；原片 40 MB 保留在项目源目录），画质参数与原片一致，未裁切、未改帧率。<br>
+  <b>制作日期</b>：2026 年 10 月。
+</div>
+
+</div>
+<script>
+(function(){
+  var v = document.querySelector('.player video'), ph = document.getElementById('ph');
+  if(!v) return;
+  function hide(){ if(ph) ph.style.display='none'; }
+  v.addEventListener('play', hide);
+  v.addEventListener('click', hide);
+})();
+</script>
+</body>
+</html>

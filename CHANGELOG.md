@@ -2,6 +2,39 @@
 
 All notable changes to this portfolio hub are documented here.
 
+## 2026-10-26 — v1.1.0
+
+### Added
+
+- **三个新作品页**：`c-loop.html`（C-Loop Night Test 单片页，内嵌 4.8 MB 分发压缩版成片 + 一页式 PDF）、
+  `sop-subtitle.html`（字幕规范 SOP）、`sop-storyboard.html`（分镜脚本规范 SOP）。入口页卡片 7 → 10。
+- **入口页重做**：首屏左右两栏，右侧「一条内容走完的五站」（选题 → 脚本 → 制作 → 发布 → 沉淀），
+  每站挂真实证据、可点跳到对应卡片并高亮。
+- **栏目筛选**：全部 10 / 视频作品 2 / SOP·过程文档 3 / 可试用工具 5；支持 `#video` `#sop` `#tool` 深链，
+  键盘 1–4 切换，筛选条吸顶。三列下只剩一张时自动居中。
+- `shots/ai-video.jpg`：入口页「AI 视频作品集」封面换成《中国龙》6.5 s 帧。原封面是本页自身截图，
+  暗到接近全黑，等于没有封面。
+
+### Changed
+
+- `og:image` / `twitter:image`：`shots/video-portfolio.jpg` → `shots/ai-video.jpg`。旧图偏暗，
+  发到微信、飞书里预览是一块黑。
+- 统计条「4 个可直接试用的工具」→ **5 个**。实际是 TalkCal、电商爆款脚本 Agent、DayPilot、
+  广告合规审查工具、OfferAgent 五个，此前少数一个。
+
+### Fixed
+
+- **「电商爆款脚本生成 Agent」测试数量 27 → 35。** v1.0.5 的记录里写了要改成 35，
+  但 `index.html` 实际没改到。本轮实查源仓库 `技术源码/tests/`：
+  test_compliance 5 + test_exporters 5 + test_generator 9 + test_llm 8 + test_templates 8 = **35**。
+  同段「27 条可修复表述自动替换表」保持 27 —— 两个 27 含义不同，不合并。
+
+### Note
+
+- 两份实习期 PDF（《千川爆款复刻方法论》《千川素材生产流程规范》）**未上传本仓库**，
+  入口页对应位置改成「PDF 版随打包件单独提供」。理由：那是实习公司内部的投放 SOP，
+  公开托管和私下发给面试官性质不同。要公开时补一条 commit 即可。
+
 ## 2026-10-22 — v1.0.5
 
 ### Fixed
