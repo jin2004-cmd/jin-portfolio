@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>聚光灯效应 · 水墨卡点短片 · 金佳信</title>
+<meta name="description" content="52 秒水墨卡点短片：用「眼睛 → 镜子 → 灯」三个意象把心理学概念「聚光灯效应」讲成一次情绪反转。画面零素材，全部由 Canvas 2D 逐帧生成，切点与鼓点误差 ≤1 帧。">
+<style>
+  :root{
+    --bg:#0f1115; --card:#161a21; --line:#242a34; --txt:#e6e9ef; --dim:#98a2b3;
+    --acc:#43d6f7; --mono:"SFMono-Regular",Consolas,"Cascadia Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+       font-family:"PingFang SC","Microsoft YaHei",-apple-system,"Segoe UI",sans-serif;
+       line-height:1.75;font-size:15px}
+  .wrap{max-width:940px;margin:0 auto;padding:30px 22px 80px}
+
+  .backlink{display:inline-block;margin-bottom:16px;font-size:13px;color:var(--acc);text-decoration:none}
+  .backlink:hover{text-decoration:underline}
+
+  header{margin-bottom:26px}
+  .kicker{font-size:12.5px;color:var(--acc);letter-spacing:2px;margin:0 0 10px}
+  h1{margin:0 0 10px;font-size:30px;line-height:1.25;letter-spacing:.3px}
+  h1 span{display:block;font-size:17px;color:var(--dim);font-weight:400;margin-top:8px}
+  .sub{color:var(--dim);font-size:14.5px;margin:0}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .meta span{font-size:12.5px;color:var(--dim);background:#151a20;border:1px solid var(--line);
+             border-radius:999px;padding:3px 12px}
+  .meta b{color:var(--txt);font-weight:600}
+
+  /* 播放器 */
+  .player{position:relative;background:#07090c;border:1px solid var(--line);border-radius:14px;
+          overflow:hidden;margin:22px 0}
+  .player video{display:block;width:100%;height:auto;background:#07090c}
+  .playhint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+            pointer-events:none}
+  .playhint i{width:66px;height:66px;border-radius:50%;background:rgba(67,214,247,.92);
+              display:flex;align-items:center;justify-content:center;font-style:normal;
+              box-shadow:0 8px 30px rgba(0,0,0,.5)}
+  .playhint i::after{content:"";border-left:19px solid #0f1115;border-top:12px solid transparent;
+                     border-bottom:12px solid transparent;margin-left:5px}
+
+  h2{font-size:19px;margin:40px 0 4px;padding-left:12px;border-left:3px solid var(--acc);line-height:1.4}
+  h3{font-size:15.5px;margin:22px 0 6px}
+  p{margin:10px 0}
+  .dim{color:var(--dim)}
+  .lead{color:var(--dim);font-size:14px;margin:0 0 16px}
+  b,strong{color:#fff;font-weight:600}
+  code{font-family:var(--mono);font-size:12.5px;background:#1b212a;border:1px solid var(--line);
+       border-radius:4px;padding:1px 5px;color:#cfe9f3}
+
+  /* 事实条 */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}
+  .facts div{background:var(--card);border:1px solid var(--line);border-radius:10px;
+             padding:12px 14px;text-align:center}
+  .facts .v{font-family:var(--mono);font-size:17px;color:var(--acc);display:block;line-height:1.3}
+  .facts .k{font-size:11.5px;color:var(--dim)}
+
+  /* 关键帧 */
+  .kfs{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:18px 0}
+  .kf{background:var(--card);border:1px solid var(--line);border-radius:11px;overflow:hidden}
+  .kf.wide{grid-column:1/-1}
+  .kf img{display:block;width:100%;height:auto}
+  .kf .c{padding:10px 13px;font-size:12.5px;color:var(--dim);border-top:1px solid var(--line)}
+  .kf .c b{display:block;color:var(--txt);font-size:13.5px;margin-bottom:2px}
+
+  /* 技术点 */
+  .tech{display:grid;gap:12px;margin:18px 0}
+  .t{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);
+     border-radius:0 10px 10px 0;padding:13px 17px}
+  .t .h{font-size:14px;margin:0 0 5px}
+  .t .h em{font-style:normal;font-family:var(--mono);font-size:11.5px;color:var(--acc);
+           border:1px solid var(--acc);border-radius:4px;padding:0 6px;margin-right:8px}
+  .t p{margin:0;font-size:13.5px;color:var(--dim)}
+
+  .why{background:linear-gradient(180deg,#151b23,#12161c);border:1px solid var(--line);
+       border-radius:12px;padding:18px 20px;margin:20px 0}
+  .why p{margin:8px 0;font-size:14px}
+  .why .h{font-size:13px;color:var(--acc);letter-spacing:.5px;margin:0 0 8px}
+
+  /* 时间线表 */
+  .tbl{width:100%;border-collapse:collapse;margin:16px 0;font-size:12.8px}
+  .tbl th,.tbl td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+  .tbl th{background:#151a20;color:var(--txt);font-weight:600;font-size:12.5px}
+  .tbl td.n{font-family:var(--mono);color:var(--acc);white-space:nowrap}
+  .tbl tr.drop td{background:#1d2731}
+  .tbl tr.drop td.n{color:#fff;font-weight:600}
+
+  .btns{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0}
+  .btn{display:inline-block;font-size:13px;padding:7px 16px;border-radius:8px;text-decoration:none;
+       border:1px solid var(--acc);color:var(--acc);transition:.15s}
+  .btn:hover{background:var(--acc);color:#0f1115}
+  .btn.ghost{border-color:var(--dim);color:var(--dim)}
+  .btn.ghost:hover{border-color:var(--txt);color:var(--txt);background:transparent}
+
+  .foot{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);
+        color:var(--dim);font-size:12.5px;line-height:1.9}
+  .foot b{color:var(--txt)}
+
+  @media (max-width:720px){
+    .facts{grid-template-columns:repeat(2,1fr)}
+    .kfs{grid-template-columns:1fr}
+    .kf.wide{grid-column:auto}
+    h1{font-size:24px}
+    .tbl{font-size:12px}
+    .tbl th,.tbl td{padding:6px 7px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<a class="backlink" href="index.html">← 返回项目作品集</a>
+
+<header>
+  <p class="kicker">MOTION · 2026</p>
+  <h1>聚光灯效应
+    <span>水墨卡点短片 · 52 秒 · 零素材纯代码</span>
+  </h1>
+  <p class="sub">你走进一间教室，觉得全场都在看你。前 17 秒把观众按进「被围观」的焦虑，<b>drop 处全屏反白、墨点炸开</b>——「没人在看。他们都在看自己。」最后给三个当晚就能用的动作。全片用<b>眼睛 → 镜子 → 灯</b>三个意象，把一个心理学概念讲成一次情绪反转。</p>
+  <div class="meta">
+    <span>画面 <b>Canvas 2D</b></span>
+    <span>卡点 <b>1.0846 s/拍</b></span>
+    <span>声音 <b>numpy 合成</b></span>
+    <span>素材文件 <b>0 个</b></span>
+  </div>
+</header>
+
+<div class="player">
+  <video controls preload="none" poster="shots/spotlight.jpg" playsinline>
+    <source src="media/spotlight-effect_1080p30.mp4" type="video/mp4">
+    你的浏览器不支持内联视频，可直接打开 <code>media/spotlight-effect_1080p30.mp4</code>。
+  </video>
+  <div class="playhint" id="ph"><i></i></div>
+</div>
+<p class="dim" style="font-size:13px;margin-top:-6px">52.2s / 1080p30 / H.264 + AAC 立体声。全片无口播，建议全屏、开声音观看 —— 卡点是这片子的骨架。视频为本地文件，不需要联网。</p>
+
+<div class="facts">
+  <div><span class="v">52.20s</span><span class="k">时长</span></div>
+  <div><span class="v">1566</span><span class="k">总帧数</span></div>
+  <div><span class="v">1920×1080</span><span class="k">30 fps</span></div>
+  <div><span class="v">≤1 帧</span><span class="k">切点与鼓点误差</span></div>
+</div>
+
+<h2>这条片子是怎么做出来的</h2>
+<p class="lead">没有拍摄、没有素材库、没有生成模型。纸纹、山峦、毛笔笔锋、墨点爆散、镜像阵列 —— 全是 Canvas 2D 一帧一帧画出来的，声音是 numpy 算出来的。</p>
+
+<div class="tech">
+
+  <div class="t">
+    <p class="h"><em>01</em>纯代码视觉：水墨也能被算出来</p>
+    <p>程序化纸纹、fbm 噪声山峦、带飞白的毛笔笔锋、墨点爆散、镜像阵列，全部是代码。<b>0 个素材文件</b> —— 没有贴图、没有笔刷、没有序列帧。好处是改一处参数整片重渲，不存在「找不到合适的素材」。</p>
+  </div>
+
+  <div class="t">
+    <p class="h"><em>02</em>数据驱动卡点：画面和声音共用同一份时间表</p>
+    <p>先用 Python 频谱通量给音乐测速，测出四分音符 <b>1.0846 s</b>、相位 <b>0.352 s</b>（实测强起音 0.35 / 1.435 / 2.520 / 3.615 … 全部落在网格上）。网格常量写进 <code>js/times.js</code>，画面与音频共用这一份；所有切点取 <code>0.352 + k × 1.0846</code>，实测切帧与网格误差 <b>≤ 1 帧（0.03 s）</b>。</p>
+  </div>
+
+  <div class="t">
+    <p class="h"><em>03</em>卡点是怎么修对的：从「慢半拍」到「压在 drop 上」</p>
+    <p>上一版为了换时间把音乐放慢到 0.9 倍，整条听感偏慢；更关键的是我用的节拍相位 0.085 与音乐真实相位 0.352 <b>差了约 0.27 秒</b> —— 所有切点都比鼓点早一点点，看起来就是「没卡上」。这一版<b>音乐恢复原速、不再做任何拉伸</b>，重测真实网格后重排，白屏正压在原曲 drop 的 <b>17.44 s</b>。</p>
+  </div>
+
+  <div class="t">
+    <p class="h"><em>04</em>声音设计：只在该让路的地方让路</p>
+    <p>原曲 0–52.2 s 连续播放，<b>无变速、无硬切、高潮不压</b>；只在脑内卡 / 数据处 −2～−3 dB、动作卡处 −1 dB，保证字读得清又不打断音乐。拟音（开门、毛笔、印章、心跳、riser、sub、crash + 金属铃 5 处）由 numpy 合成，母带 <b>−14 LUFS / −1.5 dBTP</b>。</p>
+  </div>
+
+</div>
+
+<h2>五个关键帧</h2>
+<p class="lead">从「所有人都在看你」到「每个人都有自己的一盏灯」，反转发生在第 17.44 秒。</p>
+
+<div class="kfs">
+  <div class="kf">
+    <img src="shots/sp-01-look.jpg" alt="开场：所有人都在看">
+    <div class="c"><b>01 · 看</b>开场不铺垫，直接把「被注视」的压迫感砸到屏幕上 —— 上方小字「所有人」，中间一个墨笔大字「看」。</div>
+  </div>
+  <div class="kf">
+    <img src="shots/sp-02-title.jpg" alt="片名与朱砂印章">
+    <div class="c"><b>02 · 片名</b>「聚光灯效应 / THE SPOTLIGHT EFFECT」压在黑条上，右下朱砂印章落款 —— 印章是通用组件，后面落版会再出现一次。</div>
+  </div>
+  <div class="kf">
+    <img src="shots/sp-03-drop.jpg" alt="drop：全屏反白与墨点炸开">
+    <div class="c"><b>03 · drop · 17.44 s</b>全屏反白、墨点炸开，大字「没人在看」，红色副题「他们在看自己」，底部一行：「你给自己打了追光，别人连灯都没开」。</div>
+  </div>
+  <div class="kf">
+    <img src="shots/sp-04-action.jpg" alt="三个动作：朝灯走过去">
+    <div class="c"><b>04 · 动作</b>「三个动作 · 今晚就能用」—— 03 朝灯走过去：从被看的人，变成看别人的人；走过去，说一句真话。</div>
+  </div>
+  <div class="kf wide">
+    <img src="shots/sp-05-lamp.jpg" alt="结尾：把灯打开之后">
+    <div class="c"><b>05 · 开灯</b>把灯打开之后，你会发现，每个人都有自己的一盏 —— 结尾把「聚光灯」从「照在我身上的审判灯」翻转为「我可以选择打开的那盏灯」。</div>
+  </div>
+</div>
+
+<h2>时间线：全部落在鼓点上</h2>
+<p class="lead">1 拍 = 1.0846 s。下表的时间点全部满足 <code>0.352 + k × 1.0846</code>。</p>
+
+<table class="tbl">
+  <thead>
+    <tr><th>时间</th><th>内容</th><th>拍</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="n">0–1.44</td><td>门缝光 → 人站进去</td><td class="n">—</td></tr>
+    <tr><td class="n">1.44–3.61</td><td>「看」砸屏 → 所有人都在看你 → 睁眼</td><td class="n">2 拍</td></tr>
+    <tr><td class="n">3.61–7.94</td><td>四张脑内卡（衣服 / 头发 / 她笑了 / 他们在说我）</td><td class="n">每张 1 拍</td></tr>
+    <tr><td class="n">7.94–11.20</td><td>片名 + 英文 + 两行定义</td><td class="n">3 拍</td></tr>
+    <tr><td class="n">11.20–13.37</td><td>T 恤实验场景</td><td class="n">2 拍</td></tr>
+    <tr><td class="n">13.37–15.54</td><td>50% → 23% → 差 2.2 倍</td><td class="n">2 拍</td></tr>
+    <tr><td class="n">15.54–17.44</td><td>瞳孔特写 → 群眼逼近 → 黑场蓄力</td><td class="n">1.75 拍</td></tr>
+    <tr class="drop"><td class="n">17.44</td><td>原曲 drop = 白屏 + 墨爆</td><td class="n">落在 drop 上</td></tr>
+    <tr><td class="n">17.44–19.88</td><td>「没人在看 / 他们都在看自己」</td><td class="n">2.25 拍</td></tr>
+    <tr><td class="n">19.88–22.04</td><td>几十面镜子</td><td class="n">2 拍</td></tr>
+    <tr><td class="n">22.04–28.55</td><td>01 向外看 / 02 验证 / 03 走过去</td><td class="n">每个 2 拍</td></tr>
+    <tr><td class="n">31.81–35.06</td><td>把灯打开，人人一盏</td><td class="n">3 拍</td></tr>
+    <tr><td class="n">38.31–42.65</td><td>「你不是舞台 / 你是那束光」</td><td class="n">4 拍</td></tr>
+    <tr><td class="n">42.65–52.20</td><td>落版字样 + 朱砂印章 → 结尾卡 + 渐黑</td><td class="n">9 拍</td></tr>
+  </tbody>
+</table>
+
+<div class="why">
+  <p class="h">这条片子和「做内容」有什么关系</p>
+  <p>心理学概念是最容易讲成名词解释的题材 —— 讲完观众记住了一个词，什么都没发生。这里的做法是<b>先定体验目标</b>：不是让人「知道」聚光灯效应，是让人「被看一次」，再在第 17 秒把那个感觉翻掉。为此前 17 秒全部服务于制造压迫感，数据（T 恤实验 50% → 23%）只占 2 拍。</p>
+  <p>这和我做内容的动作是同一套：<b>先定要让人产生什么感觉，再决定信息放在哪、留多久</b>。区别只是这次的「素材」是代码，「成片」是 52 秒。</p>
+</div>
+
+<h2>关于制作方式，说清楚</h2>
+<p>这条片子是 <b>vibecoding</b> 完成的：代码由 AI 模型生成，但<b>概念、脚本、分镜、视觉系统、节拍分析与声音设计</b>——这些是人的判断。模型负责把它写出来，我负责决定写成什么。</p>
+<p>其中「卡点修对」这一步最能说明分工：模型能写出卡点代码，但<b>判断「为什么看着慢半拍」、决定要回去重测真实相位</b>，是看完片子之后人的判断。这类返工决策没法外包 —— 它要求你先承认上一版是错的。</p>
+<p class="dim">这也是我认为 AI 内容生产的正确姿势：不是「让 AI 做一条片子」，而是「我说清楚要什么，AI 帮我把它造出来，我验收」。验收标准在我这边。</p>
+
+<div class="btns">
+  <a class="btn" href="media/spotlight-effect_1080p30.mp4" target="_blank" rel="noopener">全屏看成片</a>
+  <a class="btn ghost" href="Spotlight-OnePager.pdf" target="_blank" rel="noopener">一页式案例 PDF</a>
+</div>
+
+<div class="foot">
+  <b>项目事实</b>：52.20 s · 1566 帧 · 1920×1080 · 30 fps · H.264 High / yuvj420p · AAC-LC 48 kHz 立体声 · 母带 −14 LUFS / 真峰值 −1.5 dBTP。<br>
+  <b>技术栈</b>：Canvas 2D · Node.js（<code>render.mjs</code> 逐帧出图）· Python（频谱通量测速、numpy 拟音合成）· FFmpeg（编码 / 封装）。<br>
+  <b>素材来源</b>：画面 100% 代码生成，<b>0 个素材文件</b>；音频为原曲连续播放 + numpy 合成拟音，无变速、无硬切。<br>
+  <b>分发版本</b>：本页内嵌为网络分发压缩版（<b>H.264 CRF 25，12.3 MB</b>；原片 31.5 MB 保留在项目源目录）。实测与原片 SSIM 0.9831，分辨率、帧率、时长一致，未裁切、未改帧率。<br>
+  <b>制作日期</b>：2026 年 10 月。
+</div>
+
+</div>
+<script>
+(function(){
+  var v = document.querySelector('.player video'), ph = document.getElementById('ph');
+  if(!v) return;
+  function hide(){ if(ph) ph.style.display='none'; }
+  v.addEventListener('play', hide);
+  v.addEventListener('click', hide);
+})();
+</script>
+</body>
+</html>

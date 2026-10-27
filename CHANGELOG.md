@@ -2,6 +2,44 @@
 
 All notable changes to this portfolio hub are documented here.
 
+## 2026-10-27 — v1.5.0
+
+### Added
+
+- **新增作品页《聚光灯效应》**（`spotlight.html`）。52 秒水墨卡点短片，
+  用「眼睛 → 镜子 → 灯」三个意象把心理学概念讲成一次情绪反转：
+  前 17 秒制造「被围观」的焦虑，**17.44 s 原曲 drop 处全屏反白、墨点炸开**——
+  「没人在看。他们都在看自己。」
+  - 页面规格沿用 `qiuzhao.html` / `c-loop.html`：返回链接 / kicker / 播放器 /
+    四格事实条 / 四段技术点 / 关键帧网格 / 时间线表 / 与做内容的关系 /
+    制作方式说明 / 页脚事实。
+  - 关键帧 5 张 `shots/sp-01-look.jpg` ~ `sp-05-lamp.jpg` + 封面 `shots/spotlight.jpg`。
+  - 一页式案例 PDF `Spotlight-OnePager.pdf`。
+  - 成片 `media/spotlight-effect_1080p30.mp4`：H.264 CRF 25 / 12.3 MB
+    （原片 31.5 MB 保留在项目源目录）。实测与原片 **SSIM 0.9831**，
+    分辨率、帧率、时长一致，未裁切、未改帧率。
+
+### Changed
+
+- 首页卡片 **11 → 12**，视频作品 **3 → 4**；统计条与三处 meta description 同步。
+- 「最近更新」一行改为 2026-10-27 并加入《聚光灯效应》。
+
+### Note
+
+- **成片是 full range（`yuvj420p`）**，压缩时显式指定 `-pix_fmt yuvj420p` 保留，
+  不要套用 qiuzhao 那次的 `-pix_fmt yuv420p`——那会把它压成 limited range。
+- 5 张关键帧已逐帧读图核对命名，本次名实相符（01 看 / 02 片名 / 03 drop /
+  04 动作 / 05 开灯）；qiuzhao 那次错过两处，所以这次先核对再写文案。
+- **画质定档为 CRF 25 而非 23**：抽帧对比墨爆帧（17.9 s）显示 CRF25 下墨迹边缘锐利、
+  飞白保留、无振铃，而 CRF23 要 21 MB（+8.7 MB）。水墨片视觉容错高于纯文字片，按此定档。
+
+### Verified
+
+- 引用完整性：`index.html` 41 条、`spotlight.html` 9 条本地相对链接，缺失 0；标签配平 0 问题。
+- fake-DOM 冒烟：卡片分类 video 4 / tool 5 / sop 3，与筛选栏宣称计数一致；
+  初始态无卡片被隐藏；12 张时不出 `tailsolo`。
+- 镜像总站 `展示集/项目作品总站.html` 已重新生成，引用缺失 0。
+
 ## 2026-10-26 — v1.4.0
 
 ### Added
