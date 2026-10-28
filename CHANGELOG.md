@@ -2,6 +2,49 @@
 
 All notable changes to this portfolio hub are documented here.
 
+## 2026-10-28 — v2.0.0
+
+### Added
+
+- **首页整体重写**（`index.html`）。原来 13 张平铺卡片改为展厅式结构：
+  首屏 showreel + 精选五件（鼠标停在标题上，右边直接试看）+ 全部档案（16 件，按影像 / 工具 / 文档筛选）
+  + 方法（参数化 / 可验收 / 可交接）+ 关于。
+- 新增 `assets/`：`hall.css`（31 KB）、`hall.js`（20 KB），
+  以及**本地** `vendor/gsap.min.js` + `ScrollTrigger.min.js` + `lenis.min.js`（共 133 KB，不联网也能用）。
+  依赖缺失时链接、内容、筛选仍然可用，hall.js 内有 2.6 s 兜底显形。
+- 首屏 showreel `assets/video/showreel.mp4`：15.9 秒无音轨，1600×900，1.9 MB，由四部短片剪成。
+- 每个作品页加了返回首页按钮（滚动超过 280 px 后浮出）。
+- 两份中文名 PDF 进仓库根目录：`七度-爆款复刻方法论-2026-10-25.pdf`、`七度-素材生产流程规范-2026-10-25.pdf`。
+
+### Changed
+
+- 首页作品数 **13 → 16**（影像 5 / 工具 5 / 文档 6），统计条与三处 meta 同步。
+- **去 AI 味**：卡片描述长度 36 ~ 108 字不等（原来几乎等长），
+  chip 数量 2 / 3 / 4 / 5 个不等（原来几乎全是 3 个）。
+- 标点按本人语气库清理：破折号 3 处全删，分号 0 处，叙述段冒号 10 处改逗号；
+  无「不是 A 而是 B」句式，无赋能 / 闭环 / 沉淀一类词。
+- 首页与 README 的 **35 个单测改为 27 个**（`ecom-script-agent` 实测值）。
+- 首页不再放邮箱，只留 GitHub 链接。
+
+### Fixed
+
+- 🔴 **四部短片换回正确版本**。上一轮被重压成 CRF 30，体积掉到原来的 1/2 ~ 1/5
+  （spotlight 从 12.3 MB 压到 3.2 MB），且三片 full range（`yuvj420p`）被压成 `yuv420p`。
+  已换回 CRF 25（compare / spotlight / qiuzhao）与 CRF 28（C-Loop）的版本，`pix_fmt` 恢复原值。
+- 四个作品页页脚「分发版本」同步改回实测值：
+  compare 11.5 MB / SSIM 0.9933，spotlight 12.3 MB / 0.9831，
+  qiuzhao 12.9 MB / 0.9887，C-Loop 4.8 MB。
+- `og:image` 不再用 base64 畸形拼接，改为 `shots/compare.jpg`。
+
+### Verified
+
+- 引用完整性：推送副本 73 条本地相对链接，缺失 0（唯一告警是 JS 模板字符串误报）。
+- `node --check assets/js/hall.js` 通过。
+- fake-DOM 冒烟：hall.js 在**无 GSAP / 无 Lenis** 的降级环境下跑通，未抛错。
+- CSS / JS 内无任何外部 URL，断网可用。
+- 视频实测（`ffprobe -count_frames`）：compare 2431 帧 / spotlight 1566 帧 / qiuzhao 2430 帧 / C-Loop 480 帧。
+- 整包 53 MB，首屏只加载 showreel（1.9 MB）+ 封面，作品视频 hover 才拉。
+
 ## 2026-10-27 — v1.6.0
 
 ### Added

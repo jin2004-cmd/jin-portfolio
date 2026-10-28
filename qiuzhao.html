@@ -257,5 +257,25 @@
   v.addEventListener('click', hide);
 })();
 </script>
+<a id="pback" href="index.html" aria-label="返回项目作品集"
+   style="position:fixed;left:18px;bottom:18px;z-index:9998;display:inline-flex;align-items:center;gap:7px;
+          padding:9px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.16);
+          background:rgba(10,12,16,.78);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+          color:#e8ebef;font:500 12.5px/1 &quot;PingFang SC&quot;,&quot;Microsoft YaHei&quot;,sans-serif;
+          text-decoration:none;letter-spacing:.02em;opacity:0;transform:translateY(8px);
+          transition:opacity .35s ease,transform .35s ease,background .2s ease;pointer-events:none">← 作品集</a>
+<script>
+(function(){
+  var b=document.getElementById('pback'); if(!b) return;
+  var on=false;
+  function upd(){
+    var s=window.pageYOffset>280;
+    if(s!==on){ on=s; b.style.opacity=s?'1':'0'; b.style.transform=s?'none':'translateY(8px)'; b.style.pointerEvents=s?'auto':'none'; }
+  }
+  window.addEventListener('scroll',upd,{passive:true}); upd();
+  b.addEventListener('mouseenter',function(){ b.style.background='rgba(223,244,60,.92)'; b.style.color='#0a0b0d'; b.style.borderColor='rgba(223,244,60,.92)'; });
+  b.addEventListener('mouseleave',function(){ b.style.background='rgba(10,12,16,.78)'; b.style.color='#e8ebef'; b.style.borderColor='rgba(255,255,255,.16)'; });
+})();
+</script>
 </body>
 </html>
