@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>内容运营工作台 · 金佳信</title>
+<style>
+:root{
+  --bg:#f6f7f9; --card:#fff; --bd:#e3e6ea; --tx:#1a1d21; --tx2:#6b7280;
+  --acc:#2563eb; --acc2:#eff6ff; --ok:#16a34a; --warn:#d97706; --red:#dc2626;
+  --pur:#7c3aed; --grn:#059669;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--tx);font-size:14px;line-height:1.6}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px 60px}
+header{background:linear-gradient(120deg,#1e3a8a,#2563eb 55%,#7c3aed);color:#fff;padding:26px 0 22px;margin-bottom:0}
+header .wrap{padding-bottom:0}
+h1{font-size:22px;font-weight:700;letter-spacing:.5px}
+.sub{opacity:.85;font-size:13px;margin-top:6px}
+.badges{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+.badge{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:3px 10px;border-radius:20px;font-size:12px}
+nav{display:flex;gap:4px;background:#fff;border-bottom:1px solid var(--bd);padding:0 20px;position:sticky;top:0;z-index:20;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+nav .inner{max-width:1180px;margin:0 auto;display:flex;gap:2px;overflow-x:auto}
+nav button{background:none;border:none;padding:13px 16px;font-size:14px;color:var(--tx2);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;font-family:inherit}
+nav button:hover{color:var(--tx)}
+nav button.on{color:var(--acc);border-bottom-color:var(--acc);font-weight:600}
+.pane{display:none;padding-top:20px}
+.pane.on{display:block;animation:fade .22s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:16px;margin-bottom:14px}
+.card h3{font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card h3 .n{background:var(--acc2);color:var(--acc);width:22px;height:22px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+input,select,textarea{border:1px solid var(--bd);border-radius:7px;padding:8px 10px;font-size:13px;font-family:inherit;background:#fff;color:var(--tx)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+input.f1{flex:1;min-width:150px}
+button.btn{background:var(--acc);color:#fff;border:none;border-radius:7px;padding:8px 14px;font-size:13px;cursor:pointer;font-family:inherit;transition:.15s}
+button.btn:hover{background:#1d4ed8;transform:translateY(-1px)}
+button.btn.ghost{background:#fff;color:var(--tx2);border:1px solid var(--bd)}
+button.btn.ghost:hover{background:#f3f4f6;color:var(--tx)}
+button.btn.sm{padding:5px 10px;font-size:12px}
+button.btn.danger{background:#fff;color:var(--red);border:1px solid #fecaca}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:8px 10px;background:#f9fafb;color:var(--tx2);font-weight:600;border-bottom:1px solid var(--bd);font-size:12px}
+td{padding:8px 10px;border-bottom:1px solid #f1f3f5}
+tr:hover td{background:#fcfcfd}
+.tag{display:inline-block;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600}
+.t-blue{background:#dbeafe;color:#1e40af}.t-grn{background:#d1fae5;color:#065f46}
+.t-org{background:#fed7aa;color:#9a3412}.t-gry{background:#f3f4f6;color:#6b7280}
+.t-pur{background:#ede9fe;color:#5b21b6}.t-red{background:#fee2e2;color:#991b1b}
+.empty{color:var(--tx2);font-size:13px;padding:22px;text-align:center;background:#fafbfc;border:1px dashed var(--bd);border-radius:8px}
+.grid{display:grid;gap:10px}
+.g4{grid-template-columns:repeat(4,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:860px){.g4,.g3,.g2{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:#fff;border:1px solid var(--bd);border-radius:10px;padding:14px}
+.kpi .v{font-size:22px;font-weight:700;color:var(--acc)}
+.kpi .l{font-size:12px;color:var(--tx2);margin-top:2px}
+.chk{display:flex;gap:9px;align-items:flex-start;padding:7px 9px;border-radius:7px;cursor:pointer;transition:.13s}
+.chk:hover{background:#f9fafb}
+.chk input{margin-top:3px;width:15px;height:15px;accent-color:var(--acc);cursor:pointer}
+.chk.done span{text-decoration:line-through;color:var(--tx2)}
+.hint{font-size:12px;color:var(--tx2);background:#f9fafb;border-left:3px solid var(--acc);padding:9px 12px;border-radius:0 7px 7px 0;margin-bottom:12px}
+pre.out{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:8px;font-size:12px;line-height:1.75;white-space:pre-wrap;font-family:"Cascadia Mono",Consolas,monospace;max-height:380px;overflow:auto}
+.blist{padding-left:18px;font-size:13px}.blist li{margin-bottom:5px}
+.mono{font-family:"Cascadia Mono",Consolas,monospace;font-size:12px}
+footer{text-align:center;color:var(--tx2);font-size:12px;padding:26px 0 10px;border-top:1px solid var(--bd);margin-top:30px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#111827;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;opacity:0;transition:.25s;z-index:99}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>内容运营工作台</h1>
+  <div class="sub">选题 → 排期 → 发布检查 → 数据复盘 → 一鱼多吃 → 爆款拆解　六步闭环</div>
+  <div class="badges">
+    <span class="badge">金佳信 · 内容运营 / 新媒体运营</span>
+    <span class="badge">零依赖 · 双击即用</span>
+    <span class="badge">数据存本地，不联网</span>
+    <span class="badge">支持抖音 / 小红书 / 视频号 / 公众号 / Instagram / YouTube</span>
+  </div>
+</div></header>
+
+<nav><div class="inner">
+  <button class="on" data-p="idea">① 选题库</button>
+  <button data-p="plan">② 排期看板</button>
+  <button data-p="pub">③ 发布清单</button>
+  <button data-p="data">④ 数据复盘</button>
+  <button data-p="multi">⑤ 一鱼多吃</button>
+  <button data-p="swipe">⑥ 爆款拆解库</button>
+</div></nav>
+
+<div class="wrap">
+
+<!-- ① 选题库 -->
+<div class="pane on" id="p-idea">
+  <div class="card"><h3><span class="n">1</span>新增选题</h3>
+    <div class="row">
+      <input class="f1" id="iTitle" placeholder="选题标题 / 内容方向">
+      <select id="iPlat"><option>抖音</option><option>小红书</option><option>视频号</option><option>公众号</option><option>Instagram</option><option>YouTube</option></select>
+      <select id="iType"><option>痛点直击</option><option>效果反差</option><option>真实场景</option><option>热点借势</option><option>知识科普</option><option>活动宣发</option></select>
+      <input id="iHook" placeholder="开头钩子（一句话）" style="min-width:180px;flex:1">
+      <button class="btn" onclick="addIdea()">加入选题库</button>
+    </div>
+  </div>
+  <div class="card"><h3><span class="n">2</span>选题池 <span class="tag t-gry" id="iCnt">0</span></h3>
+    <div class="row">
+      <select id="iFilter"><option value="">全部状态</option><option>待评估</option><option>已采纳</option><option>已排期</option><option>已发布</option><option>废弃</option></select>
+      <input id="iSearch" placeholder="搜索标题 / 钩子" style="min-width:180px" oninput="renderIdeas()">
+      <button class="btn ghost sm" onclick="renderIdeas()">筛选</button>
+    </div>
+    <div id="ideaBox"></div>
+  </div>
+</div>
+
+<!-- ② 排期 -->
+<div class="pane" id="p-plan">
+  <div class="card"><h3><span class="n">2</span>周排期看板</h3>
+    <div class="hint">把「已采纳」的选题拖进某一天 —— 点选题右侧「排期」按钮选日期即可。排期后状态自动变「已排期」。</div>
+    <div class="row">
+      <button class="btn ghost sm" onclick="shiftWeek(-7)">← 上一周</button>
+      <b id="weekLabel" style="min-width:180px;text-align:center"></b>
+      <button class="btn ghost sm" onclick="shiftWeek(7)">下一周 →</button>
+      <button class="btn ghost sm" onclick="shiftWeek(0)">回到本周</button>
+    </div>
+    <div class="grid g4" id="planGrid" style="margin-top:12px"></div>
+  </div>
+</div>
+
+<!-- ③ 发布清单 -->
+<div class="pane" id="p-pub">
+  <div class="card"><h3><span class="n">3</span>发布前检查清单</h3>
+    <div class="hint">不同平台的硬性要求不一样。选平台 → 逐项勾 → 全勾完才发。勾选状态按平台分别保存。</div>
+    <div class="row">
+      <select id="pubPlat" onchange="renderPub()">
+        <option>抖音</option><option>小红书</option><option>视频号</option><option>公众号</option><option>Instagram</option><option>YouTube</option>
+      </select>
+      <button class="btn ghost sm" onclick="resetPub()">清空勾选</button>
+      <span id="pubProg" class="tag t-blue"></span>
+    </div>
+    <div id="pubBox"></div>
+  </div>
+</div>
+
+<!-- ④ 数据复盘 -->
+<div class="pane" id="p-data">
+  <div class="card"><h3><span class="n">4</span>录入 / 粘贴数据</h3>
+    <div class="hint">支持两种：① 手填单条　② 把平台后台导出的 CSV 整段粘进来（需含列：标题,播放,点赞,评论,转发,涨粉）。自动算互动率、涨粉率、爆款系数。</div>
+    <div class="row">
+      <input class="f1" id="dTitle" placeholder="内容标题">
+      <input id="dViews" placeholder="播放" type="number" style="width:90px">
+      <input id="dLikes" placeholder="点赞" type="number" style="width:90px">
+      <input id="dCmt" placeholder="评论" type="number" style="width:90px">
+      <input id="dShare" placeholder="转发" type="number" style="width:90px">
+      <input id="dFans" placeholder="涨粉" type="number" style="width:90px">
+      <button class="btn" onclick="addData()">录入</button>
+    </div>
+    <div class="row">
+      <textarea id="dCsv" rows="3" style="width:100%" placeholder="标题,播放,点赞,评论,转发,涨粉&#10;租房避坑第一条,120000,3200,410,260,180"></textarea>
+    </div>
+    <div class="row"><button class="btn ghost" onclick="importCsv()">导入 CSV</button>
+      <button class="btn ghost" onclick="demoData()">载入示例数据</button>
+      <button class="btn danger" onclick="clearData()">清空</button></div>
+  </div>
+  <div class="card"><h3><span class="n">4</span>复盘结论</h3>
+    <div class="grid g4" id="kpiBox"></div>
+    <div id="dataBox" style="margin-top:14px"></div>
+    <div id="conclBox"></div>
+  </div>
+</div>
+
+<!-- ⑤ 一鱼多吃 -->
+<div class="pane" id="p-multi">
+  <div class="card"><h3><span class="n">5</span>一套素材 → 多平台改造</h3>
+    <div class="hint">同一条素材换个规格就能再吃一遍。填一条素材，直接生成六个平台的改造清单，可一键复制。</div>
+    <div class="row">
+      <input class="f1" id="mTitle" placeholder="素材主题，例：租房避坑 3 条">
+      <select id="mType"><option>口播讲解</option><option>实拍展示</option><option>图文卡片</option><option>剧情短片</option><option>干货清单</option></select>
+      <button class="btn" onclick="genMulti()">生成改造清单</button>
+    </div>
+    <div id="multiBox"></div>
+  </div>
+</div>
+
+<!-- ⑥ 爆款拆解 -->
+<div class="pane" id="p-swipe">
+  <div class="card"><h3><span class="n">6</span>新增拆解</h3>
+    <div class="row">
+      <input class="f1" id="sTitle" placeholder="爆款标题">
+      <select id="sPlat"><option>抖音</option><option>小红书</option><option>视频号</option><option>公众号</option><option>Instagram</option><option>YouTube</option></select>
+      <input id="sHook" placeholder="开头钩子类型" style="min-width:150px">
+      <input id="sStr" placeholder="内容结构" style="min-width:150px">
+      <button class="btn" onclick="addSwipe()">入库</button>
+    </div>
+  </div>
+  <div class="card"><h3><span class="n">6</span>拆解库 <span class="tag t-gry" id="sCnt">0</span></h3>
+    <div id="swipeBox"></div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>数据管理</h3>
+  <div class="row">
+    <button class="btn ghost" onclick="exportAll()">导出备份 JSON</button>
+    <input type="file" id="fileIn" accept=".json" style="display:none" onchange="importAll(event)">
+    <button class="btn ghost" onclick="document.getElementById('fileIn').click()">导入备份</button>
+    <button class="btn danger" onclick="wipe()">清空全部</button>
+    <span class="mono" style="color:var(--tx2)">数据存在浏览器本地，换电脑请先导出</span>
+  </div>
+</div>
+
+<footer>内容运营工作台 · 金佳信 · 本地运行，不联网不登录</footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ 存储 ============ */
+var KEY='ops_workbench_v1';
+var DB={ideas:[],pub:{},data:[],swipe:[]};
+function load(){try{var s=localStorage.getItem(KEY);if(s){var o=JSON.parse(s);for(var k in DB)if(o[k])DB[k]=o[k];}}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(DB));}catch(e){toast('保存失败：'+e.message);}}
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(function(){t.classList.remove('on');},1800);}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function copy(t){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){toast('已复制');},function(){fallback(t);});}else fallback(t);}
+function fallback(t){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');toast('已复制');}catch(e){toast('复制失败');}document.body.removeChild(a);}
+
+/* ============ 导航 ============ */
+document.querySelectorAll('nav button').forEach(function(b){
+  b.onclick=function(){
+    document.querySelectorAll('nav button').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');
+    document.querySelectorAll('.pane').forEach(function(p){p.classList.remove('on');});
+    document.getElementById('p-'+b.dataset.p).classList.add('on');
+    if(b.dataset.p==='plan')renderPlan();
+    if(b.dataset.p==='data')renderData();
+  };
+});
+
+/* ============ ① 选题库 ============ */
+function addIdea(){
+  var t=document.getElementById('iTitle').value.trim();
+  if(!t){toast('先填标题');return;}
+  DB.ideas.unshift({id:uid(),title:t,plat:document.getElementById('iPlat').value,
+    type:document.getElementById('iType').value,hook:document.getElementById('iHook').value.trim(),
+    status:'待评估',date:'',ts:Date.now()});
+  document.getElementById('iTitle').value='';document.getElementById('iHook').value='';
+  save();renderIdeas();toast('已加入选题库');
+}
+function setStatus(id,s){var x=DB.ideas.find(function(a){return a.id===id;});if(x){x.status=s;if(s!=='已排期')x.date='';save();renderIdeas();renderPlan();}}
+function delIdea(id){if(!confirm('删除这条选题？'))return;DB.ideas=DB.ideas.filter(function(a){return a.id!==id;});save();renderIdeas();renderPlan();}
+function planIdea(id){var d=prompt('排到哪天？（格式 2026-11-05）');if(!d)return;if(!/^\d{4}-\d{2}-\d{2}$/.test(d)){toast('格式要写成 2026-11-05');return;}
+  var x=DB.ideas.find(function(a){return a.id===id;});if(x){x.date=d;x.status='已排期';save();renderIdeas();renderPlan();toast('已排到 '+d);}}
+var STC={'待评估':'t-gry','已采纳':'t-blue','已排期':'t-org','已发布':'t-grn','废弃':'t-red'};
+function renderIdeas(){
+  var f=document.getElementById('iFilter').value,q=(document.getElementById('iSearch').value||'').toLowerCase();
+  var list=DB.ideas.filter(function(a){return (!f||a.status===f)&&(!q||(a.title+a.hook).toLowerCase().indexOf(q)>=0);});
+  document.getElementById('iCnt').textContent=DB.ideas.length+' 条';
+  var b=document.getElementById('ideaBox');
+  if(!list.length){b.innerHTML='<div class="empty">还没有选题。上面填一条试试 →</div>';return;}
+  var h='<table><tr><th style="width:34%">选题</th><th>平台</th><th>类型</th><th>开头钩子</th><th>状态</th><th>排期</th><th style="width:190px">操作</th></tr>';
+  list.forEach(function(a){
+    h+='<tr><td><b>'+esc(a.title)+'</b></td><td>'+esc(a.plat)+'</td><td>'+esc(a.type)+'</td>'
+      +'<td style="color:var(--tx2)">'+esc(a.hook||'—')+'</td>'
+      +'<td><span class="tag '+(STC[a.status]||'t-gry')+'">'+esc(a.status)+'</span></td>'
+      +'<td class="mono">'+(a.date||'—')+'</td><td>'
+      +'<button class="btn ghost sm" onclick="planIdea(\''+a.id+'\')">排期</button> '
+      +'<button class="btn ghost sm" onclick="setStatus(\''+a.id+'\',\'已发布\')">标已发</button> '
+      +'<button class="btn ghost sm" onclick="delIdea(\''+a.id+'\')">删</button></td></tr>';
+  });
+  b.innerHTML=h+'</table>';
+}
+
+/* ============ ② 排期 ============ */
+var wkOff=0;
+function shiftWeek(n){wkOff=n===0?0:wkOff+n;renderPlan();}
+function renderPlan(){
+  var now=new Date();now.setDate(now.getDate()+wkOff);
+  var d=new Date(now);var day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);
+  var days=[];for(var i=0;i<7;i++){var x=new Date(d);x.setDate(d.getDate()+i);days.push(x);}
+  document.getElementById('weekLabel').textContent=fmt(days[0])+' ~ '+fmt(days[6]);
+  var h='';
+  days.forEach(function(x){
+    var ds=fmt(x);var items=DB.ideas.filter(function(a){return a.date===ds;});
+    h+='<div class="kpi"><div class="l" style="font-weight:600;color:var(--tx)">'+['周一','周二','周三','周四','周五','周六','周日'][(x.getDay()+6)%7]+' '+ds.slice(5)+'</div>';
+    if(!items.length)h+='<div style="color:#c3c8ce;font-size:12px;margin-top:8px">—</div>';
+    items.forEach(function(a){
+      h+='<div style="margin-top:7px;padding:6px 8px;background:var(--acc2);border-radius:6px;font-size:12px">'
+        +esc(a.title)+'<br><span style="color:var(--tx2)">'+esc(a.plat)+' · '+esc(a.type)+'</span></div>';
+    });
+    h+='</div>';
+  });
+  document.getElementById('planGrid').innerHTML=h;
+}
+function fmt(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+
+/* ============ ③ 发布清单 ============ */
+var PUB={
+  '抖音':['封面三秒能看懂、标题不超 20 字','前 3 秒有钩子（提问/反差/结果前置）','字幕完整无错别字','竖版 9:16 / 1080×1920','话题 3-5 个，含 1 个垂类大词','口播无违禁词（绝对化用语/功效宣称）','BGM 音量不盖人声','定位与发布时间符合人群活跃段','评论区预埋 1 条引导话术'],
+  '小红书':['封面大标题 6-12 字，字体清晰','首图竖版 3:4 / 1080×1440','正文分段 + emoji，首句抛痛点','标签 5-8 个（品类词+场景词+人群词）','无站外导流、无二维码','敏感词自查（医美/功效/价格承诺）','评论区置顶补充信息'],
+  '视频号':['竖版 9:16，首帧有标题','前 3 秒钩子','关联公众号文章/扩展链接','话题标签 2-3 个','无第三方平台水印'],
+  '公众号':['封面图 2.35:1','摘要 54 字内','正文首屏不折叠','分段配小标题','文末引导关注话术','图片无水印、来源合规'],
+  'Instagram':['Reels 竖版 9:16，前 2 秒抓人','Caption 首行放核心信息','Hashtag 8-12 个（英文+当地语种）','英文字幕（无声播放场景）','无中文水印','音乐版权可用'],
+  'YouTube':['缩略图 1280×720，人脸+文字','标题含关键词，60 字符内','描述前两行写清内容','时间戳分段','字幕文件（英文+目标市场语种）','结尾卡片 + 订阅引导']
+};
+function renderPub(){
+  var p=document.getElementById('pubPlat').value;
+  var st=DB.pub[p]||{};
+  var h='';
+  PUB[p].forEach(function(x,i){
+    var on=!!st[i];
+    h+='<label class="chk'+(on?' done':'')+'"><input type="checkbox" '+(on?'checked':'')+' onchange="togglePub('+i+',this.checked)"><span>'+esc(x)+'</span></label>';
+  });
+  document.getElementById('pubBox').innerHTML=h;
+  var done=PUB[p].filter(function(_,i){return st[i];}).length;
+  document.getElementById('pubProg').textContent='已检查 '+done+' / '+PUB[p].length;
+}
+function togglePub(i,v){var p=document.getElementById('pubPlat').value;DB.pub[p]=DB.pub[p]||{};DB.pub[p][i]=v;save();renderPub();}
+function resetPub(){var p=document.getElementById('pubPlat').value;DB.pub[p]={};save();renderPub();toast('已清空 '+p+' 的勾选');}
+
+/* ============ ④ 数据复盘 ============ */
+function addData(){
+  var t=document.getElementById('dTitle').value.trim();
+  if(!t){toast('先填标题');return;}
+  DB.data.unshift({id:uid(),title:t,views:+document.getElementById('dViews').value||0,
+    likes:+document.getElementById('dLikes').value||0,cmt:+document.getElementById('dCmt').value||0,
+    share:+document.getElementById('dShare').value||0,fans:+document.getElementById('dFans').value||0});
+  ['dTitle','dViews','dLikes','dCmt','dShare','dFans'].forEach(function(i){document.getElementById(i).value='';});
+  save();renderData();toast('已录入');
+}
+function importCsv(){
+  var txt=document.getElementById('dCsv').value.trim();
+  if(!txt){toast('先粘贴 CSV');return;}
+  var lines=txt.split('\n'),ok=0;
+  lines.forEach(function(l){
+    var c=l.split(',').map(function(s){return s.trim();});
+    if(c.length<6)return;
+    var v=+c[1]||0;
+    if(!c[0]&&!v)return;
+    DB.data.unshift({id:uid(),title:c[0]||'未命名',views:v,likes:+c[2]||0,cmt:+c[3]||0,share:+c[4]||0,fans:+c[5]||0});
+    ok++;
+  });
+  document.getElementById('dCsv').value='';save();renderData();toast('导入 '+ok+' 条');
+}
+function demoData(){
+  DB.data=[{id:uid(),title:'实习简历最常见的 3 个坑',views:164000,likes:5100,cmt:680,share:920,fans:410},
+    {id:uid(),title:'面试自我介绍怎么说',views:52000,likes:1400,cmt:120,share:180,fans:96},
+    {id:uid(),title:'秋招内推码到底怎么用',views:12800,likes:320,cmt:41,share:38,fans:22},
+    {id:uid(),title:'一周摸清一个行业的方法',views:8600,likes:210,cmt:33,share:19,fans:11}];
+  save();renderData();toast('已载入示例数据');
+}
+function clearData(){if(!confirm('清空全部数据？'))return;DB.data=[];save();renderData();}
+function delData(id){DB.data=DB.data.filter(function(a){return a.id!==id;});save();renderData();}
+function rate(a){return a.views?(a.likes+a.cmt+a.share)/a.views*100:0;}
+function frate(a){return a.views?a.fans/a.views*100:0;}
+function renderData(){
+  var d=DB.data.slice();
+  var tv=d.reduce(function(s,a){return s+a.views;},0),tf=d.reduce(function(s,a){return s+a.fans;},0);
+  var avg=d.length?d.reduce(function(s,a){return s+rate(a);},0)/d.length:0;
+  var kb=document.getElementById('kpiBox');
+  kb.innerHTML='<div class="kpi"><div class="v">'+d.length+'</div><div class="l">内容条数</div></div>'
+    +'<div class="kpi"><div class="v">'+tv.toLocaleString()+'</div><div class="l">总播放</div></div>'
+    +'<div class="kpi"><div class="v">'+tf.toLocaleString()+'</div><div class="l">总涨粉</div></div>'
+    +'<div class="kpi"><div class="v">'+avg.toFixed(2)+'%</div><div class="l">平均互动率</div></div>';
+  if(!d.length){document.getElementById('dataBox').innerHTML='<div class="empty">还没有数据。上面录一条，或点「载入示例数据」看看效果。</div>';document.getElementById('conclBox').innerHTML='';return;}
+  var sorted=d.slice().sort(function(a,b){return b.views-a.views;});
+  var median=sorted[Math.floor(sorted.length/2)].views;
+  var h='<table><tr><th>内容</th><th>播放</th><th>点赞</th><th>评论</th><th>转发</th><th>涨粉</th><th>互动率</th><th>涨粉率</th><th>判定</th><th></th></tr>';
+  sorted.forEach(function(a){
+    var r=rate(a),f=frate(a);
+    var v=a.views>=median*3?'<span class="tag t-red">爆款</span>':(a.views>=median*1.5?'<span class="tag t-org">高于中位</span>':(a.views>=median*0.6?'<span class="tag t-gry">中位区间</span>':'<span class="tag t-gry">偏低</span>'));
+    h+='<tr><td><b>'+esc(a.title)+'</b></td><td>'+a.views.toLocaleString()+'</td><td>'+a.likes.toLocaleString()+'</td><td>'+a.cmt.toLocaleString()+'</td>'
+      +'<td>'+a.share.toLocaleString()+'</td><td>'+a.fans.toLocaleString()+'</td>'
+      +'<td>'+r.toFixed(2)+'%</td><td>'+f.toFixed(2)+'%</td><td>'+v+'</td>'
+      +'<td><button class="btn ghost sm" onclick="delData(\''+a.id+'\')">删</button></td></tr>';
+  });
+  document.getElementById('dataBox').innerHTML=h+'</table>';
+  var best=sorted[0],bestR=sorted.slice().sort(function(a,b){return rate(b)-rate(a);})[0];
+  var c='<div class="hint" style="border-left-color:var(--grn)">';
+  c+='<b>复盘结论（自动生成，可当作复盘模板）</b><br>';
+  c+='· 播放最高：<b>'+esc(best.title)+'</b>（'+best.views.toLocaleString()+' 播放，为中位数的 '+(median?(best.views/median).toFixed(1):0)+' 倍）→ 这个选题方向值得做成系列<br>';
+  c+='· 互动率最高：<b>'+esc(bestR.title)+'</b>（'+rate(bestR).toFixed(2)+'%）→ 说明这类内容更能让人停下来互动，下轮选题向其靠<br>';
+  c+='· 涨粉效率：总涨粉 '+tf.toLocaleString()+'，平均每条带来 '+Math.round(tf/d.length)+' 粉 → 若低于预期，检查「内容是否给足了关注理由」<br>';
+  c+='· 下一步：把播放前 20% 的内容拆成结构模板，进「⑥ 爆款拆解库」沉淀';
+  c+='</div>';
+  document.getElementById('conclBox').innerHTML=c;
+}
+
+/* ============ ⑤ 一鱼多吃 ============ */
+var MULTI={
+  '抖音':{spec:'竖版 9:16 · 1080×1920 · 15-60 秒',tips:['前 3 秒必须出钩子','字幕全程','话题 3-5 个含垂类大词','口播节奏快，冗余剪掉']},
+  '小红书':{spec:'竖版 3:4 · 1080×1440 · 图文或短视频',tips:['首图放大标题 6-12 字','正文首句抛痛点、分段+emoji','标签 5-8 个（品类+场景+人群）','无站外导流']},
+  '视频号':{spec:'竖版 9:16 · 30-60 秒',tips:['首帧加标题','可关联公众号文章','话题 2-3 个','去第三方水印']},
+  '公众号':{spec:'封面 2.35:1 · 长图文',tips:['把视频要点改写成 3-5 个小标题','摘要 54 字内','文末引导关注','图片无水印']},
+  'Instagram':{spec:'Reels 9:16 · 15-30 秒',tips:['前 2 秒抓人','英文字幕（无声场景）','Caption 首行放核心信息','Hashtag 8-12 个']},
+  'YouTube':{spec:'16:9 或 Shorts 9:16',tips:['缩略图人脸+文字','标题含关键词 60 字符内','描述前两行写清内容','加时间戳与字幕']}
+};
+function genMulti(){
+  var t=document.getElementById('mTitle').value.trim()||'（未命名素材）';
+  var ty=document.getElementById('mType').value;
+  var out='素材主题：'+t+'\n素材类型：'+ty+'\n\n';
+  Object.keys(MULTI).forEach(function(p){
+    var m=MULTI[p];
+    out+='【'+p+'】'+m.spec+'\n';
+    m.tips.forEach(function(x){out+='  · '+x+'\n';});
+    out+='\n';
+  });
+  out+='通用复用原则：\n  · 同一主题不改内核，只改「规格 + 开头 + 信息密度」\n  · 先做竖版主素材，再横向裁剪/补帧出横版\n  · 每条平台保留独立数据记录，回填「④ 数据复盘」做横向对比\n';
+  document.getElementById('multiBox').innerHTML='<pre class="out" id="multiOut">'+esc(out)+'</pre>'
+    +'<div class="row" style="margin-top:10px"><button class="btn" onclick="copy(document.getElementById(\'multiOut\').textContent)">复制全部</button></div>';
+}
+
+/* ============ ⑥ 爆款拆解 ============ */
+function addSwipe(){
+  var t=document.getElementById('sTitle').value.trim();
+  if(!t){toast('先填标题');return;}
+  DB.swipe.unshift({id:uid(),title:t,plat:document.getElementById('sPlat').value,
+    hook:document.getElementById('sHook').value.trim(),str:document.getElementById('sStr').value.trim()});
+  ['sTitle','sHook','sStr'].forEach(function(i){document.getElementById(i).value='';});
+  save();renderSwipe();toast('已入库');
+}
+function delSwipe(id){DB.swipe=DB.swipe.filter(function(a){return a.id!==id;});save();renderSwipe();}
+function renderSwipe(){
+  document.getElementById('sCnt').textContent=DB.swipe.length+' 条';
+  var b=document.getElementById('swipeBox');
+  if(!DB.swipe.length){b.innerHTML='<div class="empty">还没有拆解记录。拆一条你跑得最好的内容进去。</div>';return;}
+  var h='<table><tr><th style="width:30%">爆款</th><th>平台</th><th>开头钩子</th><th>内容结构</th><th></th></tr>';
+  DB.swipe.forEach(function(a){
+    h+='<tr><td><b>'+esc(a.title)+'</b></td><td>'+esc(a.plat)+'</td><td>'+esc(a.hook||'—')+'</td><td>'+esc(a.str||'—')+'</td>'
+      +'<td><button class="btn ghost sm" onclick="delSwipe(\''+a.id+'\')">删</button></td></tr>';
+  });
+  b.innerHTML=h+'</table>';
+}
+
+/* ============ 备份 ============ */
+function exportAll(){
+  var s=JSON.stringify(DB,null,1);
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([s],{type:'application/json'}));
+  a.download='运营工作台备份_'+fmt(new Date())+'.json';a.click();toast('已导出');
+}
+function importAll(e){
+  var f=e.target.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(){try{var o=JSON.parse(r.result);for(var k in DB)if(o[k])DB[k]=o[k];save();renderAll();toast('已导入');}catch(x){toast('文件格式不对');}};
+  r.readAsText(f);
+}
+function wipe(){if(!confirm('清空全部数据？此操作不可恢复，建议先导出备份。'))return;DB={ideas:[],pub:{},data:[],swipe:[]};save();renderAll();toast('已清空');}
+
+/* ============ 初始化 ============ */
+function renderAll(){renderIdeas();renderPlan();renderPub();renderData();renderSwipe();}
+load();renderAll();
+</script>
+</body>
+</html>
