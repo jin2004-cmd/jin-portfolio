@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-31 口径更新
+
+- 全站去除「千川 / 电商带货」类表述，统一为「品牌内容 / 社媒短视频」，与简历口径对齐
+- 两份流程文档 PDF 更名（原文件名含旧实习公司名）
+
+
 All notable changes to this portfolio hub are documented here.
 
 ## 2026-10-28 — v2.0.0
