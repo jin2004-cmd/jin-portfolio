@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>邀请函 · 金佳信作品集 / Jackson Jin — AI 内容运营</title>
+<meta name="description" content="一封邀请函：金佳信的作品集有八个厅、四十多件展品，运营、影像、出海、投流、AI 工具、游戏、建模、行业调研。">
+<meta name="theme-color" content="#0A0B0D">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230A0B0D'/%3E%3Ctext x='16' y='21.5' font-family='monospace' font-size='12' font-weight='700' fill='%23E8B25C' text-anchor='middle'%3EJJ%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --ink:#0A0B0D;--ink2:#121417;--paper:#F2EDE4;--paper2:#B9B3A7;--paper3:#847F76;
+    --accent:#E8B25C;--line:rgba(242,237,228,.15);--line-soft:rgba(242,237,228,.075);
+    --serif:"Songti SC","STSong","SimSun",serif;
+    --sans:"PingFang SC","HarmonyOS Sans SC","MiSans","Microsoft YaHei",-apple-system,"Segoe UI",sans-serif;
+    --mono:Consolas,"Cascadia Mono","SFMono-Regular",Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(900px 520px at 50% -8%,rgba(232,178,92,.10),transparent 62%),
+      radial-gradient(700px 500px at 90% 100%,rgba(232,178,92,.05),transparent 60%),
+      #07080A;
+    color:var(--paper);font-family:var(--sans);
+    min-height:100svh;display:flex;align-items:center;justify-content:center;
+    padding:clamp(18px,4vw,54px) clamp(14px,3vw,32px);
+    -webkit-font-smoothing:antialiased;
+  }
+  .inv{
+    position:relative;width:100%;max-width:860px;
+    background:linear-gradient(168deg,rgba(18,20,23,.92),rgba(10,11,13,.96) 58%,rgba(16,18,21,.94));
+    border:1px solid var(--line);
+    padding:clamp(26px,5vw,62px) clamp(22px,5vw,64px) clamp(24px,4vw,44px);
+    box-shadow:0 40px 120px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.04);
+  }
+  /* 四角展签式细线 */
+  .inv::before,.inv::after{content:"";position:absolute;width:18px;height:18px;border:1px solid var(--accent);opacity:.55;pointer-events:none}
+  .inv::before{left:10px;top:10px;border-right:0;border-bottom:0}
+  .inv::after{right:10px;bottom:10px;border-left:0;border-top:0}
+
+  .top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+       font:500 9.5px/1 var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--paper3)}
+  .top b{color:var(--accent);font-weight:600}
+  .mark{display:flex;align-items:center;gap:9px;color:var(--paper2);font-family:var(--sans);letter-spacing:.02em;font-size:12px}
+  .mark i{width:26px;height:26px;border:1px solid rgba(232,178,92,.55);border-radius:6px;display:grid;place-items:center;
+          color:var(--accent);font:700 10px/1 var(--mono);font-style:normal;
+          background:linear-gradient(150deg,rgba(232,178,92,.16),transparent 70%)}
+
+  .hellowrap{margin:clamp(26px,4.4vw,44px) 0 0}
+  .hello{font:500 10px/1 var(--mono);letter-spacing:.26em;text-transform:uppercase;color:var(--accent)}
+  h1{
+    font-family:var(--serif);font-weight:700;line-height:1.08;letter-spacing:.01em;
+    font-size:clamp(34px,6.4vw,62px);margin:16px 0 0;
+  }
+  h1 em{font-style:normal;color:var(--accent)}
+  .en{font:500 10.5px/1.6 var(--mono);letter-spacing:.28em;text-transform:uppercase;color:var(--paper3);margin-top:16px}
+
+  .letter{
+    margin:clamp(22px,3.4vw,32px) 0 0;font-size:14.5px;line-height:2;color:var(--paper2);max-width:40em;
+  }
+  .letter b{color:var(--paper);font-weight:600}
+  .letter .sig{display:block;margin-top:14px;font-family:var(--serif);font-size:17px;color:var(--paper);letter-spacing:.04em}
+
+  .rule{height:1px;background:var(--line);margin:clamp(24px,3.6vw,36px) 0}
+
+  .nums{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
+  .num{background:transparent;padding:16px 14px 14px}
+  .num b{display:block;font-family:var(--serif);font-size:clamp(21px,2.6vw,29px);line-height:1;letter-spacing:-.01em}
+  .num b em{font-style:normal;color:var(--accent);font-size:.62em;margin-left:1px}
+  .num span{display:block;margin-top:7px;font:500 9.5px/1.5 var(--mono);letter-spacing:.1em;color:var(--paper3)}
+
+  .halls{margin-top:clamp(22px,3.2vw,30px)}
+  .halls-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
+  .halls-h p{font:500 9.5px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--paper3)}
+  .halls-h span{font:500 9.5px/1 var(--mono);letter-spacing:.12em;color:var(--paper3)}
+  .hgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
+  .hcell{
+    background:rgba(10,11,13,.6);padding:13px 12px;text-decoration:none;color:inherit;
+    display:flex;flex-direction:column;gap:5px;transition:background .22s ease;
+  }
+  .hcell:hover{background:rgba(232,178,92,.07)}
+  .hcell i{font:600 9px/1 var(--mono);letter-spacing:.16em;color:var(--accent);font-style:normal}
+  .hcell b{font-family:var(--serif);font-size:14px;font-weight:700;letter-spacing:.02em}
+  .hcell span{font:500 8.5px/1.3 var(--mono);letter-spacing:.1em;color:var(--paper3);text-transform:uppercase}
+
+  .cta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:clamp(24px,3.4vw,32px)}
+  .go{
+    display:inline-flex;align-items:center;gap:10px;padding:14px 24px;border-radius:3px;
+    background:var(--accent);color:#0A0B0D;font-size:13.5px;font-weight:700;text-decoration:none;
+    transition:transform .2s ease,background .2s ease;
+  }
+  .go:hover{transform:translateY(-1px);background:#F0BE6C}
+  .go svg{width:14px;height:14px}
+  .url{
+    font:500 11px/1.5 var(--mono);letter-spacing:.04em;color:var(--paper3);word-break:break-all;
+  }
+  .url b{color:var(--paper2);font-weight:500}
+
+  .foot{
+    display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;
+    margin-top:clamp(26px,4vw,38px);padding-top:18px;border-top:1px solid var(--line-soft);
+    font:500 10px/1.7 var(--mono);letter-spacing:.08em;color:var(--paper3);
+  }
+  .foot a{color:var(--paper2);text-decoration:none}
+  .foot a:hover{color:var(--accent)}
+  .foot .who{font-family:var(--serif);font-size:15px;letter-spacing:.06em;color:var(--paper)}
+
+  @media (max-width:640px){
+    .nums{grid-template-columns:repeat(2,1fr)}
+    .hgrid{grid-template-columns:repeat(2,1fr)}
+    .letter{font-size:14px}
+    .cta{flex-direction:column;align-items:stretch}
+    .go{justify-content:center}
+  }
+  @media print{
+    body{background:#fff;color:#111;padding:0}
+    .inv{box-shadow:none;border-color:#ddd;background:#fff;max-width:none}
+    .inv::before,.inv::after{display:none}
+    .go{background:#111;color:#fff}
+  }
+</style>
+</head>
+<body>
+
+<main class="inv">
+  <div class="top">
+    <span class="mark"><i>JJ</i>金佳信 · Jackson Jin</span>
+    <span><b>Invitation</b> · 2027 届 · 秋招</span>
+  </div>
+
+  <div class="hellowrap">
+    <p class="hello">诚邀一逛 · 作品集</p>
+    <h1>八个厅，<br>四十多件东西，<br><em>请您过目</em>。</h1>
+    <p class="en">AI 内容运营 / AIGC 运营 · 上海</p>
+
+    <p class="letter">
+      老师您好，我是金佳信，教育技术学 2027 届。这份作品集里放的是三段实习和自己折腾了两年多的东西，
+      有千川投流的素材、海外品牌的社媒成片、用代码写的短片、能直接上手的运营工具，还有我自己做的小游戏和一间便利店模型。
+      <br><br>
+      每一项都标了我负责哪一块，不是团队合照里那种"参与"。点进去就能看，不用装任何东西。
+      <span class="sig">金佳信　2026.11</span>
+    </p>
+  </div>
+
+  <div class="rule"></div>
+
+  <div class="nums">
+    <div class="num"><b>43<em>+</em></b><span>件展品</span></div>
+    <div class="num"><b>8</b><span>个厅</span></div>
+    <div class="num"><b>82<em>%</em></b><span>素材过审率</span></div>
+    <div class="num"><b>150<em>万+</em></b><span>个人账号累计播放</span></div>
+  </div>
+
+  <div class="halls">
+    <div class="halls-h"><p>The Eight Halls</p><span>按编号入场</span></div>
+    <div class="hgrid">
+      <a class="hcell" href="zones/operations.html"><i>01</i><b>运营中枢</b><span>Operations</span></a>
+      <a class="hcell" href="zones/film.html"><i>02</i><b>影像放映</b><span>Film</span></a>
+      <a class="hcell" href="zones/brand.html"><i>03</i><b>品牌出海</b><span>Brand</span></a>
+      <a class="hcell" href="zones/growth.html"><i>04</i><b>增长投流</b><span>Growth</span></a>
+      <a class="hcell" href="zones/tools.html"><i>05</i><b>AI 工具台</b><span>Tools</span></a>
+      <a class="hcell" href="zones/games.html"><i>06</i><b>游戏实验室</b><span>Games</span></a>
+      <a class="hcell" href="zones/model.html"><i>07</i><b>建模工坊</b><span>Modeling</span></a>
+      <a class="hcell" href="zones/insight.html"><i>08</i><b>行业洞察</b><span>Insight</span></a>
+    </div>
+  </div>
+
+  <div class="cta">
+    <a class="go" href="index.html">
+      打开线上大厅
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg>
+    </a>
+    <p class="url">线上地址　<b>jin2004-cmd.github.io/jin-portfolio</b></p>
+  </div>
+
+  <div class="foot">
+    <span class="who">金佳信 · Jackson Jin</span>
+    <span>
+      <a href="mailto:13606553104@163.com">13606553104@163.com</a>　·　
+      <a href="tel:13606553104">136 0655 3104</a>　·　
+      <a href="https://github.com/jin2004-cmd" target="_blank" rel="noopener">github.com/jin2004-cmd</a>
+    </span>
+  </div>
+</main>
+
+</body>
+</html>
