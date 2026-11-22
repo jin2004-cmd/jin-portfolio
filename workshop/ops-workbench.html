@@ -989,7 +989,7 @@ function afterRender(id) {
   if (id === 'compliance') runCompliance(true);
 }
 function go(id, silent) {
-  if (!moduleById(id).id) id = 'dash';
+  id = moduleById(id).id;
   UI.module = id;
   try { if (DB && DB.prefs) DB.prefs.module = id; } catch (e) {}
   if (!silent) {
@@ -1540,6 +1540,478 @@ RENDER.calendar = function () {
     '<li>发布时间尽量固定，养出用户习惯比追热点划算。</li>' +
     '</ul></div></div></div></div>';
 };
+
+/* ============================================================
+   04 素材库
+   ============================================================ */
+var ASSET_TYPES = ['实拍素材', '口播稿', '图文卡片', '空镜', '剧情短片', '封面图', 'B-roll'];
+HEAD.assets = function () {
+  return pageHead('04 / ASSETS', '素材库',
+    '<button class="btn primary sm" data-act="asset:new">＋ 新素材</button>');
+};
+function assetFormHTML() {
+  return '<div class="card" style="margin-bottom:14px"><div class="card-h"><span class="k"><b>新增素材</b></span>' +
+    '<button class="btn ico" data-act="asset:new" title="收起">×</button></div><div class="card-b">' +
+    '<div class="input-grid">' +
+    '<div class="field wide"><label>素材标题</label><input type="text" id="af-title" placeholder="例：阳台改造前后对比 4 组"></div>' +
+    '<div class="field"><label>类型</label><select id="af-type">' + ASSET_TYPES.map(function (t) { return '<option>' + esc(t) + '</option>'; }).join('') + '</select></div>' +
+    '<div class="field"><label>主发平台</label><select id="af-plat">' + PLAT_LIST.map(function (p) { return '<option>' + esc(p) + '</option>'; }).join('') + '</select></div>' +
+    '<div class="field"><label>当前状态</label><select id="af-status">' + ASSET_STATUS.map(function (s) { return '<option>' + esc(s) + '</option>'; }).join('') + '</select></div>' +
+    '<div class="field"><label>关联选题</label><select id="af-idea"><option value="">不关联</option>' +
+    DB.ideas.map(function (i) { return '<option value="' + esc(i.id) + '">' + esc(i.title) + '</option>'; }).join('') + '</select></div>' +
+    '<div class="field wide"><label>备注</label><input type="text" id="af-note" placeholder="例：同一机位拍，剪辑时先放改造后"></div>' +
+    '</div><div class="row" style="margin-top:12px"><button class="btn primary" data-act="asset:add">加入素材库</button>' +
+    '<button class="btn ghost" data-act="asset:new">取消</button></div></div></div>';
+}
+function pipeHTML(status) {
+  var idx = ASSET_STATUS.indexOf(status);
+  var h = '<div class="pipe">';
+  ASSET_STATUS.forEach(function (s, i) {
+    if (i) h += '<span class="gap"></span>';
+    h += '<span class="step ' + (i < idx ? 'done' : i === idx ? 'cur' : '') + '">' + s + '</span>';
+  });
+  return h + '</div>';
+}
+function assetCardHTML(a) {
+  var idx = ASSET_STATUS.indexOf(a.status);
+  var next = ASSET_STATUS[idx + 1];
+  var it = a.ideaId ? ideaById(a.ideaId) : null;
+  return '<div class="asset"><div class="asset-top"><div style="flex:1;min-width:220px">' +
+    '<div class="asset-t">' + esc(a.title) + '</div>' +
+    '<div class="asset-meta">' + platChip(a.plat) +
+    '<span class="chip">' + esc(a.type) + '</span>' +
+    '<span class="tag ' + (a.status === '已发' ? 'ok' : a.status === '待审' ? 'gold' : '') + '">' + esc(a.status) + '</span>' +
+    (it ? '<span class="chip">选题：' + esc(it.title) + '</span>' : '') +
+    (a.note ? '<span class="tiny-t">' + esc(a.note) + '</span>' : '') +
+    '</div></div>' +
+    '<div class="reuse">复用 <b>' + (a.reuse || 0) + '</b> 次</div></div>' +
+    pipeHTML(a.status) +
+    '<div class="asset-foot">' +
+    (next ? '<button class="btn sm" data-act="asset:advance" data-arg="' + esc(a.id) + '">推进到「' + next + '」</button>' : '<span class="tag ok">已经发布</span>') +
+    '<button class="btn sm ghost" data-act="asset:reuse" data-arg="' + esc(a.id) + '">复用 +1</button>' +
+    (it ? '<button class="btn sm ghost" data-act="go" data-arg="remix">去一鱼多吃</button>' : '') +
+    '<span class="spacer"></span>' +
+    '<span class="tiny-t mono">' + esc(a.created || '') + '</span>' +
+    '<button class="btn ico" data-act="asset:del" data-arg="' + esc(a.id) + '" title="删除素材">×</button>' +
+    '</div></div>';
+}
+function filteredAssets() {
+  return DB.assets.filter(function (a) { return UI.assetFilter === '全部' || a.status === UI.assetFilter; });
+}
+RENDER.assets = function () {
+  var counts = { '全部': DB.assets.length };
+  ASSET_STATUS.forEach(function (s) { counts[s] = DB.assets.filter(function (a) { return a.status === s; }).length; });
+  var list = filteredAssets();
+  var totalReuse = sum(DB.assets, function (a) { return a.reuse; });
+  return '<div class="row between" style="margin-bottom:12px"><div class="seg" role="group" aria-label="按状态筛选">' +
+    ['全部'].concat(ASSET_STATUS).map(function (s) {
+      return '<button type="button" data-act="asset:filter" data-arg="' + s + '" aria-pressed="' + (UI.assetFilter === s) + '">' +
+        s + '<span class="n">' + counts[s] + '</span></button>';
+    }).join('') + '</div>' +
+    '<span class="tiny-t">累计复用 ' + totalReuse + ' 次 · 复用最多的素材值得做成系列</span></div>' +
+    (UI.assetOpen ? assetFormHTML() : '') +
+    (list.length ? list.map(assetCardHTML).join('') :
+      emptyBox('这一栏是空的', '换个状态看看，或者点右上角加一条素材。'));
+};
+
+/* ============================================================
+   05 发布检查清单
+   ============================================================ */
+var CHECK = {
+  '抖音': ['画幅竖版 9:16，1080×1920 起，别用横版硬裁',
+    '前 3 秒给钩子：结果、冲突，或者一句反常识',
+    '封面大字 9-12 字，手机上一眼能看清',
+    '字幕全程，口播错别字先查一遍',
+    '话题 3-5 个，含 1 个垂类大词 + 1 个同城词',
+    '挂了 POI / 团购链接的，先自己点一遍',
+    'BGM 音量压低，不盖人声',
+    '评论区预埋一条引导话术'],
+  '小红书': ['封面 3:4，标题 6-12 字，别塞小字',
+    '首图就是结果，第二张才讲故事',
+    '正文分段，每段不超过 3 行',
+    '标签 5-8 个：品类 + 场景 + 人群',
+    '不放二维码，不写站外联系方式',
+    '医美 / 功效 / 价格承诺先自查',
+    '评论区置顶补充信息'],
+  '视频号': ['竖版 9:16，首帧带标题',
+    '前 3 秒钩子跟抖音同款，节奏可以慢半拍',
+    '关联一条公众号文章或扩展链接',
+    '话题 2-3 个就够',
+    '去掉抖音 / 小红书的水印',
+    '简介里写清这是哪家店、谁做的'],
+  '公众号': ['封面 2.35:1，头条图别糊',
+    '摘要 54 字内，写清给谁看',
+    '首屏别被折叠：标题下先给结论',
+    '每 300 字左右一个小标题',
+    '文末引导关注 / 加星标的具体动作',
+    '图片版权和来源标清楚'],
+  'Instagram': ['Reels 竖版 9:16，前 2 秒抓人',
+    '英文字幕，静音也能看懂',
+    'Caption 第一行放核心信息',
+    'Hashtag 8-12 个，英文 + 当地语种',
+    '不要带中文水印 / 国内平台 logo',
+    '音乐确认可商用'],
+  'YouTube': ['缩略图 1280×720，人脸 + 3-5 个词',
+    '标题含关键词，60 字符内',
+    '描述前两行写清这期讲什么',
+    '长视频加时间戳章节',
+    '字幕文件补齐（英文 + 目标市场语种）',
+    '结尾屏幕 + 订阅引导']
+};
+var PLAT_NOTE = {
+  '抖音': '发布时间 18:00-21:00。同城流量看 POI 和定位，别只挂话题。',
+  '小红书': '上午 11 点、晚上 8 点两个高峰。封面比正文重要，先做图再做字。',
+  '视频号': '社交推荐为主，发完先转三个群，前半小时的数据决定后面推不推。',
+  '公众号': '一周一篇就够，标题别玩谐音梗，写清「谁 + 什么事 + 能拿到什么」。',
+  'Instagram': '按目标时区发，图比视频跑得稳。合作帖记得挂 paid partnership。',
+  'YouTube': '长视频靠搜索，标题和描述里的关键词比封面更影响推荐。'
+};
+function checkedOf(plat) {
+  var arr = DB.checklist[plat];
+  return Array.isArray(arr) ? arr : [];
+}
+HEAD.checklist = function () {
+  var p = UI.checkPlat;
+  var done = checkedOf(p).length, total = CHECK[p].length;
+  return pageHead('05 / CHECKLIST', '发布检查',
+    '<span class="tiny-t">' + esc(p) + ' ' + done + '/' + total + '</span>' +
+    '<button class="btn ghost sm" data-act="check:reset">清空当前平台</button>');
+};
+RENDER.checklist = function () {
+  var p = UI.checkPlat;
+  var done = checkedOf(p);
+  var total = CHECK[p].length;
+  var missing = CHECK[p].filter(function (_, i) { return done.indexOf(i) < 0; });
+  var allDone = done.length >= total;
+  return '<div class="split"><div class="card"><div class="card-h">' +
+    '<div class="seg" role="group" aria-label="选择平台">' + PLAT_LIST.map(function (pl) {
+      var d = checkedOf(pl).length, t = CHECK[pl].length;
+      return '<button type="button" data-act="check:plat" data-arg="' + esc(pl) + '" aria-pressed="' + (pl === p) + '">' +
+        '<span class="pname">' + esc(pl) + '</span><span class="n">' + d + '/' + t + '</span></button>';
+    }).join('') + '</div>' +
+    '<span class="tiny-t">勾选状态按平台分开存</span></div>' +
+    '<div class="card-b"><div class="progress-line"><span class="pv">' + done.length + ' / ' + total + '</span>' +
+    '<span class="bar' + (allDone ? ' ok' : '') + '"><i style="width:' + Math.round(done.length / total * 100) + '%"></i></span>' +
+    '<span class="pv">' + Math.round(done.length / total * 100) + '%</span></div>' +
+    '<div class="checks" style="margin-top:10px">' + CHECK[p].map(function (item, i) {
+      var on = done.indexOf(i) >= 0;
+      return '<label class="check' + (on ? ' done' : '') + '"><input type="checkbox"' + (on ? ' checked' : '') +
+        ' data-act="check:toggle" data-arg="' + i + '"><span class="ck-t">' + esc(item) + '</span></label>';
+    }).join('') + '</div></div></div>' +
+    '<div class="stack"><div class="card"><div class="card-h"><span class="k"><b>能不能发</b></span></div><div class="card-b">' +
+    (allDone ?
+      '<div class="ok-note"><b>' + esc(p) + ' 这版可以发了。</b><br>发完 24 小时回来录数据，别等一周后再补。</div>' :
+      '<div class="block-note"><b>先别发，还有 ' + missing.length + ' 项没检查：</b><br>' +
+      missing.slice(0, 4).map(function (x) { return '· ' + esc(x); }).join('<br>') +
+      (missing.length > 4 ? '<br>· 还有 ' + (missing.length - 4) + ' 项' : '') + '</div>') +
+    '<div class="hint">' + esc(PLAT_NOTE[p]) + '</div>' +
+    '</div></div>' +
+    '<div class="card"><div class="card-h"><span class="k"><b>六个平台一起看</b></span></div><div class="card-b tight">' +
+    PLAT_LIST.map(function (pl) {
+      var d = checkedOf(pl).length, t = CHECK[pl].length;
+      var p2 = Math.round(d / t * 100);
+      return '<div class="list-row"><div class="lr-main"><div class="lr-title">' + platChip(pl) + '</div>' +
+        '<div class="lr-sub">' + d + ' / ' + t + ' 项</div></div>' +
+        '<div style="width:96px"><span class="bar' + (p2 === 100 ? ' ok' : '') + '"><i style="width:' + p2 + '%"></i></span></div></div>';
+    }).join('') + '</div></div></div></div>';
+};
+
+/* ============================================================
+   06 数据复盘
+   ============================================================ */
+function rateOf(r) {
+  var v = Number(r.views) || 0;
+  return v ? ((Number(r.likes) || 0) + (Number(r.comments) || 0) + (Number(r.shares) || 0)) / v * 100 : 0;
+}
+function fansRateOf(r) {
+  var v = Number(r.views) || 0;
+  return v ? (Number(r.fans) || 0) / v * 100 : 0;
+}
+function verdictOf(r, med) {
+  var v = Number(r.views) || 0;
+  var ratio = med ? v / med : 0;
+  if (ratio >= 3) return { label: '爆款', mult: ratio, cls: 'gold' };
+  if (ratio >= 1.5) return { label: '小爆', mult: ratio, cls: 'info' };
+  if (ratio < 0.6) return { label: '偏低', mult: ratio, cls: 'bad' };
+  return { label: '正常', mult: ratio, cls: '' };
+}
+function metricConclusion() {
+  var rows = metricsSorted();
+  if (!rows.length) return ['还没有数据。先手动录一条，趋势图和结论才有东西算。'];
+  var st = metricStats();
+  var out = [];
+  var best = rows.slice().sort(function (a, b) { return (Number(b.views) || 0) - (Number(a.views) || 0); })[0];
+  var bestRatio = st.med ? (Number(best.views) || 0) / st.med : 0;
+  out.push('播放最高的是《' + best.title + '》，' + wan(best.views) + ' 播放，是中位数的 ' + bestRatio.toFixed(1) +
+    ' 倍。' + (bestRatio >= 3 ? '这条就是模板，把开头、结构、结尾拆进拆解库。' : '下一条照着它的开头做，别自己另起一套。'));
+  var bestR = rows.slice().sort(function (a, b) { return rateOf(b) - rateOf(a); })[0];
+  out.push('互动率最高的是《' + bestR.title + '》，' + rateOf(bestR).toFixed(2) + '%。' +
+    (rateOf(bestR) > 5 ? '说明这类话题能让人开口，选题方向往这靠。' : '互动一般，结尾问句可以再具体点，别问「你怎么看」。'));
+  var fansPerWan = st.views ? (st.fans / st.views * 10000) : 0;
+  out.push('每 1 万播放涨 ' + fansPerWan.toFixed(1) + ' 个粉。' +
+    (fansPerWan >= 20 ? '关注转化不错，结尾那句「关注看后续」是有效的。' : '涨粉偏弱，内容是给人看的，但没给人一个关注的理由。'));
+  if (rows.length >= 4) {
+    var last = rows.slice(-3), prev = rows.slice(-6, -3);
+    var lastAvg = sum(last, function (r) { return r.views; }) / last.length;
+    var prevAvg = prev.length ? sum(prev, function (r) { return r.views; }) / prev.length : 0;
+    if (prevAvg) {
+      var chg = (lastAvg - prevAvg) / prevAvg * 100;
+      out.push('最近 3 条平均播放 ' + wan(lastAvg) + '，比前 3 条' + (chg >= 0 ? '高 ' : '低 ') +
+        Math.abs(chg).toFixed(0) + '%。' + (chg < -30 ? '掉得有点多，优先换开头，别先怀疑平台限流。' :
+          chg >= 30 ? '方向对了，趁热再把同结构做一条。' : '波动正常，继续按节奏发。'));
+    }
+  }
+  var lowInteract = rows.filter(function (r) { return rateOf(r) < 1.5; });
+  out.push('下一步：' + (lowInteract.length >= 2 ? '先把互动率低于 1.5% 的 ' + lowInteract.length + ' 条的开头重写，再谈数量。' :
+    '把播放前 20% 的内容做成系列，剩下时间留给素材库，别天天临时找选题。'));
+  return out;
+}
+function trendRows() {
+  return metricsSorted().map(function (r) {
+    var v;
+    if (UI.metric === 'interact') v = rateOf(r);
+    else if (UI.metric === 'fans') v = Number(r.fans) || 0;
+    else v = Number(r.views) || 0;
+    return { date: r.date, title: r.title, plat: r.plat, value: v, raw: r };
+  });
+}
+function metricLabel() {
+  return UI.metric === 'interact' ? '互动率' : UI.metric === 'fans' ? '涨粉' : '播放';
+}
+function fmtMetricVal(v) {
+  if (UI.metric === 'interact') return v.toFixed(2) + '%';
+  return num(v);
+}
+function drawTrend(hl) {
+  var cv = document.getElementById('trendCanvas');
+  if (!cv || !cv.getContext) return;
+  var wrap = cv.parentNode;
+  var w = Math.max(320, (wrap && wrap.clientWidth) || 860);
+  var h = 300;
+  var dpr = (typeof window !== 'undefined' && window.devicePixelRatio) || 1;
+  try {
+    cv.width = Math.round(w * dpr);
+    cv.height = Math.round(h * dpr);
+    cv.style.width = w + 'px';
+    cv.style.height = h + 'px';
+  } catch (e) {}
+  var ctx = cv.getContext('2d');
+  if (!ctx) return;
+  try { ctx.setTransform(dpr, 0, 0, dpr, 0, 0); } catch (e) {}
+  ctx.clearRect(0, 0, w, h);
+  var rows = trendRows();
+  var pad = { l: 58, r: 20, t: 22, b: 38 };
+  var pw = w - pad.l - pad.r;
+  var ph = h - pad.t - pad.b;
+  var mono = '11px ui-monospace,Consolas,monospace';
+  if (rows.length < 1) {
+    ctx.fillStyle = '#8A857B';
+    ctx.font = mono;
+    ctx.textAlign = 'center';
+    ctx.fillText('还没有数据，先在上面录一条', w / 2, h / 2);
+    UI.chart = null;
+    return;
+  }
+  var values = rows.map(function (r) { return r.value; });
+  var maxV = Math.max.apply(null, values);
+  var med = median(values);
+  var top = maxV > 0 ? maxV * 1.16 : 1;
+  function px(i) { return rows.length === 1 ? pad.l + pw / 2 : pad.l + pw * i / (rows.length - 1); }
+  function py(v) { return pad.t + ph - ph * (v / top); }
+  ctx.font = mono;
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  for (var g = 0; g <= 4; g++) {
+    var gy = pad.t + ph * g / 4;
+    var gv = top * (1 - g / 4);
+    ctx.strokeStyle = g === 4 ? 'rgba(242,237,228,.16)' : 'rgba(242,237,228,.07)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(pad.l, gy + 0.5);
+    ctx.lineTo(pad.l + pw, gy + 0.5);
+    ctx.stroke();
+    ctx.fillStyle = '#8A857B';
+    ctx.fillText(UI.metric === 'interact' ? gv.toFixed(1) + '%' : wan(gv), pad.l - 10, gy);
+  }
+  if (med > 0) {
+    var my = py(med);
+    ctx.save();
+    ctx.setLineDash([4, 4]);
+    ctx.strokeStyle = 'rgba(185,179,167,.42)';
+    ctx.beginPath();
+    ctx.moveTo(pad.l, my);
+    ctx.lineTo(pad.l + pw, my);
+    ctx.stroke();
+    ctx.restore();
+    ctx.fillStyle = '#8A857B';
+    ctx.textAlign = 'left';
+    ctx.font = '10px ui-monospace,Consolas,monospace';
+    ctx.fillText('中位 ' + fmtMetricVal(med), pad.l + 6, my - 9);
+  }
+  var grad = ctx.createLinearGradient(0, pad.t, 0, pad.t + ph);
+  grad.addColorStop(0, 'rgba(232,178,92,.20)');
+  grad.addColorStop(1, 'rgba(232,178,92,0)');
+  ctx.beginPath();
+  rows.forEach(function (r, i) { if (i === 0) ctx.moveTo(px(i), py(r.value)); else ctx.lineTo(px(i), py(r.value)); });
+  ctx.lineTo(px(rows.length - 1), pad.t + ph);
+  ctx.lineTo(px(0), pad.t + ph);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+  ctx.beginPath();
+  rows.forEach(function (r, i) { if (i === 0) ctx.moveTo(px(i), py(r.value)); else ctx.lineTo(px(i), py(r.value)); });
+  ctx.strokeStyle = '#E8B25C';
+  ctx.lineWidth = 2;
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.stroke();
+  rows.forEach(function (r, i) {
+    var isHl = typeof hl === 'number' && hl === i;
+    ctx.beginPath();
+    ctx.arc(px(i), py(r.value), isHl ? 5 : 3, 0, Math.PI * 2);
+    ctx.fillStyle = isHl ? '#E8B25C' : '#0A0B0D';
+    ctx.strokeStyle = '#E8B25C';
+    ctx.lineWidth = isHl ? 2 : 1.6;
+    ctx.fill();
+    ctx.stroke();
+  });
+  ctx.fillStyle = '#8A857B';
+  ctx.font = '10px ui-monospace,Consolas,monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  var every = Math.max(1, Math.ceil(rows.length / 8));
+  rows.forEach(function (r, i) {
+    if (i % every !== 0 && i !== rows.length - 1) return;
+    ctx.fillText(fmtMD(r.date), px(i), pad.t + ph + 12);
+  });
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#B9B3A7';
+  ctx.font = '10px ui-monospace,Consolas,monospace';
+  ctx.fillText(rows.length + ' 个数据点 · ' + metricLabel(), pad.l, 8);
+  UI.chart = {
+    rows: rows,
+    xs: rows.map(function (_, i) { return px(i); }),
+    ys: rows.map(function (r) { return py(r.value); }),
+    pad: pad, pw: pw, ph: ph, w: w, h: h
+  };
+}
+function bindChart() {
+  var cv = document.getElementById('trendCanvas');
+  var tip = document.getElementById('chartTip');
+  if (!cv) return;
+  cv.onmousemove = function (e) {
+    if (!UI.chart || !UI.chart.rows.length) return;
+    var rect = cv.getBoundingClientRect ? cv.getBoundingClientRect() : { left: 0, top: 0 };
+    var x = e.clientX - rect.left;
+    var best = 0, bd = Infinity;
+    UI.chart.xs.forEach(function (vx, i) {
+      var d = Math.abs(vx - x);
+      if (d < bd) { bd = d; best = i; }
+    });
+    var row = UI.chart.rows[best];
+    if (!row) return;
+    drawTrend(best);
+    if (tip) {
+      tip.innerHTML = '<span class="tt">' + esc(fmtMD(row.date)) + ' · ' + esc(row.plat) + '</span><br>' +
+        '<b>' + esc(row.title) + '</b><br>' + metricLabel() + '：<b>' + fmtMetricVal(row.value) + '</b>';
+      tip.hidden = false;
+      var wrapW = cv.clientWidth || 800;
+      var left = UI.chart.xs[best] + 14;
+      if (left > wrapW - 220) left = Math.max(8, UI.chart.xs[best] - 228);
+      tip.style.left = left + 'px';
+      tip.style.top = Math.max(6, UI.chart.ys[best] - 30) + 'px';
+    }
+  };
+  cv.onmouseleave = function () {
+    if (tip) tip.hidden = true;
+    drawTrend();
+  };
+}
+function metricTableHTML() {
+  var rows = DB.metrics.slice();
+  if (UI.metricSort === 'date') rows.sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+  else rows.sort(function (a, b) { return (Number(b.views) || 0) - (Number(a.views) || 0); });
+  if (!rows.length) return emptyBox('还没有数据', '点右上角「录入数据」，或者把平台后台的 CSV 整段粘进来。');
+  var med = metricStats().med;
+  return '<div class="table-wrap"><table><thead><tr><th>日期</th><th>平台</th><th>内容</th><th class="num">播放</th>' +
+    '<th class="num">互动率</th><th class="num">涨粉</th><th>判定</th><th></th></tr></thead><tbody>' +
+    rows.map(function (r) {
+      var vd = verdictOf(r, med);
+      return '<tr><td class="num">' + esc(fmtMD(r.date)) + '</td><td>' + platChip(r.plat) + '</td>' +
+        '<td><div class="t-title">' + esc(r.title) + '</div></td>' +
+        '<td class="num">' + num(r.views) + '</td><td class="num">' + rateOf(r).toFixed(2) + '%</td>' +
+        '<td class="num">' + num(r.fans) + '</td>' +
+        '<td><span class="tag ' + vd.cls + '">' + vd.label + (vd.mult ? ' ' + vd.mult.toFixed(1) + 'x' : '') + '</span></td>' +
+        '<td><button class="btn ico" data-act="metric:del" data-arg="' + esc(r.id) + '" title="删除">×</button></td></tr>';
+    }).join('') + '</tbody></table></div>';
+}
+HEAD.metrics = function () {
+  return pageHead('06 / METRICS', '数据复盘',
+    '<button class="btn primary sm" data-act="metric:new">＋ 录入数据</button>');
+};
+RENDER.metrics = function () {
+  var st = metricStats();
+  var rows = metricsSorted();
+  var last7 = rows.filter(function (r) {
+    return parseISO(r.date).getTime() >= addDays(today(), -7).getTime();
+  });
+  var cols = [{ k: 'views', n: '播放' }, { k: 'interact', n: '互动率' }, { k: 'fans', n: '涨粉' }];
+  return '<div class="grid g-kpi" style="margin-bottom:14px">' +
+    '<div class="kpi hot"><div class="kpi-l">总播放</div><div class="kpi-v">' + wan(st.views) + '</div>' +
+    '<div class="kpi-d">' + st.count + ' 条 · 近 7 天 ' + last7.length + ' 条</div></div>' +
+    '<div class="kpi"><div class="kpi-l">平均互动率</div><div class="kpi-v">' + st.avgInteract.toFixed(2) + '<em>%</em></div>' +
+    '<div class="kpi-d">（赞 + 评 + 转）/ 播放</div></div>' +
+    '<div class="kpi"><div class="kpi-l">总涨粉</div><div class="kpi-v">' + num(st.fans) + '</div>' +
+    '<div class="kpi-d">每万播放 ' + (st.views ? (st.fans / st.views * 10000).toFixed(1) : 0) + ' 个粉</div></div>' +
+    '<div class="kpi"><div class="kpi-l">爆款（≥3 倍中位）</div><div class="kpi-v">' + st.hits.length + '<em>条</em></div>' +
+    '<div class="kpi-d">中位 ' + num(st.med) + ' 播放</div></div></div>' +
+    (UI.metricOpen ? metricFormHTML() : '') +
+    '<div class="card chart-card"><div class="card-h"><span class="k"><b>趋势</b></span><div class="row">' +
+    '<div class="seg" role="group" aria-label="切换指标">' + cols.map(function (c) {
+      return '<button type="button" data-act="metric:switch" data-arg="' + c.k + '" aria-pressed="' + (UI.metric === c.k) + '">' + c.n + '</button>';
+    }).join('') + '</div><span class="tiny-t">鼠标移到点上可以看具体数值</span></div></div>' +
+    '<div class="card-b" style="padding:0"><div class="chart-wrap"><canvas id="trendCanvas" aria-label="数据趋势图" role="img"></canvas>' +
+    '<div class="chart-tip" id="chartTip" hidden></div></div>' +
+    '<div class="legend"><span><i></i> ' + metricLabel() + '</span><span><i class="dash"></i> 中位数</span></div></div></div>' +
+    '<div class="split" style="margin-top:14px"><div class="card"><div class="card-h"><span class="k"><b>自动复盘结论</b></span>' +
+    '<button class="btn sm ghost" data-act="report:gen">带进周报</button></div><div class="card-b">' +
+    '<ul class="concl">' + metricConclusion().map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' +
+    '<div class="hint">结论是拿当前录入数据现算的，不联网；数据变了结论就跟着变。</div></div></div>' +
+    '<div class="card"><div class="card-h"><span class="k"><b>录入</b></span>' +
+    '<span class="tiny-t">支持 CSV 粘贴</span></div><div class="card-b">' +
+    (UI.metricOpen ? '' : '<button class="btn" data-act="metric:new" style="width:100%">＋ 手动录一条 / 粘贴 CSV</button>') +
+    '<div class="hint" style="margin-top:10px"><b>CSV 列顺序：</b>标题,日期,播放,点赞,评论,转发,涨粉。<br>日期可空（默认今天）；有表头会自动跳过。</div>' +
+    '<div class="form-note">爆款判定：中位数 × 3 以上算爆款，×1.5 算小爆，低于 ×0.6 算偏低。</div>' +
+    '</div></div></div>' +
+    '<div class="card" style="margin-top:14px"><div class="card-h"><span class="k"><b>明细</b></span>' +
+    '<div class="row"><div class="seg" role="group" aria-label="明细排序">' +
+    '<button type="button" data-act="metric:sort" data-arg="date" aria-pressed="' + (UI.metricSort === 'date') + '">按日期</button>' +
+    '<button type="button" data-act="metric:sort" data-arg="views" aria-pressed="' + (UI.metricSort === 'views') + '">按播放</button>' +
+    '</div></div></div><div class="card-b tight">' + metricTableHTML() + '</div></div>';
+};
+function metricFormHTML() {
+  return '<div class="card" style="margin-bottom:14px"><div class="card-h"><span class="k"><b>录入数据</b></span>' +
+    '<button class="btn ico" data-act="metric:new" title="收起">×</button></div><div class="card-b">' +
+    '<div class="input-grid">' +
+    '<div class="field wide"><label>内容标题</label><input type="text" id="mf-title" placeholder="例：500 块改造出租屋阳台"></div>' +
+    '<div class="field"><label>日期</label><input type="date" id="mf-date" value="' + iso(today()) + '"></div>' +
+    '<div class="field"><label>平台</label><select id="mf-plat">' + PLAT_LIST.map(function (p) { return '<option>' + esc(p) + '</option>'; }).join('') + '</select></div>' +
+    '<div class="field"><label>播放</label><input type="number" id="mf-views" min="0" placeholder="0"></div>' +
+    '<div class="field"><label>点赞</label><input type="number" id="mf-likes" min="0" placeholder="0"></div>' +
+    '<div class="field"><label>评论</label><input type="number" id="mf-comments" min="0" placeholder="0"></div>' +
+    '<div class="field"><label>转发</label><input type="number" id="mf-shares" min="0" placeholder="0"></div>' +
+    '<div class="field"><label>涨粉</label><input type="number" id="mf-fans" min="0" placeholder="0"></div>' +
+    '</div>' +
+    '<div class="row" style="margin-top:12px"><button class="btn primary" data-act="metric:add">录入这条</button>' +
+    '<button class="btn ghost" data-act="metric:new">取消</button></div>' +
+    '<hr class="rule">' +
+    '<div class="field"><label>或者整段粘贴 CSV / 表格</label>' +
+    '<textarea id="mf-csv" rows="4" placeholder="标题,2026-11-22,120000,3200,410,260,180&#10;另一条,2026-11-20,86000,4300,520,610,280"></textarea></div>' +
+    '<div class="row" style="margin-top:8px"><button class="btn ghost" data-act="metric:csv">导入 CSV</button>' +
+    '<span class="tiny-t">列顺序：标题,日期,播放,点赞,评论,转发,涨粉；日期可空；有表头会自动跳过。</span></div>' +
+    '</div></div>';
+}
+
 </script>
 </body>
 </html>
