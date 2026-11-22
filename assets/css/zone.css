@@ -141,3 +141,9 @@
 /* 四列展签（竖版素材墙） */
 .ex-grid.four{grid-template-columns:repeat(4,1fr)}
 
+
+/* 五列展签 */
+.ex-grid.five{grid-template-columns:repeat(5,1fr)}
+@media (max-width:1180px){.ex-grid.five{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:820px){.ex-grid.five{grid-template-columns:repeat(2,1fr)}}
+

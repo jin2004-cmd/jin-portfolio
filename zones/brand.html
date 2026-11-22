@@ -4,11 +4,85 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>厅 03 · 品牌出海 — 金佳信作品集</title>
-<meta name="description" content="蓝色光标实习期的海外社媒内容与三语本地化，含过程资产与交付清单。">
+<meta name="description" content="蓝色光标海外社媒内容运营：Instagram / Facebook / YouTube 三平台短视频，Segway 赛格威产品与发布会、Silver Palace 三语全球发行 PV、BAJA 1000 赛事纪实，加五件过程资产。">
 <meta name="theme-color" content="#0A0B0D">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230A0B0D'/%3E%3Ctext x='16' y='21.5' font-family='monospace' font-size='12' font-weight='700' fill='%23E8B25C' text-anchor='middle'%3EJJ%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="../assets/css/tokens.css">
 <link rel="stylesheet" href="../assets/css/zone.css">
+<style>
+  /* 本页补丁：表格、规范示意与展签署名行，不动全局 */
+  .btable{width:100%;border-collapse:collapse;margin:0 0 8px;font-size:13px;line-height:1.75}
+  .btable th,.btable td{border:1px solid var(--line-soft);padding:11px 13px;text-align:left;vertical-align:top}
+  .btable thead th{background:var(--ink-3);color:var(--paper);font-weight:600;font-size:12px;letter-spacing:.04em;white-space:nowrap}
+  .btable tbody tr:nth-child(even){background:rgba(242,237,228,.02)}
+  .btable td b{color:var(--paper);font-weight:600}
+  .btable tbody td:first-child{white-space:nowrap}
+  .btable .num{font-family:var(--mono);color:var(--accent);white-space:nowrap}
+  .tbl-wrap{overflow-x:auto;margin:0 0 10px}
+  .btable-cap{margin:16px 0 9px;font:500 10.5px/1.6 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--paper-3)}
+  .btable-cap b{color:var(--accent)}
+  .page-note{margin:0 0 20px;padding-left:16px;border-left:2px solid var(--accent-line);color:var(--paper-3);font-size:12.5px;line-height:1.9}
+  .page-note b{color:var(--paper-2)}
+  .crosslink{color:var(--accent);border-bottom:1px solid var(--accent-line);padding-bottom:1px}
+  .crosslink:hover{color:var(--paper)}
+
+  /* 每条客户成片统一的署名行 */
+  .ex-credit{
+    margin:12px 0 0;padding-top:10px;border-top:1px solid var(--line-soft);
+    font:500 9.5px/1.6 var(--mono);letter-spacing:.04em;color:var(--paper-3);
+  }
+  .ex-credit b{color:var(--accent);font-weight:500}
+  .ex-grid.four .ex-body{padding:16px 16px 15px}
+  .ex-grid.four .ex-title{font-size:15px}
+  .ex-grid.four .ex-desc{font-size:12.5px;line-height:1.75}
+  .ex-grid.three .ex-title{font-size:15.5px}
+  .ex-grid.three .ex-desc{font-size:12.5px}
+
+  /* 过程资产卡里的「文档示意」——纯 CSS 画的，不是截图 */
+  .doc{position:relative;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(165deg,#15181c,#0b0d10)}
+  .doc::before{
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+    background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
+    background-size:40px 40px;
+  }
+  .mini{position:relative;z-index:1;width:100%;max-width:420px;border:1px solid var(--line);border-radius:2px;background:rgba(10,11,13,.62);padding:18px 20px}
+  .mini-label{display:flex;justify-content:space-between;gap:8px;font:500 9px/1 var(--mono);letter-spacing:.14em;color:var(--paper-3);text-transform:uppercase;margin-bottom:12px}
+  .mini-line{height:5px;border-radius:2px;margin:7px auto}
+  .mini-safe{border-top:1px dashed var(--accent-line);margin-top:16px;padding-top:5px;text-align:center;font:500 8.5px/1 var(--mono);letter-spacing:.12em;color:var(--accent)}
+  .m-sub .c1{width:76%;background:rgba(242,237,228,.30)}
+  .m-sub .c2{width:56%;background:rgba(242,237,228,.16)}
+  .m-mtx{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+  .m-mtx .mini-label{grid-column:1/-1}
+  .m-mtx .col{display:flex;flex-direction:column;gap:5px}
+  .m-mtx .col i{display:block;height:4px;background:rgba(242,237,228,.22);border-radius:2px}
+  .m-mtx .col i:nth-child(2){background:rgba(242,237,228,.12)}
+  .m-mtx .col:nth-child(2) i{width:88%}
+  .m-mtx .col:nth-child(3) i{width:74%}
+  .m-crop{display:flex;align-items:center;justify-content:center;gap:16px}
+  .m-crop .f16{position:relative;width:58%;aspect-ratio:16/9;border:1px dashed var(--line-strong)}
+  .m-crop .f16 i{position:absolute;top:0;bottom:0;left:34%;width:32%;border:1px solid var(--accent-line);background:var(--accent-soft)}
+  .m-crop .f916{width:22%;aspect-ratio:9/16;border:1px solid var(--accent-line);background:rgba(232,178,92,.07)}
+  .m-flow .steps{display:flex;align-items:center;gap:0}
+  .m-flow .steps i{flex:1;height:2px;background:rgba(242,237,228,.14);position:relative}
+  .m-flow .steps i::after{content:"";position:absolute;right:-2px;top:-2px;width:6px;height:6px;border-radius:50%;background:var(--paper-3)}
+  .m-flow .steps i.on{background:var(--accent-line)}
+  .m-flow .steps i.on::after{background:var(--accent)}
+  .m-six .rows{display:flex;flex-direction:column;gap:6px}
+  .m-six .rows i{display:block;height:4px;border-radius:2px;background:rgba(242,237,228,.16)}
+  .m-six .rows i:nth-child(odd){background:rgba(242,237,228,.26)}
+  .m-six .rows i:nth-child(1){width:100%}
+  .m-six .rows i:nth-child(2){width:86%}
+  .m-six .rows i:nth-child(3){width:92%}
+  .m-six .rows i:nth-child(4){width:70%}
+  .m-six .rows i:nth-child(5){width:80%}
+  .m-six .rows i:nth-child(6){width:58%}
+
+  @media (max-width:820px){
+    .btable{font-size:12.5px}
+    .btable th,.btable td{padding:9px 10px}
+    .doc{padding:14px}
+  }
+</style>
 <script>
   document.documentElement.classList.add('js');
   if (/(?:^|[?&])anim=0/.test(location.search) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -56,11 +130,11 @@
         <span class="zh-no">HALL 03 — BRAND / GLOBAL</span>
         <h1 class="zh-title">品牌出海</h1>
         <p class="zh-en">Overseas social content, delivered</p>
-        <p class="zh-lede">这个厅暂时只开放<b>过程资产</b>。实习期做的客户成片要不要放进公开作品集，我按保密协议先向公司申请书面同意，拿到再上线。先放的是不涉及客户素材的部分，字幕规范、多语版本矩阵、交付清单，这些恰好更能说明我怎么干活。</p>
+        <p class="zh-lede">我在蓝色光标（上海亿动传媒）做海外社媒内容运营，服务 Segway 赛格威等出海品牌，负责 <b>Instagram / Facebook / YouTube 三平台</b>的短视频剪辑与包装：横竖版重构、中英字幕本地化、按投放排期交付，实习期一共 <b>20+ 条成片、2 份团队 SOP</b>。<br>下面挑了 12 条成片加 5 件过程资产。成片是同期交付的不同客户内容——赛格威的产品与发布会、Silver Palace 的三语全球发行 PV、BAJA 1000 赛事纪实；过程资产是不涉及客户素材的那部分：字幕规范、三语矩阵、横改竖规则、交付清单、拆片方法。</p>
       </div>
       <div class="zh-side">
-        <div class="zh-cnt">—<span>件 · ITEMS</span></div>
-        <nav class="zh-nav" aria-label="同厅快速跳转"><a href="#asset" class="on">过程资产</a><a href="#pending">成片（待授权）</a></nav>
+        <div class="zh-cnt">12<span>件成片 · 5 件过程资产</span></div>
+        <nav class="zh-nav" aria-label="同厅快速跳转"><a href="#pv" class="on">三语 PV</a><a href="#product">产品 / 发布会</a><a href="#race">赛事纪实</a><a href="#asset">过程资产</a></nav>
       </div>
     </div>
   </div>
@@ -68,31 +142,164 @@
 
 <section class="zsec">
   <div class="shell">
-    <div class="evidence" data-reveal><div class="ev"><b>3<em>语</em></b><span>本地化版本</span></div><div class="ev"><b>2<em>份</em></b><span>团队 SOP</span></div><div class="ev"><b>20<em>+</em></b><span>成片交付</span></div><div class="ev"><b>3<em>平台</em></b><span>Insta / FB / YouTube</span></div></div>
+    <div class="evidence" data-reveal>
+      <div class="ev"><b>12<em>条</em></b><span>提交成片 · 已公开发布</span></div>
+      <div class="ev"><b>3<em>语</em></b><span>同一支 PV 的本地化版本</span></div>
+      <div class="ev"><b>3<em>平台</em></b><span>Instagram · Facebook · YouTube</span></div>
+      <div class="ev"><b>2<em>份</em></b><span>团队 SOP · 字幕与流程</span></div>
+    </div>
+    <p class="page-note" data-reveal style="margin-top:22px">
+      <b>关于授权：</b>下面这些成片是实习期间为品牌制作、已经正式上线发布的内容，公开前已取得公司同意，用于求职展示。每条都标注「实习期间为品牌制作 · 已公开发布」和我在这一条里负责的环节；<b>不含任何投放数据、不含客户内部策略</b>。
+    </p>
   </div>
 </section>
 
-<section class="zsec" id="asset">
+
+<section class="zsec" id="pv">
   <div class="shell">
     <div class="zsec-head" data-reveal>
-      <h2 class="zsec-title">不碰客户素材的那部分</h2>
-      <p class="zsec-note">BRAND-P · 过程资产 · <b>可公开</b></p>
+      <h2 class="zsec-title">同一支 PV，三个语言版本</h2>
+      <p class="zsec-note">BRAND-10 — 12 · Silver Palace（白银之城）· 全球发行 PV · <b>重点展项</b></p>
+    </div>
+
+    <p class="page-note" data-reveal>
+      同一个片子出英、德、法三版，不是换一条字幕文件就交。德文一句话比英文长三成，法文的重音符号会把原来那版排版顶下去——三版的字幕行宽、断行、尾版都得重排。下面三条并排，是同一支全球发行 PV 的三个本地化版本。
+    </p>
+
+    <div class="ex-grid three">
+      <article class="ex" data-reveal>
+        <div class="ex-media">
+          <video controls preload="none" playsinline poster="../media/covers/brand/brand-10-silver-palace-pv-en.jpg" aria-label="Silver Palace 全球发行 PV 英文版">
+            <source src="../media/clips/brand/brand-10-silver-palace-pv-en.mp4" type="video/mp4">
+          </video>
+          <span class="plaque"><b>BRAND-10</b><span>英文本地化版 · 18 秒</span></span>
+        </div>
+        <div class="ex-body">
+          <h3 class="ex-title">全球发行 PV · 英文版</h3>
+          <p class="ex-desc">三版里最先出的一版，字幕行宽按英文基准定（≤42 字符）。英文尾版，4K 源转 720p 交付。</p>
+          <div class="ex-chips"><span class="chip">英文尾版</span><span class="chip">行宽 42 字符</span><span class="chip">我负责：剪辑 / 字幕</span></div>
+          <div class="ex-foot">
+            <a class="ex-open" href="../media/clips/brand/brand-10-silver-palace-pv-en.mp4" target="_blank" rel="noopener">单独打开
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg>
+            </a>
+            <span class="ex-alt">4K → 720p</span>
+          </div>
+          <p class="ex-credit"><b>实习期间为品牌制作 · 已公开发布</b></p>
+        </div>
+      </article>
+
+      <article class="ex" data-reveal style="--d:80ms">
+        <div class="ex-media">
+          <video controls preload="none" playsinline poster="../media/covers/brand/brand-11-silver-palace-pv-de.jpg" aria-label="Silver Palace 全球发行 PV 德文版">
+            <source src="../media/clips/brand/brand-11-silver-palace-pv-de.mp4" type="video/mp4">
+          </video>
+          <span class="plaque"><b>BRAND-11</b><span>德文本地化版 · 18 秒</span></span>
+        </div>
+        <div class="ex-body">
+          <h3 class="ex-title">全球发行 PV · 德文版</h3>
+          <p class="ex-desc">德文句子更长、复合词多，字幕行宽收到 36 字符，两处原来一屏的句子拆成两屏，德文尾版重做。</p>
+          <div class="ex-chips"><span class="chip">德文尾版</span><span class="chip">行宽 36 字符</span><span class="chip">我负责：剪辑 / 字幕</span></div>
+          <div class="ex-foot">
+            <a class="ex-open" href="../media/clips/brand/brand-11-silver-palace-pv-de.mp4" target="_blank" rel="noopener">单独打开
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg>
+            </a>
+            <span class="ex-alt">4K → 720p</span>
+          </div>
+          <p class="ex-credit"><b>实习期间为品牌制作 · 已公开发布</b></p>
+        </div>
+      </article>
+
+      <article class="ex" data-reveal style="--d:160ms">
+        <div class="ex-media">
+          <video controls preload="none" playsinline poster="../media/covers/brand/brand-12-silver-palace-pv-fr.jpg" aria-label="Silver Palace 全球发行 PV 法文版">
+            <source src="../media/clips/brand/brand-12-silver-palace-pv-fr.mp4" type="video/mp4">
+          </video>
+          <span class="plaque"><b>BRAND-12</b><span>法文本地化版 · 18 秒</span></span>
+        </div>
+        <div class="ex-body">
+          <h3 class="ex-title">全球发行 PV · 法文版</h3>
+          <p class="ex-desc">法文比英文长约两成，句子拆得更碎，重音符号不能落行首。尾版换成法文发行信息。</p>
+          <div class="ex-chips"><span class="chip">法文尾版</span><span class="chip">行宽 40 字符</span><span class="chip">我负责：剪辑 / 字幕</span></div>
+          <div class="ex-foot">
+            <a class="ex-open" href="../media/clips/brand/brand-12-silver-palace-pv-fr.mp4" target="_blank" rel="noopener">单独打开
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg>
+            </a>
+            <span class="ex-alt">4K → 720p</span>
+          </div>
+          <p class="ex-credit"><b>实习期间为品牌制作 · 已公开发布</b></p>
+        </div>
+      </article>
+    </div>
+
+    <p class="btable-cap" data-reveal>三语本地化差异 · <b>矩阵</b> · 三版并排后的对照</p>
+    <div class="tbl-wrap" data-reveal>
+      <table class="btable">
+        <thead>
+          <tr><th>差异项</th><th>英文版</th><th>德文版</th><th>法文版</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>语言长度基准</b></td><td><span class="num">100%</span></td><td><span class="num">+30%</span> 左右，复合词多</td><td><span class="num">+15~20%</span>，句子更长但词更短</td></tr>
+          <tr><td><b>单行字符上限</b></td><td><span class="num">42</span></td><td><span class="num">36</span></td><td><span class="num">40</span></td></tr>
+          <tr><td><b>断行处理</b></td><td>按意群断，介词不落行尾</td><td>复合词整词换行，宁可换屏也不拆词</td><td>重音符号不落行首，代词不单独成行</td></tr>
+          <tr><td><b>尾版</b></td><td>英文尾版，品牌标不动</td><td>德文尾版，机构名换本地写法</td><td>法文尾版，加本地发行信息</td></tr>
+          <tr><td><b>修正动作</b></td><td>定基准：行宽、字号、轴位</td><td>两处一屏拆两屏，重新对轴</td><td>句子拆更碎，重音符号单独检查</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="page-note" data-reveal>
+      三个版本放在一起看，差异一眼能看出来：<b>话多的语言，字幕就得重新排</b>。三版尾版也各做一版——同一张尾版直接换语言，字号会溢出来。这套差异清单后来整理成了这一厅里的过程资产 <a class="crosslink" href="#asset">BRAND-P2 三语本地化版本矩阵</a>。
+    </p>
+  </div>
+</section>
+
+
+<section class="zsec" id="product">
+  <div class="shell">
+    <div class="zsec-head" data-reveal>
+      <h2 class="zsec-title">产品片与发布会：把产品讲清楚</h2>
+      <p class="zsec-note">BRAND-08 — 09 · Segway（赛格威）· <b>横屏 16:9</b></p>
     </div>
 
     <div class="ex-grid">
-
       <article class="ex" data-reveal>
-        <a class="ex-media" href="../sop-subtitle.html">
-          <img src="../shots/sop-subtitle.jpg" alt="字幕规范" loading="lazy">
-          <span class="plaque"><b>BRAND-P1</b><span>规范 · 三语</span></span>
-        </a>
+        <div class="ex-media">
+          <video controls preload="none" playsinline poster="../media/covers/brand/brand-08-segway-at-family-tvc.jpg" aria-label="Segway AT Family 产品 TVC">
+            <source src="../media/clips/brand/brand-08-segway-at-family-tvc.mp4" type="video/mp4">
+          </video>
+          <span class="plaque"><b>BRAND-08</b><span>产品 TVC · 18 秒</span></span>
+        </div>
         <div class="ex-body">
-          <h3 class="ex-title">字幕与本地化规范（出海版）</h3>
-          <p class="ex-desc">中英双语字幕的字数上限、换行规则、字体层级、安全区，横竖版各一套。这份是真正会被其他剪辑直接拿去用的东西。</p>
-          <div class="ex-chips"><span class="chip">中英双语</span><span class="chip">横竖版各一套</span><span class="chip">安全区</span></div>
-          <div class="ex-foot"><a class="ex-open" href="../sop-subtitle.html">看规范
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg></a>
-            <span class="ex-alt"></span></div>
+          <h3 class="ex-title">Segway AT Family 产品 TVC</h3>
+          <p class="ex-desc">产品片的标准做法：先给使用场景，再给车辆细节，最后落屏。我做的是横屏版本的剪辑与包装，按平台版本再出竖版。</p>
+          <div class="ex-chips"><span class="chip">产品片</span><span class="chip">横竖两版</span><span class="chip">我负责：剪辑 / 包装</span></div>
+          <div class="ex-foot">
+            <a class="ex-open" href="../media/clips/brand/brand-08-segway-at-family-tvc.mp4" target="_blank" rel="noopener">单独打开
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg>
+            </a>
+            <span class="ex-alt">16:9 · 720p</span>
+          </div>
+          <p class="ex-credit"><b>实习期间为品牌制作 · 已公开发布</b></p>
+        </div>
+      </article>
+
+      <article class="ex" data-reveal style="--d:80ms">
+        <div class="ex-media">
+          <video controls preload="none" playsinline poster="../media/covers/brand/brand-09-segway-launch-keynote.jpg" aria-label="Segway 发布会直播切片 Keynote">
+            <source src="../media/clips/brand/brand-09-segway-launch-keynote.mp4" type="video/mp4">
+          </video>
+          <span class="plaque"><b>BRAND-09</b><span>发布会切片 · 20 秒</span></span>
+        </div>
+        <div class="ex-body">
+          <h3 class="ex-title">Segway 发布会 · Keynote 切片</h3>
+          <p class="ex-desc">发布会直播切片的 Keynote 段落。素材是 50fps 的直播源，转 30fps 后按发布节点重新剪，现场感留住，动作不虚。</p>
+          <div class="ex-chips"><span class="chip">直播切片</span><span class="chip">50fps → 30fps</span><span class="chip">我负责：剪辑</span></div>
+          <div class="ex-foot">
+            <a class="ex-open" href="../media/clips/brand/brand-09-segway-launch-keynote.mp4" target="_blank" rel="noopener">单独打开
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg>
+            </a>
+            <span class="ex-alt">16:9 · 720p</span>
+          </div>
+          <p class="ex-credit"><b>实习期间为品牌制作 · 已公开发布</b></p>
         </div>
       </article>
     </div>
@@ -100,34 +307,431 @@
 </section>
 
 
-<section class="zsec" id="pending">
+<section class="zsec" id="race">
   <div class="shell">
     <div class="zsec-head" data-reveal>
-      <h2 class="zsec-title">客户成片（等授权）</h2>
-      <p class="zsec-note">BRAND-01 — · 已上线成片 · <b>待书面同意</b></p>
+      <h2 class="zsec-title">BAJA 1000 赛事纪实：七条竖屏</h2>
+      <p class="zsec-note">BRAND-01 — 07 · 实习期间为客户制作的赛事纪实内容 · <b>竖屏 9:16</b></p>
+    </div>
+
+    <p class="page-note" data-reveal>
+      同一场越野赛拍下来的七组素材，剪成七条竖屏短片：赛前访谈、品牌方发言、技术访谈、车辆细节、赛车经过、夜间维修站、颁奖。竖屏不是横屏裁一刀就完事——人物切到胸口以上、主体压在中下三分之一、字幕避开底部平台按钮，这套规则写在下面的 <a class="crosslink" href="#vertical">横改竖规则</a> 里。
+    </p>
+
+    <div class="ex-grid four">
+      <article class="ex" data-reveal>
+        <div class="ex-media vertical">
+          <video controls preload="none" playsinline poster="../media/covers/brand/brand-01-baja-pre-race-interview.jpg" aria-label="BAJA 1000 赛前访谈 竖屏">
+            <source src="../media/clips/brand/brand-01-baja-pre-race-interview.mp4" type="video/mp4">
+          </video>
+          <span class="plaque"><b>BRAND-01</b><span>访谈 · 18 秒</span></span>
+        </div>
+        <div class="ex-body">
+          <h3 class="ex-title">赛前访谈 · Todd &amp; Jacob</h3>
+          <p class="ex-desc">发车前两个人说车况和心态。开口第一句就是正题，没有铺垫，适合做赛事片的情绪引子。</p>
+          <div class="ex-chips"><span class="chip">双人访谈</span><span class="chip">竖屏</span></div>
+          <div class="ex-foot">
+            <a class="ex-open" href="../media/clips/brand/brand-01-baja-pre-race-interview.mp4" target="_blank" rel="noopener">单独打开
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg>
+            </a>
+            <span class="ex-alt">18 s</span>
+          </div>
+          <p class="ex-credit"><b>实习期间为品牌制作 · 已公开发布</b></p>
+        </div>
+      </article>
+
+      <article class="ex" data-reveal style="--d:60ms">
+        <div class="ex-media vertical">
+          <video controls preload="none" playsinline poster="../media/covers/brand/brand-02-baja-leadership-interview-vertical.jpg" aria-label="BAJA 1000 品牌方发言 竖屏访谈">
+            <source src="../media/clips/brand/brand-02-baja-leadership-interview-vertical.mp4" type="video/mp4">
+          </video>
+          <span class="plaque"><b>BRAND-02</b><span>访谈 · 15 秒</span></span>
+        </div>
+        <div class="ex-body">
+          <h3 class="ex-title">品牌方发言 · 竖屏访谈</h3>
+          <p class="ex-desc">横屏 4K 原片重新裁切构图改出来的竖版，人物始终压在中下三分之一，头顶留白不顶天。</p>
+          <div class="ex-chips"><span class="chip">横改竖</span><span class="chip">4K 裁切</span></div>
+          <div class="ex-foot">
+            <a class="ex-open" href="../media/clips/brand/brand-02-baja-leadership-interview-vertical.mp4" target="_blank" rel="noopener">单独打开
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg>
+            </a>
+            <span class="ex-alt">15 s</span>
+          </div>
+          <p class="ex-credit"><b>实习期间为品牌制作 · 已公开发布</b></p>
+        </div>
+      </article>
+
+      <article class="ex" data-reveal style="--d:120ms">
+        <div class="ex-media vertical">
+          <video controls preload="none" playsinline poster="../media/covers/brand/brand-03-baja-official-tech-interview-vertical.jpg" aria-label="BAJA 1000 官方技术访谈 竖屏">
+            <source src="../media/clips/brand/brand-03-baja-official-tech-interview-vertical.mp4" type="video/mp4">
+          </video>
+          <span class="plaque"><b>BRAND-03</b><span>访谈 · 18 秒</span></span>
+        </div>
+        <div class="ex-body">
+          <h3 class="ex-title">官方技术访谈 · 竖屏</h3>
+          <p class="ex-desc">讲车辆怎么调、赛段遇到什么状况。信息密度最高的一条，字幕断句按意群切，不按字数硬切。</p>
+          <div class="ex-chips"><span class="chip">技术访谈</span><span class="chip">字幕断句</span></div>
+          <div class="ex-foot">
+            <a class="ex-open" href="../media/clips/brand/brand-03-baja-official-tech-interview-vertical.mp4" target="_blank" rel="noopener">单独打开
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg>
+            </a>
+            <span class="ex-alt">18 s</span>
+          </div>
+          <p class="ex-credit"><b>实习期间为品牌制作 · 已公开发布</b></p>
+        </div>
+      </article>
+
+      <article class="ex" data-reveal style="--d:180ms">
+        <div class="ex-media vertical">
+          <video controls preload="none" playsinline poster="../media/covers/brand/brand-04-baja-livery-closeup.jpg" aria-label="BAJA 1000 车辆涂装特写">
+            <source src="../media/clips/brand/brand-04-baja-livery-closeup.mp4" type="video/mp4">
+          </video>
+          <span class="plaque"><b>BRAND-04</b><span>产品特写 · 17 秒</span></span>
+        </div>
+        <div class="ex-body">
+          <h3 class="ex-title">车辆涂装特写</h3>
+          <p class="ex-desc">镜头贴着车身走，涂装和贴纸的细节。60fps 源转 30fps，快剪里当呼吸位用。</p>
+          <div class="ex-chips"><span class="chip">产品细节</span><span class="chip">60→30fps</span></div>
+          <div class="ex-foot">
+            <a class="ex-open" href="../media/clips/brand/brand-04-baja-livery-closeup.mp4" target="_blank" rel="noopener">单独打开
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg>
+            </a>
+            <span class="ex-alt">17 s</span>
+          </div>
+          <p class="ex-credit"><b>实习期间为品牌制作 · 已公开发布</b></p>
+        </div>
+      </article>
+
+      <article class="ex" data-reveal>
+        <div class="ex-media vertical">
+          <video controls preload="none" playsinline poster="../media/covers/brand/brand-05-baja-race-pass.jpg" aria-label="BAJA 1000 赛车迎面驶过">
+            <source src="../media/clips/brand/brand-05-baja-race-pass.mp4" type="video/mp4">
+          </video>
+          <span class="plaque"><b>BRAND-05</b><span>赛事镜头 · 15 秒</span></span>
+        </div>
+        <div class="ex-body">
+          <h3 class="ex-title">赛车迎面驶过</h3>
+          <p class="ex-desc">速度感全在机位上。赛事片里最抓眼的一条，适合放开头三秒，把人的注意力先按住。</p>
+          <div class="ex-chips"><span class="chip">速度镜头</span><span class="chip">前 3 秒</span></div>
+          <div class="ex-foot">
+            <a class="ex-open" href="../media/clips/brand/brand-05-baja-race-pass.mp4" target="_blank" rel="noopener">单独打开
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg>
+            </a>
+            <span class="ex-alt">15 s</span>
+          </div>
+          <p class="ex-credit"><b>实习期间为品牌制作 · 已公开发布</b></p>
+        </div>
+      </article>
+
+      <article class="ex" data-reveal style="--d:60ms">
+        <div class="ex-media vertical">
+          <video controls preload="none" playsinline poster="../media/covers/brand/brand-06-baja-night-pit.jpg" aria-label="BAJA 1000 夜间维修站">
+            <source src="../media/clips/brand/brand-06-baja-night-pit.mp4" type="video/mp4">
+          </video>
+          <span class="plaque"><b>BRAND-06</b><span>环境镜头 · 18 秒</span></span>
+        </div>
+        <div class="ex-body">
+          <h3 class="ex-title">夜间维修站</h3>
+          <p class="ex-desc">夜里的灯、人和工具，节奏慢、环境音重。整组里用来换气的一段，别全片都硬切。</p>
+          <div class="ex-chips"><span class="chip">环境氛围</span><span class="chip">慢节奏</span></div>
+          <div class="ex-foot">
+            <a class="ex-open" href="../media/clips/brand/brand-06-baja-night-pit.mp4" target="_blank" rel="noopener">单独打开
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg>
+            </a>
+            <span class="ex-alt">18 s</span>
+          </div>
+          <p class="ex-credit"><b>实习期间为品牌制作 · 已公开发布</b></p>
+        </div>
+      </article>
+
+      <article class="ex" data-reveal style="--d:120ms">
+        <div class="ex-media vertical">
+          <video controls preload="none" playsinline poster="../media/covers/brand/brand-07-baja-award-speech.jpg" aria-label="BAJA 1000 颁奖发言 四位发言人">
+            <source src="../media/clips/brand/brand-07-baja-award-speech.mp4" type="video/mp4">
+          </video>
+          <span class="plaque"><b>BRAND-07</b><span>活动记录 · 18 秒</span></span>
+        </div>
+        <div class="ex-body">
+          <h3 class="ex-title">颁奖发言 · 四位发言人</h3>
+          <p class="ex-desc">颁奖台上四个人依次讲话。活动记录向，素材完整、可切可留，收尾放在整组最后。</p>
+          <div class="ex-chips"><span class="chip">活动记录</span><span class="chip">收尾镜头</span></div>
+          <div class="ex-foot">
+            <a class="ex-open" href="../media/clips/brand/brand-07-baja-award-speech.mp4" target="_blank" rel="noopener">单独打开
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg>
+            </a>
+            <span class="ex-alt">18 s</span>
+          </div>
+          <p class="ex-credit"><b>实习期间为品牌制作 · 已公开发布</b></p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+<section class="zsec" id="asset">
+  <div class="shell">
+    <div class="zsec-head" data-reveal>
+      <h2 class="zsec-title">五件不碰客户素材的过程资产</h2>
+      <p class="zsec-note">BRAND-P1 — P5 · 团队 SOP 与规范 · <b>可公开</b></p>
     </div>
 
     <div class="ex-grid">
 
-      <div class="pending" data-reveal>
-        <i>待授权</i>
-        <b>客户成片暂未上线</b>
-        <span>这些是已公开发布过的品牌成片，按保密协议需要公司书面同意才能放进公开作品集。我已经把申请发出去了，批下来就补进来，不批就只留过程资产。</span>
-      </div>
-      <div class="pending" data-reveal style="--d:80ms">
-        <i>整理中</i>
-        <b>三语本地化版本矩阵</b>
-        <span>同一支片子做德语、法语、英语三个版本，每一版的字幕长度、画面裁切、尾板都不一样。整理成矩阵图后会发现工作量比想象的大。</span>
-      </div>
+      <article class="ex ex-lg" data-reveal>
+        <div class="ex-media doc">
+          <div class="mini m-sub">
+            <div class="mini-label"><span>16:9 / 9:16</span><span>中上 · 英下</span></div>
+            <div class="mini-line c1"></div>
+            <div class="mini-line c2"></div>
+            <div class="mini-safe">SAFE AREA</div>
+          </div>
+        </div>
+        <div class="ex-body">
+          <h3 class="ex-title">中英双语字幕规范（出海版）</h3>
+          <p class="ex-desc">横版和竖版各一套：字数上限、行数、字号层级、换行规则、平台安全区。我做的时候它只是剪映里的两套预设，后来被整理成这张表，别的剪辑接手直接套。</p>
+          <div class="ex-chips"><span class="chip">横版 16:9</span><span class="chip">竖版 9:16</span><span class="chip">平台安全区</span><span class="chip">中上英下</span></div>
+          <div class="ex-foot"><a class="ex-open" href="#spec">看规范
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg></a>
+            <span class="ex-alt">BRAND-P1</span></div>
+        </div>
+      </article>
+
+      <article class="ex" data-reveal style="--d:70ms">
+        <div class="ex-media doc">
+          <div class="mini m-mtx">
+            <div class="mini-label"><span>EN</span><span>DE</span><span>FR</span></div>
+            <div class="col"><i></i><i></i><i></i><i></i></div>
+            <div class="col"><i></i><i></i><i></i></div>
+            <div class="col"><i></i><i></i><i></i></div>
+          </div>
+        </div>
+        <div class="ex-body">
+          <h3 class="ex-title">三语本地化版本矩阵</h3>
+          <p class="ex-desc">英、德、法三版的差异清单：行宽、断行、尾版、修正动作。矩阵贴在上面三语 PV 的下面，边看片边对。</p>
+          <div class="ex-chips"><span class="chip">英 / 德 / 法</span><span class="chip">差异清单</span></div>
+          <div class="ex-foot"><a class="ex-open" href="#pv">看矩阵
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg></a>
+            <span class="ex-alt">BRAND-P2</span></div>
+        </div>
+      </article>
+
+      <article class="ex" data-reveal style="--d:140ms">
+        <div class="ex-media doc">
+          <div class="mini m-crop">
+            <div class="f16"><i></i></div>
+            <div class="f916"></div>
+          </div>
+        </div>
+        <div class="ex-body">
+          <h3 class="ex-title">横版改竖版的取舍规则</h3>
+          <p class="ex-desc">横版转竖版先做减法：裁切、重构图、补画三条路各有代价。主体放哪、字幕避哪，规则写在前面，改的时候就不靠手感。</p>
+          <div class="ex-chips"><span class="chip">裁切 / 重构图</span><span class="chip">主体位置</span></div>
+          <div class="ex-foot"><a class="ex-open" href="#vertical">看规则
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg></a>
+            <span class="ex-alt">BRAND-P3</span></div>
+        </div>
+      </article>
+
+      <article class="ex" data-reveal style="--d:210ms">
+        <div class="ex-media doc">
+          <div class="mini m-flow">
+            <div class="mini-label"><span>Brief</span><span>上线</span></div>
+            <div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+          </div>
+        </div>
+        <div class="ex-body">
+          <h3 class="ex-title">交付清单与流程</h3>
+          <p class="ex-desc">从 brief 到上线拆成七步，每步写清我交什么、谁确认、按什么验收。没有验收口径的步骤，最后都会变成反复改。</p>
+          <div class="ex-chips"><span class="chip">7 步</span><span class="chip">验收口径</span></div>
+          <div class="ex-foot"><a class="ex-open" href="#deliver">看流程
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg></a>
+            <span class="ex-alt">BRAND-P4</span></div>
+        </div>
+      </article>
+
+      <article class="ex" data-reveal style="--d:280ms">
+        <div class="ex-media doc">
+          <div class="mini m-six">
+            <div class="mini-label"><span>6 段拆解</span><span>01 — 06</span></div>
+            <div class="rows"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+        </div>
+        <div class="ex-body">
+          <h3 class="ex-title">一条片子的六段拆解法</h3>
+          <p class="ex-desc">拆片不是复述剧情。目标、前 3 秒、信息点、情绪峰值、CTA、字幕与声音，每段只记一个能验证的判断。</p>
+          <div class="ex-chips"><span class="chip">六段</span><span class="chip">每段一个判断</span></div>
+          <div class="ex-foot"><a class="ex-open" href="#teardown">看方法
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg></a>
+            <span class="ex-alt">BRAND-P5</span></div>
+        </div>
+      </article>
     </div>
+  </div>
+</section>
+
+
+<section class="zsec" id="spec">
+  <div class="shell">
+    <div class="zsec-head" data-reveal>
+      <h2 class="zsec-title">字幕规范：横竖版各一套</h2>
+      <p class="zsec-note">BRAND-P1 · 表格 = <b>参数</b> · 预设已在剪映里做成模板</p>
+    </div>
+
+    <p class="page-note" data-reveal>
+      这份表只干一件事：把「字幕凭手感调」变成「照着填」。同一批素材换人剪，位置和字号不该漂移。字号、坐标、缩放那组数字在 <a class="crosslink" href="../sop-subtitle.html">01 厅的 OPS-03 字幕规范</a> 里；出海版在这里补的是<b>语言上限</b>和<b>平台安全区</b>——手机竖屏的字幕不是「放得下」就行，是要避开平台自己盖在画面上的东西。
+    </p>
+
+    <div class="tbl-wrap" data-reveal>
+      <table class="btable">
+        <caption class="btable-cap">参数对照 · <b>横版 16:9 / 竖版 9:16</b> · 以 1920×1080 为基准</caption>
+        <thead>
+          <tr><th>项目</th><th>横版 16:9</th><th>竖版 9:16</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>中文字数</b></td><td>单行 ≤ 18 字，最多两行；一句话一屏，不跨屏断句</td><td>单行 ≤ 12 字，最多两行；竖屏窄，18 字会顶到右侧互动栏</td></tr>
+          <tr><td><b>拉丁文字数</b></td><td>英文 ≤ 42 字符；德文 ≤ 36；法文 ≤ 40（含空格）</td><td>英文 ≤ 30 字符；德文 ≤ 26；法文 ≤ 28</td></tr>
+          <tr><td><b>字号层级</b></td><td>主字幕 1 档 <span class="num">›</span> 强调字幕升 2 档 <span class="num">›</span> 角标/落款降 2 档；一屏不出现两种层级竞争</td><td>主字幕比横版升两档；强调字幕只用于数字和行动词，不整屏加粗</td></tr>
+          <tr><td><b>平台安全区</b></td><td>左右各留 6%（约 120px）；底边 96px 以上；字幕不压平台水印位</td><td>底边留 320px（避开标题、按钮、进度条）；右侧留 140px（避开点赞评论列）；顶部 120px 不放字幕</td></tr>
+          <tr><td><b>换行规则</b></td><td colspan="2">按意群断，介词、冠词、连词不留行尾；数字和单位不断开（<span class="num">700 kg</span> 不写成 700 / kg）；德文复合词整词换行不拆；法文重音符号不落在行首；中文标点不落在行首</td></tr>
+          <tr><td><b>层序与色</b></td><td colspan="2">中上英下，两层独立文本，不用回车在同一文本框里凑；暖白 <span class="num">#F2EDE4</span>，阴影 30%，不用纯白纯黑，不描荧光边</td></tr>
+          <tr><td><b>同步规则</b></td><td colspan="2">中文是主轴，中文对轴之后再切英文；一句中文配一句英文，不做多句合并；口播和字幕对不上时，改字幕不改口播</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="page-note" data-reveal>
+      两个最常见的退回原因：一是英文整句大写占满画面，客户一眼就看出是机翻；二是竖版直接沿用横版字号，手机上要凑近看。这两条写进了交付前检查清单，不靠记性。
+    </p>
+  </div>
+</section>
+
+
+<section class="zsec" id="vertical">
+  <div class="shell">
+    <div class="zsec-head" data-reveal>
+      <h2 class="zsec-title">横版改竖版，先做减法</h2>
+      <p class="zsec-note">BRAND-P3 · 构图取舍 · <b>字幕避让</b></p>
+    </div>
+
+    <div class="tbl-wrap" data-reveal>
+      <table class="btable">
+        <caption class="btable-cap">横改竖的三条路 · <b>什么时候用哪条</b></caption>
+        <thead>
+          <tr><th>做法</th><th>什么时候用</th><th>代价</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>裁切</b></td><td>源是 4K 或 1080p 以上，主体集中在中段</td><td>丢掉左右环境；原来的字幕和角标要整体重排</td></tr>
+          <tr><td><b>重构图</b></td><td>主体偏在一边，或者画面里有两个必须同时出现的人</td><td>等于重剪一遍，工时翻倍，但成片最自然</td></tr>
+          <tr><td><b>补画</b>（AI 扩图 / 上下渐变）</td><td>源只有 1080p，主体居中，环境信息不重要</td><td>边缘容易假；品牌片慎用，客户一眼能看出</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="btable-cap" data-reveal>构图规则 · <b>竖版重排时按这几条</b></p>
+    <div class="tbl-wrap" data-reveal>
+      <table class="btable">
+        <tbody>
+          <tr><td><b>主体位置</b></td><td>主体压在中下三分之一；人物访谈切到胸口以上，头顶留出画面高度 8%，不顶天</td></tr>
+          <tr><td><b>信息取舍</b></td><td>车/产品完整优先于环境完整。横版里那种大远景，竖版等于空白，前 3 秒别用</td></tr>
+          <tr><td><b>字幕避让</b></td><td>不压脸、不压车标和 logo、不压画面里已有的硬字幕；字幕放在画面下四分之一偏上，避开底部 320px</td></tr>
+          <tr><td><b>首帧</b></td><td>竖版第一屏就是封面。横版能靠左右铺陈，竖版只能靠一帧，所以首帧单独挑一版</td></tr>
+          <tr><td><b>动作方向</b></td><td>车向左开还是向右开，竖版要留出前方空间，别把车头怼在画框边上</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="page-note" data-reveal>
+      上面赛事纪实里的 BRAND-02 就是这条路的实例：横屏 4K 原片重新裁切构图出的竖版。改完自检四条：主体完整没被切断；字幕没压主体和平台 UI；首帧能当封面；横竖两版的时长和结尾一致（别竖版少半句尾巴）。
+    </p>
+  </div>
+</section>
+
+
+<section class="zsec" id="deliver">
+  <div class="shell">
+    <div class="zsec-head" data-reveal>
+      <h2 class="zsec-title">一条片子从 brief 到上线</h2>
+      <p class="zsec-note">BRAND-P4 · 7 步 · <b>谁交什么、按什么验收</b></p>
+    </div>
+
+    <div class="tbl-wrap" data-reveal>
+      <table class="btable">
+        <caption class="btable-cap">交付流程 · <b>七个节点</b></caption>
+        <thead>
+          <tr><th>节点</th><th>我交什么</th><th>对面交什么 / 谁确认</th><th>验收口径</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="num">01</span> 接 brief</td><td>一页 brief 复述：目标、平台、时长、语言、必须出现、禁止出现</td><td>对接人确认目标与最终审核人</td><td>brief 里没有审核人名字，先问清再动手</td></tr>
+          <tr><td><span class="num">02</span> 素材整理</td><td>按镜头类型分箱（动作/人物/环境/产品），命名统一；附缺料清单</td><td>素材方补料</td><td>素材够不够剪满目标时长，这一步就要判断</td></tr>
+          <tr><td><span class="num">03</span> 粗剪</td><td>结构版：不带包装，先对时长和叙事顺序</td><td>对接人确认结构</td><td>结构没点头，不往下做精剪</td></tr>
+          <tr><td><span class="num">04</span> 精剪与包装</td><td>字幕、调色、音效、尾版、导出规格</td><td>品牌规范确认（字体/配色/尾版/术语）</td><td>字幕过安全区，双语分层，术语与客户一致</td></tr>
+          <tr><td><span class="num">05</span> 自检</td><td>交付前清单逐项过，留一份自查记录</td><td>—</td><td>七项全过才交，不把问题丢给审核环节</td></tr>
+          <tr><td><span class="num">06</span> 审核回改</td><td>一版一回改说明：改了什么、为什么、对照哪条意见</td><td>审核方给反馈</td><td>改完重新自检，不跳步</td></tr>
+          <tr><td><span class="num">07</span> 上线与归档</td><td>横竖两版 + 封面 + 字幕文本；归档命名能三个月内找到</td><td>上线方发布</td><td>命名结构：项目_平台_语言_版本_日期</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="btable-cap" data-reveal>交付前必查 · <b>七项</b></p>
+    <div class="tbl-wrap" data-reveal>
+      <table class="btable">
+        <tbody>
+          <tr><td><b>规格</b></td><td>16:9 或 9:16、分辨率、帧率、码率按平台要求；同一批版本规格一致</td></tr>
+          <tr><td><b>时长</b></td><td>按投放位和平台定，不按感觉；结尾留足时间看落版</td></tr>
+          <tr><td><b>字幕</b></td><td>语言版本对、字数在限内、双语分层、没压安全区</td></tr>
+          <tr><td><b>声音</b></td><td>人声清晰不被音乐盖住；环境声和音乐有出处；平台响度统一</td></tr>
+          <tr><td><b>版权</b></td><td>音乐、字体、素材、肖像、商标五项各有出处，来源不明的不上</td></tr>
+          <tr><td><b>术语</b></td><td>产品名、车型名、功能词与客户术语表一致，不自己发明叫法</td></tr>
+          <tr><td><b>命名</b></td><td>项目_平台_语言_版本_日期，交付包和成片同名</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<section class="zsec" id="teardown">
+  <div class="shell">
+    <div class="zsec-head" data-reveal>
+      <h2 class="zsec-title">一条片子拆六段，每段只记一个判断</h2>
+      <p class="zsec-note">BRAND-P5 · 拆解方法 · <b>只拆公开成片</b></p>
+    </div>
+
+    <p class="page-note" data-reveal>
+      拆片最容易变成写观后感：「节奏感很强」「画面很高级」——这种话写一百条也没用。我的做法是六段固定问句，每段只落一个能验证的判断。拆的时候不看播放数据（大多数也拿不到），只看结构和表达，所以这套方法对任何一条公开成片都能用。
+    </p>
+
+    <div class="tbl-wrap" data-reveal>
+      <table class="btable">
+        <caption class="btable-cap">六段拆解 · <b>每段一个问题</b></caption>
+        <thead>
+          <tr><th>段落</th><th>记什么</th><th>判断标准</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="num">01</span> 目标</td><td>这条片子要人看完做什么：点链接、进店、打电话，还是只是记住</td><td>一句话说不清目标，说明原片自己也没想清</td></tr>
+          <tr><td><span class="num">02</span> 前 3 秒</td><td>第一帧给的是动作、问题还是人；前三秒有没有出现「为什么继续看」</td><td>三秒内找不到理由，后面做得再好也白搭</td></tr>
+          <tr><td><span class="num">03</span> 信息点</td><td>数一数全片讲了几个卖点/知识点</td><td>超过三个就是没取舍；少于两个是没内容</td></tr>
+          <tr><td><span class="num">04</span> 情绪峰值</td><td>第几秒、靠什么撑起来的：音乐、动作、反转，还是人</td><td>指不出具体秒数，说明只是「觉得好看」</td></tr>
+          <tr><td><span class="num">05</span> CTA</td><td>行动指令出现几次、说完还剩几秒给人反应</td><td>落版前留不足 1.5 秒，等于没说</td></tr>
+          <tr><td><span class="num">06</span> 字幕与声音</td><td>字幕在说什么，音乐在做什么，两条线是不是各干各的</td><td>字幕念画面解说的，是浪费一屏信息</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="page-note" data-reveal>
+      拆完只写一页结论，三条以内：「如果是我会怎么改、依据是什么」。给对接人看的时候说依据，不说「我觉得更好看」——前者能讨论，后者只能吵架。<br>
+      <b>边界：</b>只拆已经公开发布的成片；用公司设备看公开内容，不把客户素材拷进个人设备。
+    </p>
   </div>
 </section>
 
 </main>
 
 <nav class="zone-next" aria-label="上下厅">
-  <a class="zn-card" href="film.html"><em>← 上一厅</em><b>02 影像放映</b><span>四部纯代码短片</span></a>
-  <a class="zn-card rt" href="growth.html"><em>下一厅 →</em><b>04 增长投流</b><span>千川素材规模化供给</span></a>
+  <a class="zn-card" href="film.html"><em>← 上一厅</em><b>02 影像放映</b><span>四部纯代码短片与 AIGC 合集</span></a>
+  <a class="zn-card rt" href="growth.html"><em>下一厅 →</em><b>04 增长投流</b><span>千川素材的规模化供给</span></a>
 </nav>
 
 <footer class="foot">
