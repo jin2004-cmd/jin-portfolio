@@ -1,0 +1,190 @@
+/* =========================================================================
+   一厅一貌 · zone-motifs.css
+   每个厅一条专属"特征条" + 一层极淡底纹，让八个厅打开第一眼就不一样。
+   全部纯 CSS，用 tokens.css 的颜色变量，不引任何图片。
+   ========================================================================= */
+
+/* ---------------- 通用特征条 ---------------- */
+.motif{
+  position:relative;margin-top:clamp(20px,2.8vw,32px);
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  font:500 10.5px/1 var(--mono);letter-spacing:.12em;
+  color:var(--paper-3);text-transform:uppercase;
+}
+.motif em{font-style:normal;color:var(--accent);opacity:.85}
+.motif b{color:var(--accent);opacity:.5;font-weight:400}
+.motif .dot{width:4px;height:4px;border-radius:50%;background:var(--accent);opacity:.55}
+
+/* 底纹共用骨架 */
+[data-hall] .zone-head{isolation:isolate}
+[data-hall] .zone-head::after{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  opacity:.55;
+}
+
+/* =========================================================================
+   01 运营中枢 —— 方格纸 + 六步流程管线
+   ========================================================================= */
+[data-hall="ops"] .zone-head::after{
+  background-image:
+    linear-gradient(to right,rgba(242,237,228,.05) 1px,transparent 1px),
+    linear-gradient(to bottom,rgba(242,237,228,.05) 1px,transparent 1px);
+  background-size:42px 42px;
+  -webkit-mask-image:radial-gradient(78% 120% at 72% 0%,#000 12%,transparent 74%);
+  mask-image:radial-gradient(78% 120% at 72% 0%,#000 12%,transparent 74%);
+}
+.motif--ops{padding-top:14px;border-top:1px solid var(--line-soft)}
+.motif--ops span{
+  position:relative;padding:5px 9px;border:1px solid var(--line-soft);border-radius:2px;
+  background:rgba(242,237,228,.025);color:var(--paper-2);letter-spacing:.08em;
+}
+.motif--ops span::before{
+  content:attr(data-i);position:absolute;left:-1px;top:-8px;
+  font:600 8px/1 var(--mono);color:var(--accent);opacity:.75;background:var(--ink);padding:0 2px;
+}
+.motif--ops i{flex:0 0 14px;height:1px;background:var(--line);position:relative}
+.motif--ops i::after{
+  content:"";position:absolute;right:0;top:-2.5px;
+  border-left:4px solid var(--line-strong);border-top:3px solid transparent;border-bottom:3px solid transparent;
+}
+
+/* =========================================================================
+   02 影像放映 —— 胶片齿孔 + 扫描线 + 时间码
+   ========================================================================= */
+[data-hall="film"] .zone-head::after{
+  background-image:repeating-linear-gradient(180deg,rgba(242,237,228,.045) 0 1px,transparent 1px 4px);
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent);
+  mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent);
+}
+.motif--film{
+  padding:10px 0;border-top:1px dashed var(--line);border-bottom:1px dashed var(--line);
+  position:relative;
+}
+.motif--film::before,.motif--film::after{
+  content:"";position:absolute;left:0;right:0;height:5px;
+  background-image:radial-gradient(circle,rgba(242,237,228,.22) 2px,transparent 2.2px);
+  background-size:16px 5px;background-repeat:repeat-x;
+}
+.motif--film::before{top:-3px}
+.motif--film::after{bottom:-3px}
+.motif--film .tc{color:var(--paper-2);font-variant-numeric:tabular-nums}
+.motif--film .rec{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:motif-rec 2.4s infinite}
+@keyframes motif-rec{0%,72%{opacity:1}76%,100%{opacity:.18}}
+
+/* =========================================================================
+   03 品牌出海 —— 经纬点阵 + 三语标记 + 时区
+   ========================================================================= */
+[data-hall="brand"] .zone-head::after{
+  background-image:radial-gradient(circle,rgba(242,237,228,.16) 1px,transparent 1.4px);
+  background-size:18px 18px;
+  -webkit-mask-image:radial-gradient(70% 110% at 78% 10%,#000 6%,transparent 70%);
+  mask-image:radial-gradient(70% 110% at 78% 10%,#000 6%,transparent 70%);
+}
+.motif--brand{gap:8px}
+.motif--brand span{
+  padding:5px 8px;border:1px solid var(--line-soft);border-radius:2px;
+  color:var(--paper-2);letter-spacing:.16em;background:rgba(242,237,228,.02);
+}
+.motif--brand span.on{border-color:var(--accent-line);color:var(--accent);background:var(--accent-soft)}
+
+/* =========================================================================
+   04 增长投流 —— 斜纹 + 漏斗链路
+   ========================================================================= */
+[data-hall="growth"] .zone-head::after{
+  background-image:repeating-linear-gradient(115deg,rgba(242,237,228,.045) 0 1px,transparent 1px 13px);
+  -webkit-mask-image:radial-gradient(74% 118% at 74% 6%,#000 8%,transparent 72%);
+  mask-image:radial-gradient(74% 118% at 74% 6%,#000 8%,transparent 72%);
+}
+.motif--growth{align-items:flex-end;gap:7px}
+.motif--growth span{
+  position:relative;padding:5px 9px;color:var(--paper-2);
+  border-bottom:2px solid var(--accent-line);letter-spacing:.06em;
+}
+.motif--growth span:nth-of-type(1){border-bottom-color:rgba(232,178,92,.85)}
+.motif--growth span:nth-of-type(2){border-bottom-color:rgba(232,178,92,.6)}
+.motif--growth span:nth-of-type(3){border-bottom-color:rgba(232,178,92,.4)}
+.motif--growth span:nth-of-type(4){border-bottom-color:rgba(232,178,92,.24)}
+.motif--growth .arrow{color:var(--paper-3);opacity:.5;letter-spacing:0}
+
+/* =========================================================================
+   05 AI 工具台 —— 代码行底纹 + 终端命令行
+   ========================================================================= */
+[data-hall="tools"] .zone-head::after{
+  background-image:repeating-linear-gradient(180deg,rgba(242,237,228,.05) 0 1px,transparent 1px 11px);
+  -webkit-mask-image:radial-gradient(80% 120% at 70% 0%,#000 10%,transparent 76%);
+  mask-image:radial-gradient(80% 120% at 70% 0%,#000 10%,transparent 76%);
+}
+.motif--tools{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:9px 13px;border:1px solid var(--line);border-radius:4px;
+  background:rgba(10,11,13,.7);color:var(--paper-2);letter-spacing:.02em;text-transform:none;
+}
+.motif--tools .p{color:var(--accent);opacity:.8}
+.motif--tools .caret{width:6px;height:12px;background:var(--accent);opacity:.75;animation:motif-caret 1.1s steps(1) infinite}
+@keyframes motif-caret{0%,49%{opacity:.75}50%,100%{opacity:0}}
+
+/* =========================================================================
+   06 游戏实验室 —— 8bit 棋盘 + 生命值 + 关卡
+   ========================================================================= */
+[data-hall="games"] .zone-head::after{
+  background-image:
+    linear-gradient(45deg,rgba(242,237,228,.05) 25%,transparent 25%,transparent 75%,rgba(242,237,228,.05) 75%),
+    linear-gradient(45deg,rgba(242,237,228,.05) 25%,transparent 25%,transparent 75%,rgba(242,237,228,.05) 75%);
+  background-size:24px 24px;background-position:0 0,12px 12px;
+  -webkit-mask-image:radial-gradient(72% 118% at 76% 4%,#000 8%,transparent 72%);
+  mask-image:radial-gradient(72% 118% at 76% 4%,#000 8%,transparent 72%);
+}
+.motif--games{gap:6px}
+.motif--games .hp{display:inline-flex;gap:3px}
+.motif--games .hp b{width:8px;height:8px;background:var(--accent);opacity:.85;font-size:0}
+.motif--games .hp b.off{opacity:.16}
+.motif--games .stage{padding:5px 9px;border:1px solid var(--line-soft);color:var(--paper-2);letter-spacing:.1em}
+
+/* =========================================================================
+   07 建模工坊 —— 等距网格 + 坐标轴
+   ========================================================================= */
+[data-hall="model"] .zone-head::after{
+  background-image:
+    linear-gradient(60deg,rgba(242,237,228,.05) 1px,transparent 1px),
+    linear-gradient(-60deg,rgba(242,237,228,.05) 1px,transparent 1px);
+  background-size:34px 34px;
+  -webkit-mask-image:radial-gradient(70% 120% at 76% 0%,#000 6%,transparent 70%);
+  mask-image:radial-gradient(70% 120% at 76% 0%,#000 6%,transparent 70%);
+}
+.motif--model .axis{display:inline-flex;gap:9px;align-items:center}
+.motif--model .axis span{position:relative;padding-left:14px;color:var(--paper-2);letter-spacing:.14em}
+.motif--model .axis span::before{
+  content:"";position:absolute;left:0;top:50%;width:10px;height:1px;background:var(--accent);opacity:.7;
+}
+.motif--model .axis span::after{
+  content:"";position:absolute;left:9px;top:50%;width:3px;height:3px;border-radius:50%;
+  background:var(--accent);transform:translateY(-50%);opacity:.9;
+}
+
+/* =========================================================================
+   08 行业洞察 —— 报表横线 + 迷你柱状图
+   ========================================================================= */
+[data-hall="insight"] .zone-head::after{
+  background-image:repeating-linear-gradient(180deg,transparent 0 29px,rgba(242,237,228,.055) 29px 30px);
+  -webkit-mask-image:radial-gradient(80% 120% at 74% 0%,#000 8%,transparent 72%);
+  mask-image:radial-gradient(80% 120% at 74% 0%,#000 8%,transparent 72%);
+}
+.motif--insight{gap:4px;align-items:flex-end}
+.motif--insight .bar{
+  width:9px;background:linear-gradient(180deg,var(--accent),rgba(232,178,92,.25));
+  opacity:.8;border-radius:1px 1px 0 0;
+}
+.motif--insight .cap{margin-left:8px;color:var(--paper-3);letter-spacing:.1em}
+
+/* =========================================================================
+   移动端：特征条收紧，底纹减弱
+   ========================================================================= */
+@media (max-width:760px){
+  .motif{font-size:9.5px;gap:7px}
+  .motif--ops span{padding:4px 6px}
+  .motif--ops i{flex:0 0 8px}
+  [data-hall] .zone-head::after{opacity:.34}
+}
+@media (prefers-reduced-motion:reduce){
+  .motif--film .rec,.motif--tools .caret{animation:none}
+}
