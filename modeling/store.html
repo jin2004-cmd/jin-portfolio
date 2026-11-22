@@ -241,7 +241,7 @@ RENDERER.setPixelRatio(SHOT ? 1 : DPR);
 RENDERER.setSize(innerWidth, innerHeight);
 RENDERER.outputEncoding = THREE.sRGBEncoding;
 RENDERER.toneMapping = THREE.ACESFilmicToneMapping;
-RENDERER.toneMappingExposure = 0.86;
+RENDERER.toneMappingExposure = 0.88;
 RENDERER.shadowMap.enabled = true;
 RENDERER.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -434,17 +434,101 @@ TEX.sidewalk = tex(512, 512, (g, w, h) => {
 }, { repeat: [3.2, 1.4] });
 
 TEX.upperFacade = tex(1024, 256, (g, w, h) => {
-  g.fillStyle = '#1c2026'; g.fillRect(0, 0, w, h);
-  const cols = 8, rows = 2, gw = w / cols, gh = h / rows;
+  g.fillStyle = '#171b21'; g.fillRect(0, 0, w, h);
+  const cols = 12, rows = 2, gw = w / cols, gh = h / rows;
   for (let y = 0; y < rows; y++) for (let x = 0; x < cols; x++) {
-    const lit = RND() > .55;
-    g.fillStyle = lit ? `rgba(255,214,150,${rr(.16, .4)})` : 'rgba(12,16,22,.9)';
-    g.fillRect(x * gw + 12, y * gh + 12, gw - 24, gh - 24);
-    g.strokeStyle = 'rgba(255,255,255,.06)'; g.lineWidth = 1;
-    g.strokeRect(x * gw + 12, y * gh + 12, gw - 24, gh - 24);
+    const lit = RND() > .88;
+    const grd = g.createLinearGradient(x * gw, y * gh, x * gw + gw, y * gh + gh);
+    grd.addColorStop(0, lit ? 'rgba(255,208,140,.4)' : 'rgba(42,56,72,.9)');
+    grd.addColorStop(1, lit ? 'rgba(255,190,110,.12)' : 'rgba(13,19,27,.95)');
+    g.fillStyle = grd;
+    g.fillRect(x * gw + 7, y * gh + 8, gw - 14, gh - 16);
+    g.strokeStyle = 'rgba(120,132,148,.35)'; g.lineWidth = 2;
+    g.strokeRect(x * gw + 7, y * gh + 8, gw - 14, gh - 16);
+    g.strokeStyle = 'rgba(255,255,255,.05)'; g.lineWidth = 1;
+    g.beginPath(); g.moveTo(x * gw + gw / 2, y * gh + 8); g.lineTo(x * gw + gw / 2, y * gh + gh - 8); g.stroke();
   }
-  g.fillStyle = 'rgba(0,0,0,.35)'; g.fillRect(0, gh * 2 - 6, w, 6);
+  g.fillStyle = '#0e1116'; g.fillRect(0, 0, w, 6);
+  g.fillStyle = 'rgba(255,255,255,.05)'; g.fillRect(0, h - 8, w, 8);
+  noise(g, w, h, 500, .04, false);
+});
+
+TEX.shopA = tex(1024, 512, (g, w, h) => {
+  g.fillStyle = '#151a20'; g.fillRect(0, 0, w, h);
+  // upper windows
+  for (let y = 0; y < 2; y++) for (let x = 0; x < 6; x++) {
+    g.fillStyle = RND() > .6 ? 'rgba(255,200,140,.32)' : 'rgba(24,32,42,.9)';
+    g.fillRect(40 + x * 160, 30 + y * 90, 120, 66);
+    g.strokeStyle = 'rgba(140,150,165,.3)'; g.lineWidth = 2;
+    g.strokeRect(40 + x * 160, 30 + y * 90, 120, 66);
+  }
+  // awning
+  g.fillStyle = '#3a2a22'; g.fillRect(0, 220, w, 42);
+  for (let i = 0; i < 16; i++) { g.fillStyle = i % 2 ? '#c9a04a' : '#24282e'; g.fillRect(i * 64, 220, 64, 42); }
+  // shop window
+  const grd = g.createLinearGradient(0, 270, 0, 500);
+  grd.addColorStop(0, 'rgba(255,196,120,.9)'); grd.addColorStop(1, 'rgba(90,62,36,.5)');
+  g.fillStyle = grd; g.fillRect(40, 280, 700, 200);
+  g.strokeStyle = '#1b1e23'; g.lineWidth = 10;
+  g.strokeRect(40, 280, 700, 200);
+  g.strokeStyle = 'rgba(27,30,35,.85)'; g.lineWidth = 6;
+  for (let i = 1; i < 4; i++) { g.beginPath(); g.moveTo(40 + i * 175, 280); g.lineTo(40 + i * 175, 480); g.stroke(); }
+  // silhouettes (chairs / people)
+  g.fillStyle = 'rgba(30,22,16,.75)';
+  g.fillRect(120, 380, 90, 70); g.beginPath(); g.arc(165, 366, 22, 0, 7); g.fill();
+  g.fillRect(420, 400, 70, 50); g.beginPath(); g.arc(455, 388, 18, 0, 7); g.fill();
+  // door
+  g.fillStyle = '#2b2118'; g.fillRect(800, 280, 170, 200);
+  g.fillStyle = 'rgba(255,200,130,.45)'; g.fillRect(820, 300, 130, 120);
+  // sign
+  g.fillStyle = '#0e1116'; g.fillRect(0, 120, w, 90);
+  g.fillStyle = '#101215'; g.fillRect(0, 120, w, 90);
+  g.font = '800 54px ' + FONT_MONO; g.fillStyle = '#E8B25C'; g.textAlign = 'center';
+  g.fillText('BOOKS & CAFE', w / 2, 180);
+  g.strokeStyle = 'rgba(232,178,92,.4)'; g.lineWidth = 3; g.strokeRect(10, 128, w - 20, 74);
   noise(g, w, h, 700, .05, false);
+});
+
+TEX.shopB = tex(1024, 512, (g, w, h) => {
+  g.fillStyle = '#141920'; g.fillRect(0, 0, w, h);
+  for (let y = 0; y < 3; y++) for (let x = 0; x < 7; x++) {
+    g.fillStyle = RND() > .55 ? 'rgba(255,214,150,.28)' : 'rgba(20,28,36,.92)';
+    g.fillRect(30 + x * 138, 26 + y * 76, 106, 56);
+    g.strokeStyle = 'rgba(140,155,170,.25)'; g.lineWidth = 2;
+    g.strokeRect(30 + x * 138, 26 + y * 76, 106, 56);
+  }
+  // glass storefront
+  const grd = g.createLinearGradient(0, 260, 0, 500);
+  grd.addColorStop(0, 'rgba(190,245,255,.75)'); grd.addColorStop(1, 'rgba(40,110,130,.45)');
+  g.fillStyle = grd; g.fillRect(30, 270, 960, 210);
+  g.strokeStyle = '#1b1e23'; g.lineWidth = 10; g.strokeRect(30, 270, 960, 210);
+  g.strokeStyle = 'rgba(27,30,35,.9)'; g.lineWidth = 6;
+  for (let i = 1; i < 5; i++) { g.beginPath(); g.moveTo(30 + i * 192, 270); g.lineTo(30 + i * 192, 480); g.stroke(); }
+  // shelf rows in window
+  g.fillStyle = 'rgba(245,251,255,.55)';
+  for (let i = 0; i < 3; i++) g.fillRect(60, 330 + i * 46, 880, 10);
+  for (let i = 0; i < 30; i++) {
+    g.fillStyle = ['#d8432f', '#2f8fd8', '#3fae6a', '#e0b13c', '#8a4fd0'][i % 5];
+    g.fillRect(80 + (i % 15) * 58, 296 + Math.floor(i / 15) * 46, 24, 32);
+  }
+  // sign
+  g.fillStyle = '#0e1116'; g.fillRect(0, 120, w, 84);
+  g.font = '800 50px ' + FONT_MONO; g.fillStyle = '#7fe7ff'; g.textAlign = 'center';
+  g.fillText('DRUG STORE', w / 2, 178);
+  g.font = '600 24px ' + FONT_CN; g.fillStyle = 'rgba(242,237,228,.8)';
+  g.fillText('药 妆 便 利', 80, 130); g.textAlign = 'right';
+  g.fillText('24H', w - 80, 130);
+  noise(g, w, h, 700, .05, false);
+});
+
+TEX.cloud = tex(256, 128, (g, w, h) => {
+  g.clearRect(0, 0, w, h);
+  for (let i = 0; i < 16; i++) {
+    const x = rr(30, w - 30), y = rr(34, h - 30), r = rr(16, 46);
+    const gr = g.createRadialGradient(x, y, 0, x, y, r);
+    gr.addColorStop(0, 'rgba(255,255,255,.5)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+    g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill();
+  }
 });
 
 TEX.roadLine = tex(64, 256, (g, w, h) => {
@@ -483,13 +567,26 @@ TEX.neonOpen = tex(512, 256, (g, w, h) => {
   g.clearRect(0, 0, w, h);
   g.textAlign = 'center'; g.textBaseline = 'middle';
   g.font = '800 92px ' + FONT_MONO;
-  g.shadowColor = '#57e8ff'; g.shadowBlur = 26;
+  g.shadowColor = '#00d8ff'; g.shadowBlur = 22;
+  g.fillStyle = '#7defff'; g.fillText('OPEN', w / 2, h * .36);
   g.fillStyle = '#c8fbff'; g.fillText('OPEN', w / 2, h * .36);
   g.font = '800 56px ' + FONT_MONO;
-  g.shadowColor = '#ff5fd2'; g.shadowBlur = 22;
-  g.fillStyle = '#ffd9f4'; g.fillText('24 HOURS', w / 2, h * .73);
+  g.shadowColor = '#ff1fb8'; g.shadowBlur = 20;
+  g.fillStyle = '#ff5fd2'; g.fillText('24 HOURS', w / 2, h * .73);
+  g.fillStyle = '#ffc4ec'; g.fillText('24 HOURS', w / 2, h * .73);
   g.shadowBlur = 0;
 });
+TEX.neon24 = tex(160, 512, (g, w, h) => {
+  g.clearRect(0, 0, w, h);
+  g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.save(); g.translate(w / 2, h / 2); g.rotate(-Math.PI / 2);
+  g.font = '800 120px ' + FONT_MONO;
+  g.shadowColor = '#ff1fb8'; g.shadowBlur = 26;
+  g.fillStyle = '#ff4fd0'; g.fillText('24H', 0, 0);
+  g.fillStyle = '#ffd0f2'; g.fillText('24H', 0, 0);
+  g.restore(); g.shadowBlur = 0;
+});
+TEX.neon24.glow = true;
 
 TEX.posterSale = tex(512, 512, (g, w, h) => {
   g.fillStyle = '#12151a'; g.fillRect(0, 0, w, h);
@@ -705,16 +802,31 @@ SCENE.add(STARS);
 
 const MOON_MAT = new THREE.MeshBasicMaterial({ color: 0xfff6e0, transparent: true, opacity: 0, fog: false });
 const MOON = new THREE.Mesh(new THREE.CircleGeometry(2.2, 32), MOON_MAT);
-MOON.position.set(-26, 26, -42);
+MOON.position.set(-8, 23, -30);
 MOON.lookAt(0, 0, 0);
 SCENE.add(MOON);
 
+/* soft cloud layer (day only, fades out at night) */
+const CLOUD_MAT = new THREE.SpriteMaterial({
+  map: TEX.cloud, color: 0xffffff, transparent: true, opacity: 0.55,
+  depthWrite: false, fog: false
+});
+const CLOUDS = [];
+[[-18, 20, -38, 26], [6, 22, -42, 32], [24, 19, -34, 22], [-34, 21, -26, 24], [14, 24, -48, 30]].forEach(c => {
+  const sp = new THREE.Sprite(CLOUD_MAT.clone());
+  sp.material.opacity = 0.42;
+  sp.position.set(c[0], c[1], c[2]);
+  sp.scale.set(c[3], c[3] * 0.45, 1);
+  SCENE.add(sp); CLOUDS.push(sp);
+});
+function setCloudOpacity(v) { CLOUDS.forEach(c => c.material.opacity = v); }
+
 /* ---------------- lights ---------------- */
 const LIGHTS = {};
-LIGHTS.hemi = new THREE.HemisphereLight(0xcfe0f2, 0x7a6a58, 0.5);
+LIGHTS.hemi = new THREE.HemisphereLight(0xcfe0f2, 0x7a6a58, 0.52);
 SCENE.add(LIGHTS.hemi);
 
-LIGHTS.sun = new THREE.DirectionalLight(0xffeed4, 1.05);
+LIGHTS.sun = new THREE.DirectionalLight(0xffeed4, 1.12);
 LIGHTS.sun.position.set(7, 9, 13);
 LIGHTS.sun.target.position.set(0, 0, 0);
 LIGHTS.sun.castShadow = true;
@@ -733,7 +845,7 @@ LIGHTS.ceiling = [];
   SCENE.add(l); LIGHTS.ceiling.push(l);
 });
 
-LIGHTS.fridge = new THREE.PointLight(0x8fe4ff, 1.1, 6.5, 2);
+LIGHTS.fridge = new THREE.PointLight(0x8fe4ff, 1.3, 6.5, 2);
 LIGHTS.fridge.position.set(-0.4, 1.7, -4.5);
 SCENE.add(LIGHTS.fridge);
 
@@ -795,6 +907,11 @@ box(0.04, 0.12, ROOM.d, BASE_MAT, ROOM.w / 2 - 0.06, 0.06, 0);
 const CEIL_MAT = basic({ map: TEX.ceiling, color: 0xa9a49b });
 const CEIL = plane(ROOM.w, ROOM.d, CEIL_MAT, 0, ROOM.h, 0, { rx: Math.PI / 2, recv: false });
 tw(CEIL_MAT, 'color', new THREE.Color(0xa9a49b), new THREE.Color(0x25272d));
+// ceiling beams + perimeter cove
+const BEAM_MAT = std({ color: 0x2a2d33, roughness: 0.55, metalness: 0.3, envMapIntensity: 0.3 });
+[-2.2, 0.9].forEach(z => box(11.9, 0.09, 0.16, BEAM_MAT, 0, ROOM.h - 0.05, z, { cast: false }));
+box(11.9, 0.04, 0.05, GOLD_SOFT, 0, ROOM.h - 0.1, -5.34, { cast: false });
+box(11.9, 0.04, 0.05, GOLD_SOFT, 0, ROOM.h - 0.1, 5.34, { cast: false });
 
 // ceiling LED fixtures
 const LED_MAT = basic({ color: 0xfff4e2 });
@@ -898,14 +1015,25 @@ plane(1.7, 1.0, std({ map: TEX.mat, roughness: 0.85, metalness: 0.02, envMapInte
 })();
 
 // neon OPEN sign inside glass
-const NEON_MAT = basic({ map: TEX.neonOpen, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false, fog: false });
+const NEON_MAT = basic({ map: TEX.neonOpen, transparent: true, opacity: 0.55, depthWrite: false, fog: false });
 const NEON = plane(2.5, 1.25, NEON_MAT, -1.35, 2.1, 5.42, { recv: false });
+const NEON_ADD = basic({ map: TEX.neonOpen, transparent: true, opacity: 0.22, blending: THREE.AdditiveBlending, depthWrite: false, fog: false });
+plane(2.6, 1.3, NEON_ADD, -1.35, 2.1, 5.41, { recv: false });
 const NEON_GLOW = spritePlane(4.2, 2.4, TEX.glow, 0x8fe8ff, 0.22);
 NEON_GLOW.position.set(-1.35, 2.1, 5.38);
 SCENE.add(NEON_GLOW);
 
+// exterior vertical 24H neon on the facade pillar
+const NEON24_MAT = basic({ map: TEX.neon24, transparent: true, opacity: 0.9, depthWrite: false, fog: false });
+const NEON24 = plane(0.62, 2.0, NEON24_MAT, -5.55, 2.05, 5.88, { recv: false });
+const NEON24_GLOW = spritePlane(2.4, 2.8, TEX.glow, 0xff5fd2, 0.18);
+NEON24_GLOW.position.set(-5.55, 2.05, 5.86);
+SCENE.add(NEON24_GLOW);
+tw(NEON24_MAT, 'opacity', 0.32, 1.0);
+tw(NEON24_GLOW.material, 'opacity', 0.05, 0.34);
+
 // facade above glass
-const FACADE = std({ color: 0x1a1d22, roughness: 0.45, metalness: 0.3, envMapIntensity: 0.4 });
+const FACADE = std({ color: 0x1b1f25, roughness: 0.52, metalness: 0.3, envMapIntensity: 0.35 });
 box(12.2, 1.0, 0.32, FACADE, 0, 3.19, 5.66);
 box(12.2, 0.05, 0.36, GOLD, 0, 2.7, 5.64, { cast: false });
 box(12.2, 0.04, 0.36, GOLD, 0, 3.68, 5.64, { cast: false });
@@ -934,11 +1062,13 @@ function sphereGlow(x, y, z, r) {
 }
 
 /* ---------------- outside: sidewalk / road / opposite buildings ---------------- */
-plane(20, 3.2, std({ map: TEX.sidewalk, roughness: 0.7, metalness: 0.18, envMapIntensity: 0.55 }), 0, 0.01, 7.1, { rx: -Math.PI / 2 });
-box(20, 0.16, 0.2, std({ color: 0x5c6068, roughness: .8, metalness: .1 }), 0, 0.02, 8.7, { cast: false });
-plane(34, 11.5, std({ map: TEX.asphalt, roughness: 0.42, metalness: 0.22, envMapIntensity: 0.7 }), 0, -0.06, 14.4, { rx: -Math.PI / 2 });
+const SIDEWALK_MAT = std({ map: TEX.sidewalk, roughness: 0.66, metalness: 0.18, envMapIntensity: 0.55 });
+plane(46, 3.2, SIDEWALK_MAT, 0, 0.01, 7.1, { rx: -Math.PI / 2 });
+box(46, 0.16, 0.2, std({ color: 0x5c6068, roughness: .8, metalness: .1 }), 0, 0.02, 8.7, { cast: false });
+const ROAD_MAT = std({ map: TEX.asphalt, roughness: 0.4, metalness: 0.24, envMapIntensity: 0.7 });
+plane(64, 11.5, ROAD_MAT, 0, -0.06, 14.4, { rx: -Math.PI / 2 });
 // lane dashes
-for (let i = -3; i <= 3; i++) {
+for (let i = -7; i <= 7; i++) {
   const m = plane(0.14, 2.2, basic({ map: TEX.roadLine, transparent: true, opacity: 0.75 }), i * 4.2, -0.05, 14.5, { rx: -Math.PI / 2 });
 }
 // manhole
@@ -974,9 +1104,29 @@ plane(1.5, 3.0, NEON_HOTEL_MAT, 10.5, 5.2, 21.2, { ry: Math.PI, recv: false });
 tw(NEON_RAMEN_MAT, 'opacity', 0.18, 0.95);
 tw(NEON_HOTEL_MAT, 'opacity', 0.16, 0.95);
 
+// neighbouring buildings (same street line)
+(function neighbours() {
+  const NB = std({ color: 0x151a20, roughness: 0.6, metalness: 0.15, envMapIntensity: 0.25 });
+  box(13, 8.6, 6, NB, -12.75, 4.3, 2.4);
+  box(13, 7.4, 6, NB, 12.75, 3.7, 2.4);
+  const shopAMat = basic({ map: TEX.shopA });
+  const shopBMat = basic({ map: TEX.shopB });
+  plane(13, 8.6, shopAMat, -12.75, 4.3, 5.42, { recv: false });
+  plane(13, 7.4, shopBMat, 12.75, 3.7, 5.42, { recv: false });
+  tw(shopAMat, 'color', new THREE.Color(0xcfcfcf), new THREE.Color(0xffffff));
+  tw(shopBMat, 'color', new THREE.Color(0xcfcfcf), new THREE.Color(0xffffff));
+  const nA = basic({ map: TEX.neonRamen, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.9, fog: false });
+  const nB = basic({ map: TEX.neonHotel, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.9, fog: false });
+  plane(3.2, 1.2, nA, -12.7, 4.9, 5.46, { recv: false });
+  plane(1.2, 2.4, nB, 12.7, 4.4, 5.46, { recv: false });
+  tw(nA, 'opacity', 0.12, 0.95);
+  tw(nB, 'opacity', 0.1, 0.95);
+  box(13.4, 0.3, 6.2, std({ color: 0x101318, roughness: .7 }), -12.75, 8.7, 2.4, { cast: false });
+  box(13.4, 0.3, 6.2, std({ color: 0x101318, roughness: .7 }), 12.75, 7.5, 2.4, { cast: false });
+})();
+
 // street lamp
-(function streetLamp() {
-  const g = new THREE.Group(); g.position.set(-5.4, 0, 7.6); SCENE.add(g);
+(function streetLamp() {  const g = new THREE.Group(); g.position.set(-5.4, 0, 7.6); SCENE.add(g);
   cyl(0.07, 0.1, 4.6, 10, std({ color: 0x2b2f36, roughness: .45, metalness: .7 }), 0, 2.3, 0, { parent: g });
   box(1.1, 0.07, 0.07, MATTE, 0.5, 4.55, 0, { parent: g, cast: false });
   const head = box(0.34, 0.09, 0.2, MATTE, 1.02, 4.52, 0, { parent: g, cast: false });
@@ -1044,6 +1194,11 @@ function buildEnv(isNight) {
     console.warn('env failed', e);
     return null;
   }
+}
+function getEnv(night) {
+  const key = night ? 'night' : 'day';
+  if (!ENV[key]) ENV[key] = buildEnv(night);
+  return ENV[key];
 }
 
 /* ---------------- colliders for room ---------------- */
@@ -1213,14 +1368,15 @@ TEX.trashLabel = tex(128, 160, (g, w, h) => {
 });
 
 /* ---------- fixture materials ---------- */
-const SHELF_BODY = std({ color: 0xc9c2b6, roughness: 0.58, metalness: 0.18, envMapIntensity: 0.35 });
-const SHELF_BOARD = std({ color: 0xb3aca0, roughness: 0.64, metalness: 0.14, envMapIntensity: 0.3 });
+const SHELF_BODY = std({ color: 0xb3aca0, roughness: 0.58, metalness: 0.18, envMapIntensity: 0.35 });
+const SHELF_BOARD = std({ color: 0xcec7bb, roughness: 0.6, metalness: 0.14, envMapIntensity: 0.3 });
+const SHELF_BACK = std({ color: 0x776e60, roughness: 0.68, metalness: 0.12, envMapIntensity: 0.25 });
 const SHELF_DARK = std({ color: 0x262a31, roughness: 0.45, metalness: 0.55, envMapIntensity: 0.5 });
 const WHITE_PANEL = std({ color: 0xdcd6cb, roughness: 0.52, metalness: 0.1, envMapIntensity: 0.3 });
 const BLACK_GLOSS = std({ color: 0x121419, roughness: 0.24, metalness: 0.6, envMapIntensity: 0.8 });
 const CHROME2 = std({ color: 0xd2d6da, roughness: 0.15, metalness: 1.0, envMapIntensity: 1.0 });
 const COUNTER_BODY = std({ color: 0x1a1d22, roughness: 0.4, metalness: 0.4, envMapIntensity: 0.6 });
-const COUNTER_TOP = std({ map: TEX.counterTop, color: 0xc9c2b4, roughness: 0.22, metalness: 0.18, envMapIntensity: 0.9 });
+const COUNTER_TOP = std({ map: TEX.counterTop, color: 0x8f887b, roughness: 0.26, metalness: 0.2, envMapIntensity: 0.8 });
 const GLASS2 = std({ color: 0xbfe0ee, roughness: 0.05, metalness: 0.1, transparent: true, opacity: 0.22, envMapIntensity: 1.1, side: THREE.DoubleSide, depthWrite: false });
 const CYAN_LED = basic({ color: 0xbdf1ff });
 const GOLD_LED = basic({ color: 0xffd9a0 });
@@ -1240,7 +1396,7 @@ function inst(type, x, y, z, ry, color, sx, sy, sz) {
 const SNACK_PAL = ['#d8432f', '#e07b2f', '#e0b13c', '#8e5c2e', '#c94f6d', '#3fae6a', '#2f8fd8'];
 const DRINK_PAL = ['#2f8fd8', '#3fae6a', '#57c9e8', '#8a4fd0', '#e0b13c', '#d8432f', '#f2ede4', '#df6a2f'];
 const DAIRY_PAL = ['#f2ede4', '#e8e2d4', '#dfe8ef', '#e6d9c4'];
-function randColor(list) { return new THREE.Color(pick(list)).multiplyScalar(rr(0.82, 1.0)); }
+function randColor(list) { return new THREE.Color(pick(list)).multiplyScalar(rr(0.95, 1.12)); }
 
 /* ---------- gondola shelving ---------- */
 const GONDOLA = [
@@ -1264,6 +1420,7 @@ function buildGondola(cx, z0, z1) {
   const w = 1.0, len = z1 - z0, cz = (z0 + z1) / 2;
   box(w, 0.12, len, SHELF_DARK, cx, 0.06, cz);
   box(0.06, 1.76, len, SHELF_BODY, cx, 0.98, cz);
+  [-1, 1].forEach(s => box(0.02, 1.62, len - 0.1, SHELF_BACK, cx + s * 0.045, 0.98, cz, { cast: false }));
   box(w, 0.05, len + 0.06, SHELF_DARK, cx, 1.82, cz);
   [z0 + 0.025, z1 - 0.025].forEach(z => box(w, 1.9, 0.05, SHELF_BODY, cx, 0.95, z));
   LEVELS.forEach(y => {
@@ -1272,6 +1429,15 @@ function buildGondola(cx, z0, z1) {
   });
   // price rank edge (top)
   box(w + 0.04, 0.02, len, GOLD_SOFT, cx, 1.845, cz, { cast: false });
+  // storage boxes on the top cap
+  const CB = std({ color: 0xa8895f, roughness: 0.82, metalness: 0.02, envMapIntensity: 0.2 });
+  for (let i = 0; i < 3; i++) {
+    const zz = cz - len / 3 + i * (len / 3) + rr(-0.24, 0.24);
+    const bw = rr(0.3, 0.48), bh = rr(0.2, 0.3), bd = rr(0.3, 0.5);
+    const b = box(bw, bh, bd, CB, cx + rr(-0.12, 0.12), 1.87 + bh / 2, zz);
+    b.rotation.y = rr(-0.18, 0.18);
+    box(bw * 0.98, 0.015, bd * 0.22, std({ color: 0xd9c39a, roughness: .72 }), b.position.x, 1.87 + bh, zz, { cast: false });
+  }
   collide(cx - w / 2 - 0.06, cx + w / 2 + 0.06, z0 - 0.06, z1 + 0.06);
 }
 GONDOLA.forEach(g => buildGondola(g.cx, g.z0, g.z1));
@@ -1307,6 +1473,7 @@ function shelfFiller(cx, z0, z1, side, levels, skip) {
   const x = -5.62, z0 = -4.3, z1 = 1.3, len = z1 - z0, cz = (z0 + z1) / 2, depth = 0.42;
   box(depth, 0.1, len, SHELF_DARK, x, 0.05, cz);
   box(0.04, 1.9, len, SHELF_BODY, x - depth / 2 + 0.02, 0.95, cz);
+  box(0.02, 1.8, len - 0.08, SHELF_BACK, x - depth / 2 + 0.03, 0.95, cz, { cast: false });
   [0.58, 1.02, 1.46, 1.75].forEach(y => {
     box(depth, 0.035, len, SHELF_BOARD, x, y, cz);
     priceStrip(len, x + depth / 2 + 0.02, y + 0.05, cz, 1);
@@ -1515,6 +1682,39 @@ SHELF_HEROES.forEach(h => {
 hero('water', gA.cx - 0.46, LEVELS[2] + 0.008, 0.8, -Math.PI / 2, 1);
 hero('yogurt', gA.cx - 0.46, LEVELS[2] + 0.008, -0.6, -Math.PI / 2, 1);
 
+/* ---------- endcap pegboard display (faces the entrance) ---------- */
+(function endcap() {
+  const cx = gB.cx, z = 1.64;
+  const pegMat = std({ color: 0x30353d, roughness: 0.6, metalness: 0.35, envMapIntensity: 0.4 });
+  box(0.94, 1.58, 0.03, pegMat, cx, 1.0, z);
+  box(0.98, 0.04, 0.05, GOLD_SOFT, cx, 1.8, z, { cast: false });
+  box(0.98, 0.04, 0.05, GOLD_SOFT, cx, 0.2, z, { cast: false });
+  const endSign = tex(256, 64, (g, w, h) => {
+    g.fillStyle = '#14161a'; g.fillRect(0, 0, w, h);
+    g.strokeStyle = '#E8B25C'; g.lineWidth = 2; g.strokeRect(5, 5, w - 10, h - 10);
+    g.fillStyle = '#E8B25C'; g.font = '800 24px ' + FONT_MONO; g.textAlign = 'center';
+    g.fillText('SNACKS', w / 2, 30);
+    g.fillStyle = 'rgba(242,237,228,.72)'; g.font = '600 12px ' + FONT_CN;
+    g.fillText('零 食 特 区', w / 2, 52);
+  });
+  plane(0.8, 0.2, basic({ map: endSign }), cx, 1.68, z + 0.02, { recv: false });
+  const bagMats = ['#d8432f', '#e0b13c', '#2f8fd8', '#3fae6a', '#8a4fd0', '#df6a2f', '#e05c8a', '#57c9e8'].map(c => std({ color: c, roughness: 0.5, metalness: 0.08, envMapIntensity: 0.4 }));
+  const hookM = std({ color: 0xb9bec4, roughness: 0.25, metalness: 0.9 });
+  for (let row = 0; row < 3; row++) {
+    for (let col = 0; col < 4; col++) {
+      const bx = cx - 0.33 + col * 0.22, by = 1.42 - row * 0.42;
+      const bag = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.15, 0.03), bagMats[(row * 4 + col) % bagMats.length]);
+      bag.position.set(bx, by - 0.08, z + 0.035);
+      bag.rotation.z = rr(-0.06, 0.06);
+      bag.castShadow = true; SCENE.add(bag);
+      const hook = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.006, 0.07, 6), hookM);
+      hook.position.set(bx, by + 0.03, z + 0.025); hook.rotation.x = 0.5; SCENE.add(hook);
+      const tag = new THREE.Mesh(new THREE.PlaneGeometry(0.07, 0.035), basic({ map: TEX.priceTagSmall }));
+      tag.position.set(bx, by - 0.19, z + 0.045); SCENE.add(tag);
+    }
+  }
+})();
+
 /* ============================================================
    FRIDGE WALL (with auto doors + cold air)
    ============================================================ */
@@ -1523,20 +1723,27 @@ const FRIDGE = { doors: [], openAny: 0, group: new THREE.Group() };
   const g = FRIDGE.group; SCENE.add(g);
   const X0 = -2.75, X1 = 2.75, Z0 = -5.4, Z1 = -4.48;
   const W = X1 - X0, doorW = W / 4, Y1 = 2.36, cz = (Z0 + Z1) / 2, depth = Z1 - Z0;
+  const FR_INNER = std({ color: 0x15222a, roughness: 0.6, metalness: 0.22, envMapIntensity: 0.35, emissive: 0x071a22, emissiveIntensity: 0.7 });
+  const FR_SHELF = std({ color: 0x22313a, roughness: 0.32, metalness: 0.5, envMapIntensity: 0.6 });
   // cabinet shell
   box(W + 0.14, 0.16, depth + 0.06, SHELF_DARK, 0, Y1 + 0.08, cz, { parent: g });
   box(W + 0.14, 0.14, depth + 0.06, SHELF_DARK, 0, 0.07, cz, { parent: g });
   box(0.1, Y1, depth, SHELF_DARK, X0 - 0.05, Y1 / 2, cz, { parent: g });
   box(0.1, Y1, depth, SHELF_DARK, X1 + 0.05, Y1 / 2, cz, { parent: g });
-  box(W, Y1 - 0.2, 0.05, WHITE_PANEL, 0, Y1 / 2, Z0 + 0.045, { parent: g });
-  box(W, 0.05, depth - 0.1, WHITE_PANEL, 0, Y1 - 0.12, cz, { parent: g });
+  box(W, Y1 - 0.2, 0.05, FR_INNER, 0, Y1 / 2, Z0 + 0.045, { parent: g });
+  box(W, 0.05, depth - 0.1, FR_INNER, 0, Y1 - 0.12, cz, { parent: g });
+  box(W, 0.05, depth - 0.1, FR_INNER, 0, 0.13, cz, { parent: g });
   // interior side panels
-  [-1, 1].forEach(s => box(0.05, Y1 - 0.2, depth - 0.12, WHITE_PANEL, s * (W / 2 - 0.03), Y1 / 2, cz, { parent: g }));
+  [-1, 1].forEach(s => box(0.05, Y1 - 0.2, depth - 0.12, FR_INNER, s * (W / 2 - 0.03), Y1 / 2, cz, { parent: g }));
   // shelves inside
   const FR_SHELVES = [0.52, 1.0, 1.48, 1.92];
   FR_SHELVES.forEach((y, i) => {
-    box(W - 0.12, 0.03, depth - 0.16, GLASS2, 0, y, cz, { parent: g });
+    box(W - 0.12, 0.03, depth - 0.16, FR_SHELF, 0, y, cz, { parent: g });
     box(W - 0.12, 0.02, 0.03, CYAN_LED, 0, y + 0.02, Z1 - 0.15, { parent: g, cast: false });
+    // price rail inside the cooler
+    const t = TEX.priceStrip.clone();
+    t.needsUpdate = true; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(14, 1);
+    plane(W - 0.3, 0.05, basic({ map: t }), 0, y + 0.055, Z1 - 0.17, { parent: g, recv: false });
   });
   // vertical cold LED strips between doors
   for (let i = 0; i <= 4; i++) {
@@ -1558,7 +1765,7 @@ const FRIDGE = { doors: [], openAny: 0, group: new THREE.Group() };
   plane(W - 0.2, 0.3, backSignMat, 0, 2.62, Z1 + 0.1, { parent: g, recv: false });
   tw(backSignMat, 'color', new THREE.Color(0x8a8a8a), new THREE.Color(0xffffff));
   // doors
-  const doorGlassMat = std({ color: 0xdff4ff, roughness: 0.04, metalness: 0.1, transparent: true, opacity: 0.18, envMapIntensity: 1.3, side: THREE.DoubleSide, depthWrite: false });
+  const doorGlassMat = std({ color: 0xdff4ff, roughness: 0.04, metalness: 0.1, transparent: true, opacity: 0.12, envMapIntensity: 1.3, side: THREE.DoubleSide, depthWrite: false });
   for (let i = 0; i < 4; i++) {
     const hingeX = X0 + i * doorW;
     const pivot = new THREE.Group();
@@ -1588,8 +1795,8 @@ const FRIDGE = { doors: [], openAny: 0, group: new THREE.Group() };
   FRIDGE.mist = [];
   [-1.6, 0.0, 1.6].forEach(x => {
     const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: TEX.smoke, color: 0xcdeeff, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending }));
-    sp.scale.set(1.8, 1.1, 1);
-    sp.position.set(x, 0.45, Z1 + 0.35);
+    sp.scale.set(1.5, 1.25, 1);
+    sp.position.set(x, 0.5, Z1 + 0.28);
     g.add(sp); FRIDGE.mist.push(sp);
   });
   FRIDGE.baseY = FR_SHELVES[1];
@@ -1606,7 +1813,7 @@ FRIDGE_HEROES.forEach(h => hero(h[0], h[1], 1.015, -4.72, 0, 1.0));
 
 /* cold air particles */
 const COLD = (function () {
-  const N = 170;
+  const N = 150;
   const geo = new THREE.BufferGeometry();
   const pos = new Float32Array(N * 3);
   const vel = [];
@@ -1616,8 +1823,8 @@ const COLD = (function () {
   }
   geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   const mat = new THREE.PointsMaterial({
-    map: TEX.smoke, size: 0.36, transparent: true, opacity: 0,
-    depthWrite: false, blending: THREE.AdditiveBlending, color: 0xd6f2ff, sizeAttenuation: true, fog: false
+    map: TEX.smoke, size: 0.13, transparent: true, opacity: 0,
+    depthWrite: false, blending: THREE.AdditiveBlending, color: 0xcdeeff, sizeAttenuation: true, fog: false
   });
   const pts = new THREE.Points(geo, mat);
   pts.frustumCulled = false;
@@ -1632,11 +1839,11 @@ onFrame(function updateCold(dt, t) {
     d.open += (d.target - d.open) * Math.min(1, dt * 6.5);
     d.pivot.rotation.y = -1.78 * d.open;
   });
-  const anyOpen = Math.max(...FRIDGE.doors.map(d => d.open));
+  const anyOpen = Math.max.apply(null, FRIDGE.doors.map(d => d.open));
   FRIDGE.openAny = anyOpen;
-  COLD.mat.opacity = anyOpen * 0.85;
+  COLD.mat.opacity = anyOpen * 0.42;
   FRIDGE.mist.forEach((sp, i) => {
-    sp.material.opacity = anyOpen * (0.16 + 0.05 * Math.sin(t * 1.7 + i));
+    sp.material.opacity = anyOpen * (0.15 + 0.06 * Math.sin(t * 1.7 + i));
   });
   if (anyOpen > 0.05) {
     const openDoors = FRIDGE.doors.filter(d => d.open > 0.15);
@@ -1644,17 +1851,17 @@ onFrame(function updateCold(dt, t) {
       const v = COLD.vel[i];
       if (v.life <= 0) {
         const d = openDoors[Math.floor(RND() * openDoors.length)] || FRIDGE.doors[1];
-        COLD.pos[i * 3] = d.cx + rr(-0.45, 0.45);
-        COLD.pos[i * 3 + 1] = rr(0.55, 2.0);
-        COLD.pos[i * 3 + 2] = FRIDGE.zFront - 0.05;
-        v.x = rr(-0.18, 0.18); v.y = rr(-0.6, -0.28); v.z = rr(0.35, 0.85);
-        v.max = rr(0.8, 1.7); v.life = v.max;
+        COLD.pos[i * 3] = d.cx + rr(-0.42, 0.42);
+        COLD.pos[i * 3 + 1] = rr(0.4, 1.75);
+        COLD.pos[i * 3 + 2] = FRIDGE.zFront + rr(0.12, 0.55);
+        v.x = rr(-0.16, 0.16); v.y = rr(-0.42, -0.2); v.z = rr(0.45, 1.0);
+        v.max = rr(0.7, 1.5); v.life = v.max;
       } else {
         v.life -= dt;
         COLD.pos[i * 3] += v.x * dt;
         COLD.pos[i * 3 + 1] += v.y * dt;
         COLD.pos[i * 3 + 2] += v.z * dt;
-        v.y -= 0.35 * dt;
+        v.y -= 0.28 * dt;
         if (COLD.pos[i * 3 + 1] < 0.08 || v.life <= 0) v.life = 0;
       }
       if (v.life <= 0 && anyOpen <= 0.05) { COLD.pos[i * 3 + 1] = -10; }
@@ -1676,15 +1883,11 @@ const CHECK = { screen: null, custScreen: null, beam: null, beamGlow: null, rece
   box(W - 0.1, 0.16, D - 0.05, MATTE, cx, 0.08, cz);                        // toe kick
   // front sign panel
   plane(2.3, 0.52, basic({ map: TEX.paySign }), cx, 0.56, cz + D / 2 + 0.008, { recv: false });
-  // wood slat accents
-  for (let i = 0; i < 12; i++) {
-    box(0.04, 0.8, 0.02, std({ color: 0x2c3037, roughness: .5, metalness: .3 }), cx - 1.5 + i * 0.27, 0.52, cz + D / 2 + 0.012, { cast: false });
-  }
   // back counter (staff side)
   box(3.2, 0.9, 0.46, SHELF_DARK, 4.2, 0.45, 1.6);
   box(3.24, 0.05, 0.5, COUNTER_TOP, 4.2, 0.92, 1.6);
   // cup/bag rack on back counter
-  box(1.2, 0.5, 0.04, WHITE_PANEL, 3.6, 1.2, 1.42, { cast: false });
+  box(1.2, 0.5, 0.04, SHELF_BACK, 3.6, 1.2, 1.42, { cast: false });
   for (let i = 0; i < 3; i++) box(0.3, 0.04, 0.3, SHELF_BOARD, 3.25 + i * 0.36, 1.02 + i * 0.18, 1.6, { cast: false });
   // register monitor
   const reg = new THREE.Group(); reg.position.set(4.95, 1.07, 2.5); reg.rotation.y = -0.28; SCENE.add(reg);
@@ -1725,10 +1928,10 @@ const CHECK = { screen: null, custScreen: null, beam: null, beamGlow: null, rece
   slot.position.set(0, 0.132, 0.055); pr.add(slot);
   const led = new THREE.Mesh(new THREE.SphereGeometry(0.008, 8, 6), basic({ color: 0x4dff9a }));
   led.position.set(0.09, 0.13, 0.06); pr.add(led);
-  CHECK.receipt = new THREE.Group(); CHECK.receipt.position.set(3.0, 1.08, 2.5); SCENE.add(CHECK.receipt);
+  CHECK.receipt = new THREE.Group(); CHECK.receipt.position.set(3.02, 1.14, 2.44); CHECK.receipt.rotation.y = 0.18; SCENE.add(CHECK.receipt);
   CHECK.receiptTex = makeScreen(280, 520);
-  const rp = new THREE.Mesh(new THREE.PlaneGeometry(0.17, 0.31), basic({ map: CHECK.receiptTex.t, transparent: true, side: THREE.DoubleSide }));
-  rp.position.set(0.0, 0.15, 0.03); CHECK.receipt.add(rp);
+  const rp = new THREE.Mesh(new THREE.PlaneGeometry(0.125, 0.25), basic({ map: CHECK.receiptTex.t, transparent: true, side: THREE.DoubleSide }));
+  rp.position.set(0.0, 0.115, 0.02); rp.rotation.x = -0.12; CHECK.receipt.add(rp);
   CHECK.receipt.scale.set(1, 0.001, 1); CHECK.receipt.visible = false;
   // card terminal
   const term = new THREE.Group(); term.position.set(4.72, 1.075, 2.9); term.rotation.set(-0.5, 0.3, 0); SCENE.add(term);
@@ -1844,9 +2047,15 @@ function makeScreen(w, h) {
   // liquor cabinet behind the counter (right wall)
   const g = new THREE.Group(); SCENE.add(g);
   box(0.24, 1.3, 2.5, SHELF_DARK, 5.83, 1.72, 2.8, { parent: g });
-  const backMat = basic({ map: TEX.liquor });
-  plane(2.32, 1.12, backMat, 5.7, 1.72, 2.8, { ry: -Math.PI / 2, recv: false });
-  tw(backMat, 'color', new THREE.Color(0x8f8f8f), new THREE.Color(0xffffff));
+  const cabBack = basic({ color: 0x121b20 });
+  plane(2.32, 1.24, cabBack, 5.705, 1.72, 2.8, { ry: -Math.PI / 2, recv: false });
+  const cabGlow = spritePlane(2.4, 1.5, TEX.glow, 0x3a2a18, 0.7);
+  cabGlow.position.set(5.7, 1.72, 2.8); cabGlow.rotation.y = -Math.PI / 2; SCENE.add(cabGlow);
+  // warm strip lights inside the cabinet
+  [1.12, 1.68, 2.33].forEach(y => {
+    const led = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.015, 2.4), basic({ color: 0xffcf8a }));
+    led.position.set(5.68, y, 2.8); SCENE.add(led);
+  });
   box(0.04, 1.34, 2.56, GOLD_SOFT, 5.69, 1.72, 2.8, { parent: g, cast: false });
   box(0.3, 0.05, 2.56, SHELF_BOARD, 5.74, 2.37, 2.8, { parent: g, cast: false });
   box(0.3, 0.05, 2.56, SHELF_BOARD, 5.74, 1.72, 2.8, { parent: g, cast: false });
@@ -1857,9 +2066,11 @@ function makeScreen(w, h) {
       inst('bottle', 5.66, 1.74 + row * 0.65, 1.75 + i * 0.42, Math.PI / 2, randColor(['#c9a04a', '#8a4fd0', '#d8432f', '#2f8fd8', '#3fae6a', '#df6a2f']), .9, rr(.9, 1.2), .9);
     }
   }
-  // gold "PREMIUM" strip
-  const strip = new THREE.Mesh(new THREE.PlaneGeometry(2.3, 0.12), basic({ map: TEX.signMain }));
-  strip.position.set(5.68, 2.58, 2.8); strip.rotation.y = -Math.PI / 2; SCENE.add(strip);
+  // gold "PREMIUM" header sign above the cabinet
+  box(0.07, 0.36, 2.5, SHELF_DARK, 5.87, 2.66, 2.8, { parent: g, cast: false });
+  const stripMat = basic({ map: TEX.signMain });
+  plane(2.4, 0.28, stripMat, 5.83, 2.66, 2.8, { ry: -Math.PI / 2, recv: false });
+  tw(stripMat, 'color', new THREE.Color(0x9a9a9a), new THREE.Color(0xffffff));
 
   // staff door on back wall right side
   const dx = 4.05;
@@ -1940,14 +2151,14 @@ function makeScreen(w, h) {
   collide(x - 0.3, x + 0.3, z - 0.24, z + 0.24);
 })();
 
-// wet floor sign near the fridge aisle
+// wet floor sign near the left aisle
 (function wetSign() {
-  const g = new THREE.Group(); g.position.set(1.62, 0, -3.5); g.rotation.y = 0.4; SCENE.add(g);
+  const g = new THREE.Group(); g.position.set(-3.45, 0, -3.55); g.rotation.y = 0.4; SCENE.add(g);
   const m = basic({ map: TEX.wetSign, side: THREE.DoubleSide });
   const a = new THREE.Mesh(new THREE.PlaneGeometry(0.34, 0.52), m); a.position.set(0, 0.27, 0.1); a.rotation.x = -0.16; g.add(a);
   const b = new THREE.Mesh(new THREE.PlaneGeometry(0.34, 0.52), m); b.position.set(0, 0.27, -0.1); b.rotation.x = 0.16; b.rotation.y = Math.PI; g.add(b);
   const top = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.02, 0.04), std({ color: 0x2c3037 })); top.position.set(0, 0.52, 0); g.add(top);
-  collide(1.4, 1.85, -3.72, -3.28);
+  collide(-3.68, -3.22, -3.78, -3.32);
 })();
 
 // hand sanitizer stand near the door
@@ -2058,7 +2269,7 @@ TEX.badge = tex(96, 48, (g, w, h) => {
 function makePerson(o) {
   o = o || {};
   const M = (c, r, m, e) => std({ color: c, roughness: r === undefined ? .6 : r, metalness: m === undefined ? .03 : m, envMapIntensity: e === undefined ? .25 : e });
-  const skin = M(o.skin || 0xe8b78f, .6, .02, .2);
+  const skin = std({ color: o.skin || 0xe8b78f, roughness: .6, metalness: .02, envMapIntensity: .2, emissive: 0x1b0d06, emissiveIntensity: 0.4 });
   const hairM = M(o.hair || 0x1d1814, .85, .02, .12);
   const shirtM = M(o.shirt || 0x2e7f74, .62, .04, .28);
   const shirt2M = M(o.shirt2 || o.shirt || 0x2e7f74, .6, .05, .28);
@@ -2117,29 +2328,34 @@ function makePerson(o) {
   headMesh.scale.set(1, 1.12, 0.98); headMesh.position.y = 0.1;
   headMesh.castShadow = true; j.head.add(headMesh);
   const eyeM = M(0x141414, .35, .1, .1);
+  const eyeWhiteM = M(0xf7f3ea, .35, .02, .1);
   [-0.047, 0.047].forEach(x => {
-    const e = new THREE.Mesh(new THREE.SphereGeometry(0.019, 8, 6), eyeM);
-    e.position.set(x, 0.135, 0.114); j.head.add(e);
+    const w = new THREE.Mesh(new THREE.SphereGeometry(0.026, 10, 8), eyeWhiteM);
+    w.position.set(x, 0.137, 0.107); w.scale.set(1, 1.05, 0.55); j.head.add(w);
+    const e = new THREE.Mesh(new THREE.SphereGeometry(0.0145, 8, 6), eyeM);
+    e.position.set(x, 0.135, 0.123); j.head.add(e);
   });
   const brow = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.008, 0.012), hairM);
-  brow.position.set(-0.047, 0.168, 0.112); brow.rotation.z = -0.1; j.head.add(brow);
+  brow.position.set(-0.047, 0.176, 0.114); brow.rotation.z = -0.1; j.head.add(brow);
   const brow2 = brow.clone(); brow2.position.x = 0.047; brow2.rotation.z = 0.1; j.head.add(brow2);
-  const mouth = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.009, 0.01), M(0x9c5a4a, .6, .02, .1));
-  mouth.position.set(0, 0.048, 0.118); j.head.add(mouth);
+  const mouth = new THREE.Mesh(new THREE.BoxGeometry(0.042, 0.008, 0.01), M(0xa8624f, .6, .02, .1));
+  mouth.position.set(0, 0.048, 0.121); j.head.add(mouth);
+  const nose = new THREE.Mesh(new THREE.SphereGeometry(0.019, 8, 6), skin);
+  nose.position.set(0, 0.1, 0.126); nose.scale.set(1, 0.82, 1.15); j.head.add(nose);
   [-0.122, 0.122].forEach(x => {
     const ear = new THREE.Mesh(new THREE.SphereGeometry(0.028, 8, 6), skin);
     ear.position.set(x, 0.1, 0); ear.scale.set(.6, 1, .8); j.head.add(ear);
   });
-  const hairMesh = new THREE.Mesh(new THREE.SphereGeometry(0.133, 16, 10, 0, Math.PI * 2, 0, Math.PI * 0.56), hairM);
-  hairMesh.position.y = 0.104; hairMesh.scale.set(1.03, 1.14, 1.03); j.head.add(hairMesh);
+  const hairMesh = new THREE.Mesh(new THREE.SphereGeometry(0.136, 16, 10, 0, Math.PI * 2, 0, Math.PI * 0.42), hairM);
+  hairMesh.position.y = 0.118; hairMesh.scale.set(1.03, 1.16, 1.04); j.head.add(hairMesh);
   if (o.cap) {
     const capM = M(o.cap, .55, .06, .2);
-    const crown = new THREE.Mesh(new THREE.CylinderGeometry(0.132, 0.138, 0.075, 18), capM);
-    crown.position.set(0, 0.205, -0.005); j.head.add(crown);
-    const brim = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.016, 0.11), capM);
-    brim.position.set(0, 0.172, 0.13); brim.rotation.x = 0.08; j.head.add(brim);
-    const stripe = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.012, 0.012), M(0xE8B25C, .35, .6, .6));
-    stripe.position.set(0, 0.216, 0.12); j.head.add(stripe);
+    const crown = new THREE.Mesh(new THREE.CylinderGeometry(0.133, 0.139, 0.075, 18), capM);
+    crown.position.set(0, 0.212, -0.005); j.head.add(crown);
+    const brim = new THREE.Mesh(new THREE.BoxGeometry(0.21, 0.016, 0.085), capM);
+    brim.position.set(0, 0.196, 0.115); brim.rotation.x = 0.06; j.head.add(brim);
+    const stripe = new THREE.Mesh(new THREE.BoxGeometry(0.19, 0.012, 0.012), M(0xE8B25C, .35, .6, .6));
+    stripe.position.set(0, 0.222, 0.115); j.head.add(stripe);
   }
   if (o.glasses) {
     const gm = M(0x1b1d22, .3, .3, .4);
@@ -2152,13 +2368,13 @@ function makePerson(o) {
   }
   if (o.backpack) {
     const bp = M(o.backpack, .7, .08, .18);
-    const b = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.32, 0.13), bp);
-    b.position.set(0, 0.3, -0.19); b.castShadow = true; j.torso.add(b);
-    const p = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.1, 0.06), bp);
-    p.position.set(0, 0.22, -0.27); j.torso.add(p);
-    [-0.09, 0.09].forEach(x => {
-      const s = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.3, 0.015), bp);
-      s.position.set(x, 0.3, 0.13); j.torso.add(s);
+    const b = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.28, 0.1), bp);
+    b.position.set(0, 0.31, -0.17); b.castShadow = true; j.torso.add(b);
+    const p = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.08, 0.05), bp);
+    p.position.set(0, 0.23, -0.23); j.torso.add(p);
+    [-0.08, 0.08].forEach(x => {
+      const s = new THREE.Mesh(new THREE.BoxGeometry(0.022, 0.28, 0.013), bp);
+      s.position.set(x, 0.3, 0.125); j.torso.add(s);
     });
   }
   return { root, j, opts: o, phase: 0, walkPhase: 0 };
@@ -2172,12 +2388,13 @@ CLERK.root.position.set(4.35, 0, 2.08);
 SCENE.add(CLERK.root);
 const SCAN_GUN = new THREE.Group();
 {
-  const gb = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.16, 0.045), std({ color: 0x15181d, roughness: .4, metalness: .4 }));
-  gb.position.set(0, -0.36, 0.03); gb.rotation.x = 0.35; SCAN_GUN.add(gb);
-  const tip = new THREE.Mesh(new THREE.BoxGeometry(0.055, 0.03, 0.06), std({ color: 0x2a2e35, roughness: .4, metalness: .3 }));
-  tip.position.set(0, -0.44, 0.09); tip.rotation.x = 0.35; SCAN_GUN.add(tip);
-  const red = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.004, 0.004), basic({ color: 0xff3b3b }));
-  red.position.set(0, -0.456, 0.12); SCAN_GUN.add(red);
+  const gb = new THREE.Mesh(new THREE.BoxGeometry(0.038, 0.115, 0.035), std({ color: 0x15181d, roughness: .4, metalness: .4 }));
+  gb.position.set(0, -0.3, 0.02); gb.rotation.x = 0.3; SCAN_GUN.add(gb);
+  const tip = new THREE.Mesh(new THREE.BoxGeometry(0.042, 0.025, 0.05), std({ color: 0x2a2e35, roughness: .4, metalness: .3 }));
+  tip.position.set(0, -0.355, 0.055); tip.rotation.x = 0.3; SCAN_GUN.add(tip);
+  const red = new THREE.Mesh(new THREE.BoxGeometry(0.036, 0.004, 0.004), basic({ color: 0xff3b3b }));
+  red.position.set(0, -0.365, 0.08); SCAN_GUN.add(red);
+  SCAN_GUN.scale.setScalar(0.9);
   CLERK.j.elR.add(SCAN_GUN);
 }
 
@@ -2188,7 +2405,7 @@ const CUSTOMER = makePerson({
 CUSTOMER.root.position.set(4.1, 0, 6.9);
 CUSTOMER.root.rotation.y = Math.PI;
 SCENE.add(CUSTOMER.root);
-const PHONE = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.095, 0.012), std({ color: 0x1a1d22, roughness: .25, metalness: .5, envMapIntensity: .9 }));
+const PHONE = new THREE.Mesh(new THREE.BoxGeometry(0.038, 0.072, 0.01), std({ color: 0x1a1d22, roughness: .25, metalness: .5, envMapIntensity: .9 }));
 PHONE.position.set(0, -0.33, 0.05); PHONE.visible = false;
 CUSTOMER.j.elR.add(PHONE);
 
@@ -2255,11 +2472,11 @@ function updateClerk(dt, t) {
   c.j.shL.rotation.z = 0.05; c.j.shR.rotation.z = -0.05;
   if (CHECKOUT.active || (SHOT_LOCK && (VIEW === 'counter' || PAY_SHOT))) {
     const pulse = 0.5 + 0.5 * Math.sin(t * 7.5);
-    c.j.shR.rotation.x = -1.02 - pulse * 0.12;
-    c.j.shR.rotation.z = 0.1;
-    c.j.elR.rotation.x = -0.62 - pulse * 0.12;
-    c.j.shL.rotation.x = -0.22; c.j.elL.rotation.x = -0.95;
-    c.j.head.rotation.x = 0.2 + Math.sin(t * 4) * 0.02;
+    c.j.shR.rotation.x = -0.8 - pulse * 0.08;
+    c.j.shR.rotation.z = 0.08;
+    c.j.elR.rotation.x = -0.52 - pulse * 0.08;
+    c.j.shL.rotation.x = -0.18; c.j.elL.rotation.x = -0.95;
+    c.j.head.rotation.x = 0.16 + Math.sin(t * 4) * 0.02;
     c.j.head.rotation.y = 0.04;
     SCAN_GUN.visible = true;
   } else {
@@ -2827,28 +3044,34 @@ tw(SCENE.fog, 'color', new THREE.Color(0xcdd6dc), new THREE.Color(0x05070d));
 tw(SCENE.fog, 'near', 7, 4.5);
 tw(SCENE.fog, 'far', 34, 30);
 tw(SCENE, 'background', new THREE.Color(0xcdd6dc), new THREE.Color(0x05070d));
-tw(LIGHTS.hemi, 'intensity', 0.5, 0.16);
+tw(LIGHTS.hemi, 'intensity', 0.52, 0.11);
 tw(LIGHTS.hemi, 'color', new THREE.Color(0xcfe0f2), new THREE.Color(0x2b3a58));
 tw(LIGHTS.hemi, 'groundColor', new THREE.Color(0x7a6a58), new THREE.Color(0x120f0c));
-tw(LIGHTS.sun, 'intensity', 1.05, 0.16);
+tw(LIGHTS.sun, 'intensity', 1.12, 0.1);
 tw(LIGHTS.sun, 'color', new THREE.Color(0xffeed4), new THREE.Color(0x9db4dd));
 LIGHTS.ceiling.forEach((l, i) => {
-  tw(l, 'intensity', 1.0, 1.55 - i * 0.05);
+  tw(l, 'intensity', 1.0, 1.3 - i * 0.04);
   tw(l, 'color', new THREE.Color(0xffe6c2), new THREE.Color(0xffd7a0));
 });
-tw(LIGHTS.fridge, 'intensity', 1.1, 1.8);
+tw(LIGHTS.fridge, 'intensity', 1.3, 2.1);
 tw(LIGHTS.fridge, 'color', new THREE.Color(0x8fe4ff), new THREE.Color(0x7fe0ff));
-tw(LIGHTS.street, 'intensity', 0, 1.9);
-tw(LIGHTS.neonOut, 'intensity', 0, 1.8);
-tw(RENDERER, 'toneMappingExposure', 0.86, 1.06);
+tw(LIGHTS.street, 'intensity', 0, 2.1);
+tw(LIGHTS.neonOut, 'intensity', 0, 2.0);
+tw(RENDERER, 'toneMappingExposure', 0.88, 0.98);
 tw(STAR_MAT, 'opacity', 0, 0.95);
 tw(MOON_MAT, 'opacity', 0, 1);
 tw(SKY_UNI.top, 'value', new THREE.Color(0x8fb8e4), new THREE.Color(0x040814));
 tw(SKY_UNI.bottom, 'value', new THREE.Color(0xe6edf2), new THREE.Color(0x101a2c));
 tw(SKY_UNI.glow, 'value', new THREE.Color(0xfff0d8), new THREE.Color(0x1b2740));
-tw(NEON_MAT, 'opacity', 0.3, 0.95);
+tw(NEON_MAT, 'opacity', 0.5, 1.0);
+tw(NEON_ADD, 'opacity', 0.08, 0.28);
 tw(NEON_GLOW.material, 'opacity', 0.03, 0.24);
-tw(FLOOR.material, 'envMapIntensity', 0.5, 1.05);
+tw(SIDEWALK_MAT, 'color', new THREE.Color(0xffffff), new THREE.Color(0x71767d));
+tw(SIDEWALK_MAT, 'envMapIntensity', 0.55, 1.0);
+tw(ROAD_MAT, 'color', new THREE.Color(0xffffff), new THREE.Color(0xa9adb4));
+tw(ROAD_MAT, 'envMapIntensity', 0.7, 1.15);
+CLOUDS.forEach(c => tw(c.material, 'opacity', 0.42, 0));
+tw(FLOOR.material, 'envMapIntensity', 0.5, 1.15);
 tw(GLASS, 'envMapIntensity', 0.6, 1.1);
 tw(SIGN_GLOW.material, 'opacity', 0.08, 0.24);
 
@@ -2863,14 +3086,14 @@ function applyThemeInstant(night) {
   THEME_TARGET = night ? 1 : 0;
   THEME_T = THEME_TARGET;
   applyThemeT(THEME_T);
-  SCENE.environment = night ? ENV.night : ENV.day;
+  SCENE.environment = getEnv(night);
   updateThemeUI();
 }
 function toggleTheme() {
   if (SHOT_LOCK) return;
   const night = THEME_TARGET < 0.5;
   THEME_TARGET = night ? 1 : 0;
-  SCENE.environment = night ? ENV.night : ENV.day;
+  SCENE.environment = getEnv(night);
   updateThemeUI();
   showToast(night ? '深夜模式 · 霓虹与暖光' : '白天模式 · 自然采光', 1800);
 }
@@ -2940,13 +3163,13 @@ $('#prompt').addEventListener('click', tryCheckout);
    SHOT MODE (deterministic screenshots)
    ============================================================ */
 const SHOT_VIEWS = {
-  front: { pos: [1.35, 1.78, 8.75], look: [0.25, 2.15, 5.3] },
-  front2: { pos: [-2.6, 1.72, 8.3], look: [0.9, 1.95, 5.35] },
+  front: { pos: [1.15, 1.72, 12.7], look: [0.2, 2.7, 5.25] },
+  front2: { pos: [-3.4, 1.62, 10.6], look: [1.3, 2.2, 5.3] },
   door: { pos: [2.62, 1.62, 4.35], look: [-0.9, 1.12, -3.4] },
-  overview: { pos: [4.75, 2.55, 4.55], look: [0.1, 0.85, -2.6] },
-  inside: { pos: [3.55, 1.62, 3.85], look: [-2.8, 1.15, -1.7] },
-  fridge: { pos: [0.85, 1.62, -1.95], look: [-0.15, 1.12, -5.1] },
-  counter: { pos: [2.45, 1.62, 4.18], look: [4.85, 1.0, 2.5] }
+  overview: { pos: [1.7, 2.42, 4.05], look: [-0.6, 0.95, -3.3] },
+  inside: { pos: [0.35, 1.66, 0.3], look: [3.6, 1.28, 4.8] },
+  fridge: { pos: [1.95, 1.52, -3.15], look: [1.95, 1.15, -4.95] },
+  counter: { pos: [2.32, 1.62, 4.42], look: [4.95, 1.05, 2.5] }
 };
 let SHOT_LOCK = false;
 function poseShotPeople() {
@@ -2958,11 +3181,15 @@ function poseShotPeople() {
     CUSTOMER.root.rotation.y = Math.PI - 0.35;
     PHONE.visible = true;
   } else if (VIEW === 'fridge') {
-    CUSTOMER.root.position.set(2.1, 0, -3.0);
-    CUSTOMER.root.rotation.y = -2.3;
+    CUSTOMER.root.position.set(0.45, 0, -2.55);
+    CUSTOMER.root.rotation.y = Math.PI - 0.2;
+    PHONE.visible = false;
+  } else if (VIEW === 'inside') {
+    CUSTOMER.root.position.set(2.9, 0, 3.62);
+    CUSTOMER.root.rotation.y = 0.35;
     PHONE.visible = false;
   } else {
-    CUSTOMER.root.position.set(1.5, 0, 0.4);
+    CUSTOMER.root.position.set(2.25, 0, 1.15);
     CUSTOMER.root.rotation.y = -Math.PI / 2;
     PHONE.visible = false;
   }
@@ -3005,17 +3232,20 @@ function enterShotMode() {
   const e = new THREE.Euler().setFromQuaternion(CAMERA.quaternion, 'YXZ');
   PLAYER.yaw = e.y; PLAYER.pitch = e.x;
   // pose scene
-  FRIDGE.doors.forEach(d => { d.forceOpen = (VIEW === 'fridge' || VIEW === 'overview'); });
-  if (VIEW === 'fridge') {
-    FRIDGE.doors.forEach(d => { d.target = 1; d.open = 1; d.pivot.rotation.y = -1.78; });
+  FRIDGE.doors.forEach((d, i) => { d.forceOpen = ((VIEW === 'fridge' || VIEW === 'overview') && (i === 2 || i === 3)); });
+  if (VIEW === 'fridge' || VIEW === 'overview') {
+    FRIDGE.doors.forEach((d, i) => {
+      if (i === 2 || i === 3) { d.target = 1; d.open = 1; d.pivot.rotation.y = -1.78; }
+      else { d.target = 0; d.open = 0; d.pivot.rotation.y = 0; }
+    });
     FRIDGE.openAny = 1;
-    COLD.mat.opacity = 0.85;
+    COLD.mat.opacity = 0.5;
     for (let i = 0; i < COLD.N; i++) {
-      const door = FRIDGE.doors[i % FRIDGE.doors.length];
-      COLD.pos[i * 3] = door.cx + rr(-0.45, 0.45);
-      COLD.pos[i * 3 + 1] = rr(0.5, 2.3);
-      COLD.pos[i * 3 + 2] = FRIDGE.zFront + rr(-0.05, 0.45);
-      COLD.vel[i].x = rr(-0.15, 0.15); COLD.vel[i].y = rr(-0.25, -0.05); COLD.vel[i].z = rr(0.1, 0.4);
+      const door = FRIDGE.doors[2 + (i % 2)];
+      COLD.pos[i * 3] = door.cx + rr(-0.42, 0.42);
+      COLD.pos[i * 3 + 1] = rr(0.35, 1.8);
+      COLD.pos[i * 3 + 2] = FRIDGE.zFront + rr(0.12, 0.9);
+      COLD.vel[i].x = rr(-0.12, 0.12); COLD.vel[i].y = rr(-0.3, -0.12); COLD.vel[i].z = rr(0.2, 0.6);
       COLD.vel[i].life = 2;
     }
     COLD.posAttr.needsUpdate = true;
@@ -3048,7 +3278,7 @@ onFrame(function updateFx(dt, t) {
   // neon flicker at night
   if (THEME_T > 0.5) {
     const fl = 0.94 + Math.sin(t * 13.7) * 0.03 + (Math.sin(t * 31.1) > 0.96 ? -0.2 : 0);
-    NEON_MAT.opacity = clamp(THEME_T * 0.95 * fl, 0, 1);
+    NEON_MAT.opacity = clamp(THEME_T * fl, 0, 1);
   }
   if (FPS) {
     const pill = $('#fpsPill');
@@ -3062,12 +3292,13 @@ drawRegister();
 drawCustScreen();
 
 /* ---------------- boot ---------------- */
-SCENE.environment = ENV.day = buildEnv(false);
-ENV.night = buildEnv(true);
 applyThemeT(0);
 updateThemeUI();
-if (FORCE_LIGHT === 'night' && !SHOT) applyThemeInstant(true);
 if (SHOT) enterShotMode();
+else {
+  if (FORCE_LIGHT === 'night') applyThemeInstant(true);
+  else SCENE.environment = getEnv(false);
+}
 tick();
 </script>
 </body>

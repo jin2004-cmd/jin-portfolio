@@ -1119,6 +1119,10 @@ kbd{
       if (!G.heroDone && G.t >= 6) {
         var hb = Math.ceil(G.t / BEAT) + 1;
         var harr = hb * BEAT + 0.3;
+        // 清掉英雄瞬间附近的其它障碍，保证截图那一跳干净
+        G.obstacles = G.obstacles.filter(function (ob) {
+          return ob.arr < harr - 1.95 || ob.arr > harr + 0.4;
+        });
         G.obstacles.push({ arr: harr, type: 'rework', hit: false, auto: false, seed: 0.5 });
         addArc(harr, hb);
         G.heroDone = true;
