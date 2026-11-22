@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>厅 08 · 行业洞察 — 金佳信作品集</title>
+<meta name="description" content="两份自己做的行业调研：医疗投放的合规边界与账户诊断（报告体，法条可逐条核对），和海外短剧出海的七个市场。">
+<meta name="theme-color" content="#0A0B0D">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230A0B0D'/%3E%3Ctext x='16' y='21.5' font-family='monospace' font-size='12' font-weight='700' fill='%23E8B25C' text-anchor='middle'%3EJJ%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<link rel="stylesheet" href="../assets/css/zone.css">
+<style>
+  /* 本页补丁：报告封面示意、目录条与摘要卡 */
+  .doc{position:relative;display:flex;align-items:center;justify-content:center;padding:22px;background:linear-gradient(165deg,#15181c,#0b0d10)}
+  .doc::before{
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+    background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
+    background-size:40px 40px;
+  }
+  .mini{position:relative;z-index:1;width:100%;max-width:520px;border:1px solid var(--line);border-radius:2px;background:rgba(10,11,13,.62);padding:20px 22px}
+  .mini-label{display:flex;justify-content:space-between;gap:8px;font:500 9px/1 var(--mono);letter-spacing:.14em;color:var(--paper-3);text-transform:uppercase;margin-bottom:14px}
+  .mini-label b{color:var(--accent);font-weight:600}
+  .mini-title{font-family:var(--serif);font-size:20px;line-height:1.35;color:var(--paper);margin:0 0 12px}
+  .mini-line{height:4px;border-radius:2px;background:rgba(242,237,228,.16);margin:6px 0}
+  .mini-line.w1{width:92%}
+  .mini-line.w2{width:78%}
+  .mini-line.w3{width:64%}
+  .mini-quote{border-left:2px solid var(--accent-line);padding:6px 0 6px 12px;margin:14px 0 4px}
+  .mini-quote span{display:block;height:4px;border-radius:2px;background:rgba(232,178,92,.35);margin:5px 0}
+  .mini-quote span:nth-child(2){width:76%}
+  .mini-quote span:nth-child(3){width:52%}
+  .m-seven{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:4px}
+  .m-seven i{font:500 8.5px/1.5 var(--mono);letter-spacing:.04em;color:var(--paper-3);border:1px solid var(--line-soft);border-radius:2px;padding:5px 4px;text-align:center;font-style:normal}
+  .m-seven i:first-child{color:var(--accent);border-color:var(--accent-line)}
+  .toc{margin:6px 0 0;border-top:1px solid var(--line-soft)}
+  .toc a{display:flex;align-items:baseline;gap:14px;padding:11px 4px;border-bottom:1px solid var(--line-soft);transition:background .2s var(--ease)}
+  .toc a:hover{background:rgba(242,237,228,.03)}
+  .toc .no{font:500 10px/1 var(--mono);letter-spacing:.12em;color:var(--accent);flex:0 0 30px}
+  .toc .tt{font-size:13.5px;color:var(--paper-2)}
+  .toc a:hover .tt{color:var(--paper)}
+  .toc .pg{margin-left:auto;font:500 9.5px/1 var(--mono);letter-spacing:.08em;color:var(--paper-3)}
+  .page-note{margin:0 0 20px;padding-left:16px;border-left:2px solid var(--accent-line);color:var(--paper-3);font-size:12.5px;line-height:1.9}
+  .page-note b{color:var(--paper-2)}
+  .read-more{display:inline-flex;align-items:center;gap:7px;margin-top:6px;font-size:12.5px;font-weight:600;color:var(--accent)}
+  .read-more svg{width:12px;height:12px}
+  .sum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:20px}
+  .sum{border:1px solid var(--line-soft);border-radius:3px;background:var(--ink-2);padding:20px 20px 18px;display:flex;flex-direction:column;gap:9px}
+  .sum-tag{font:500 9.5px/1 var(--mono);letter-spacing:.14em;color:var(--accent)}
+  .sum h3{margin:0;font-size:15.5px;font-weight:700}
+  .sum p{margin:0;color:var(--paper-3);font-size:12.5px;line-height:1.8}
+  @media (max-width:1024px){ .sum-grid{grid-template-columns:1fr} }
+  @media (max-width:820px){ .m-seven{grid-template-columns:repeat(3,1fr)} .doc{padding:14px} }
+</style>
+<script>
+  document.documentElement.classList.add('js');
+  if (/(?:^|[?&])anim=0/.test(location.search) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('no-anim');
+  }
+  if (/(?:^|[?&])shot=1/.test(location.search)) {
+    document.documentElement.classList.add('no-anim', 'shot');
+  }
+</script>
+</head>
+<body id="top">
+
+<div class="grain" aria-hidden="true"></div>
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <div class="shell nav-in">
+    <a class="brand" href="../index.html" aria-label="回到大厅">
+      <span class="brand-mark">JJ</span>
+      <span class="brand-txt"><b>金佳信</b><span>Portfolio · 2027</span></span>
+    </a>
+    <nav class="nav-links" aria-label="八厅导航">
+      <a href="operations.html"><i>01</i>运营中枢</a>
+      <a href="film.html"><i>02</i>影像放映</a>
+      <a href="brand.html"><i>03</i>品牌出海</a>
+      <a href="growth.html"><i>04</i>增长投流</a>
+      <a href="tools.html"><i>05</i>AI 工具台</a>
+      <a href="games.html"><i>06</i>游戏实验室</a>
+      <a href="model.html"><i>07</i>建模工坊</a>
+      <a href="insight.html" class="on"><i>08</i>行业洞察</a>
+    </nav>
+    <div class="nav-side"><a class="kbd-btn" href="../index.html">回大厅 <kbd>Esc</kbd></a></div>
+  </div>
+</header>
+
+<main>
+
+<section class="zone-head">
+  <div class="shell">
+    <div class="zh-crumb">
+      <a href="../index.html">大厅</a><i>/</i><span>厅 08</span><i>/</i><span>行业洞察</span>
+    </div>
+    <div class="zh-row">
+      <div>
+        <span class="zh-no">HALL 08 — INSIGHT</span>
+        <h1 class="zh-title">行业洞察</h1>
+        <p class="zh-en">Two industry studies, written from scratch</p>
+        <p class="zh-lede">面试官常问我一句「你了解我们行业吗」。与其现场解释，不如把调研直接放出来。<b>这两份都是从公开 JD、法规原文和公开报告里扒出来的</b>：一份讲医疗投放的合规边界和账户诊断，一份讲海外短剧的七个市场。能查到出处的都标了出处，查不到的就写查不到，不编数字。</p>
+      </div>
+      <div class="zh-side">
+        <div class="zh-cnt">2<span>件 · ITEMS</span></div>
+        <nav class="zh-nav" aria-label="同厅快速跳转"><a href="#medical" class="on">医疗投放</a><a href="#drama">海外短剧</a></nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="zsec">
+  <div class="shell">
+    <div class="evidence" data-reveal>
+      <div class="ev"><b>2<em>份</em></b><span>自己做的调研报告</span></div>
+      <div class="ev"><b>7<em>个</em></b><span>短剧区域市场</span></div>
+      <div class="ev"><b>8<em>项</em></b><span>医疗广告白名单</span></div>
+      <div class="ev"><b>0<em>条</em></b><span>编造数据</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="zsec" id="medical">
+  <div class="shell">
+    <div class="zsec-head" data-reveal>
+      <h2 class="zsec-title">要线索量，又不能踩线</h2>
+      <p class="zsec-note">INSIGHT-01 · 行业调研 · <b>报告体 · 可打印</b></p>
+    </div>
+
+    <div class="ex-grid">
+      <article class="ex ex-lg" data-reveal>
+        <a class="ex-media doc" href="../reports/medical-ad-ops.html">
+          <div class="mini">
+            <div class="mini-label"><span><b>INSIGHT-01</b> · 2026.11</span><span>个人研究</span></div>
+            <p class="mini-title">医疗行业投放：<br>合规边界与账户诊断</p>
+            <div class="mini-line w1"></div>
+            <div class="mini-line w2"></div>
+            <div class="mini-line w3"></div>
+            <div class="mini-quote"><span></span><span></span><span></span></div>
+          </div>
+          <span class="plaque"><b>INSIGHT-01</b><span>调研 · 8 节</span></span>
+        </a>
+        <div class="ex-body">
+          <h3 class="ex-title">生活服务 · 医疗行业投放调研</h3>
+          <p class="ex-desc">从一张公开 JD 出发，把医疗机构在平台上投广告这件事拆开：客户是谁、决策链长什么样、为什么「要线索量」和「不踩合规线」天然打架、法规到底卡在哪几条、账户出问题从哪四层往下查。法条全部按原文引，标了条款号，能逐条核对。</p>
+          <div class="ex-chips"><span class="chip">资质三道门</span><span class="chip">广告法第 16 条</span><span class="chip">8 项白名单</span><span class="chip">诊断四层法</span></div>
+          <div class="ex-foot">
+            <a class="ex-open" href="../reports/medical-ad-ops.html">打开报告
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg>
+            </a>
+            <span class="ex-alt">HTML · 可打印</span>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <p class="page-note" data-reveal>
+      <b>标注先说清：</b>个人研究 · 基于公开 JD 与法规原文整理 · 不含客户数据。行业规模、客单价、投放成本这类数字我一概没写——手上没有能公开引用的信源，写区间就是编，宁可空着。<br>
+      报告是「报告体」不是面试稿：有目录、有分节、能打印，法规条款一字没改，附录里列了每一条的出处。
+    </p>
+
+    <p class="mini-label" data-reveal style="display:flex;max-width:100%;margin:26px 0 0;padding:0 2px"><span><b>报告目录</b></span><span>8 节 · 点开直达</span></p>
+    <nav class="toc" aria-label="报告目录" data-reveal>
+      <a href="../reports/medical-ad-ops.html#s1"><span class="no">01</span><span class="tt">行业与平台背景：这个岗位到底在干什么</span><span class="pg">背景</span></a>
+      <a href="../reports/medical-ad-ops.html#s2"><span class="no">02</span><span class="tt">客户画像与决策链：五类机构，一条链</span><span class="pg">客户</span></a>
+      <a href="../reports/medical-ad-ops.html#s3"><span class="no">03</span><span class="tt">核心矛盾：越想要线索，越容易踩线</span><span class="pg">矛盾</span></a>
+      <a href="../reports/medical-ad-ops.html#s4"><span class="no">04</span><span class="tt">合规框架：资质、8 项白名单、广告法第 16 条、医美红线、科普边界</span><span class="pg">合规</span></a>
+      <a href="../reports/medical-ad-ops.html#s5"><span class="no">05</span><span class="tt">投放诊断四层法：消耗、成本、素材、承接</span><span class="pg">诊断</span></a>
+      <a href="../reports/medical-ad-ops.html#s6"><span class="no">06</span><span class="tt">我能迁移过来的能力，和还缺的那块</span><span class="pg">能力</span></a>
+      <a href="../reports/medical-ad-ops.html#s7"><span class="no">07</span><span class="tt">方法论收口：把规则变成清单</span><span class="pg">收口</span></a>
+      <a href="../reports/medical-ad-ops.html#s8"><span class="no">08</span><span class="tt">附录：来源清单、研究边界、自我说明</span><span class="pg">附录</span></a>
+    </nav>
+  </div>
+</section>
+
+
+<section class="zsec" id="drama">
+  <div class="shell">
+    <div class="zsec-head" data-reveal>
+      <h2 class="zsec-title">七个市场的口味差在哪</h2>
+      <p class="zsec-note">INSIGHT-02 · 行业调研 · <b>PDF 可直开</b></p>
+    </div>
+
+    <div class="ex-grid">
+      <article class="ex ex-lg" data-reveal>
+        <a class="ex-media doc" href="../pdf/海外短剧出海市场调研报告-金佳信-2026-11.pdf" target="_blank" rel="noopener">
+          <div class="mini">
+            <div class="mini-label"><span><b>INSIGHT-02</b> · 2026.11</span><span>市场调研</span></div>
+            <p class="mini-title">海外短剧出海<br>市场调研</p>
+            <div class="m-seven"><i>北美</i><i>欧洲</i><i>东南亚</i><i>拉美</i><i>中东</i><i>日韩</i><i>印度</i><i>+ 大盘</i></div>
+            <div class="mini-quote"><span></span><span></span><span></span></div>
+          </div>
+          <span class="plaque"><b>INSIGHT-02</b><span>调研 · 7 市场</span></span>
+        </a>
+        <div class="ex-body">
+          <h3 class="ex-title">海外短剧出海市场调研</h3>
+          <p class="ex-desc">收入和下载是错位的：发达市场出钱、新兴市场出量。报告从这一条推下去，逐块拆文化成因、题材偏好和宗教文化红线，再落到内容形态、平台格局、社媒引流漏斗和选题模板。十节，PDF 十八页。</p>
+          <div class="ex-chips"><span class="chip">7 个区域</span><span class="chip">题材适配矩阵</span><span class="chip">六步调研法</span><span class="chip">前 3 秒钩子模板</span></div>
+          <div class="ex-foot">
+            <a class="ex-open" href="../pdf/海外短剧出海市场调研报告-金佳信-2026-11.pdf" target="_blank" rel="noopener">打开 PDF
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3.5 12.5 12.5 3.5M6 3.5h6.5V10"/></svg>
+            </a>
+            <span class="ex-alt">PDF · 十八页</span>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="sum-grid" data-reveal>
+      <div class="sum">
+        <span class="sum-tag">MARKET / 7</span>
+        <h3>七个区域，逐个看</h3>
+        <p>北美钱最多也最卷，做北美基本等于做品牌；欧洲要按语区分别本地化；东南亚走量、付费薄，宗教红线要小心；拉美增速最猛但付费弱；中东付费不差、审查最密；日韩本土内容强，算竞争者；印度下载量大、收入极低，适合试题材。</p>
+      </div>
+      <div class="sum">
+        <span class="sum-tag">MATRIX / 母题 × 题材</span>
+        <h3>题材适配矩阵</h3>
+        <p>同一个母题换市场就要重想：霸总在巴西是豪门情感剧的延续，在东南亚得做成轻冲突甜宠，到中东亲密戏要整段改掉。矩阵把「市场母题 × 题材 × 宗教文化红线」排在一起，标出哪些能直接拍、哪些必须改设定。</p>
+      </div>
+      <div class="sum">
+        <span class="sum-tag">METHOD / 6 STEP</span>
+        <h3>六步调研法</h3>
+        <p>先立问题（钱在哪、量在哪、内容怎么改、人怎么被拉进 App）→ 排市场优先级 → 盯应用商店榜单和下载趋势 → 逐条拆头部爆款的前三秒钩子 → 翻评论区找真实需求 → 落成一张能直接派活的选题表。</p>
+      </div>
+    </div>
+
+    <p class="page-note" data-reveal>
+      这份报告里的市场规模、份额、单次下载收入都标了来源（DataEye、Sensor Tower 等公开报告）；远期预测写了「方向性判断，别当精确值用」，没有把预估当事实。
+    </p>
+  </div>
+</section>
+
+</main>
+
+<nav class="zone-next" aria-label="上下厅">
+  <a class="zn-card" href="model.html"><em>← 上一厅</em><b>07 建模工坊</b><span>一间能走进去的便利店</span></a>
+  <a class="zn-card rt" href="operations.html"><em>下一厅 →</em><b>01 运营中枢</b><span>工作台 · SOP · 方法论</span></a>
+</nav>
+
+<footer class="foot">
+  <div class="shell foot-in">
+    <span>© 2026 金佳信 · Jackson Jin</span>
+    <span class="foot-links"><a href="../index.html">大厅</a><a href="../index.html#crown">镇馆之宝</a><a href="../invite.html">邀请函</a></span>
+    <a class="to-top" href="#top">回到厅顶
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5"/></svg>
+    </a>
+  </div>
+</footer>
+
+<script src="../assets/js/hall-v2.js" defer></script>
+</body>
+</html>

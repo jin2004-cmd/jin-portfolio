@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>医疗行业投放调研：合规边界与账户诊断 — 金佳信 · 个人研究</title>
+<meta name="description" content="个人研究：医疗行业广告投放的合规框架与账户诊断。法规条款按原文引用并标注条款号，基于公开 JD 与法规原文整理，不含客户数据。">
+<meta name="theme-color" content="#0A0B0D">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230A0B0D'/%3E%3Ctext x='16' y='21.5' font-family='monospace' font-size='12' font-weight='700' fill='%23E8B25C' text-anchor='middle'%3EJJ%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/css/tokens.css">
+<style>
+  /* ── 报告页专用样式：屏幕沿用站内深墨底，打印自动转白底 ── */
+  *,*::before,*::after{box-sizing:border-box}
+  body{
+    margin:0;background:var(--ink);color:var(--paper);
+    font-family:var(--sans);font-size:16px;line-height:1.78;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--accent);color:var(--ink)}
+
+  /* 顶栏 */
+  .r-top{
+    position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:16px;
+    min-height:56px;padding:0 22px;background:rgba(10,11,13,.86);
+    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line-soft);
+    font:500 11px/1.4 var(--mono);letter-spacing:.06em;color:var(--paper-3);
+  }
+  .r-top a:hover{color:var(--accent)}
+  .r-top-meta{display:none}
+  .r-print{
+    margin-left:auto;padding:7px 12px;border:1px solid var(--line);border-radius:4px;
+    background:none;color:var(--paper-2);font:500 11px/1 var(--mono);letter-spacing:.04em;cursor:pointer;
+  }
+  .r-print:hover{border-color:var(--accent-line);color:var(--accent)}
+  @media (min-width:760px){ .r-top-meta{display:block;margin-left:auto} .r-print{margin-left:0} }
+
+  .r-wrap{max-width:880px;margin:0 auto;padding:0 26px}
+
+  /* 报告头 */
+  .r-head{padding:clamp(48px,8vw,84px) 0 clamp(26px,4vw,38px);border-bottom:1px solid var(--line)}
+  .r-kicker{font:600 10.5px/1.5 var(--mono);letter-spacing:.2em;color:var(--accent);text-transform:uppercase;margin:0 0 24px}
+  .r-head h1{font-family:var(--serif);font-size:clamp(29px,4.8vw,48px);line-height:1.2;margin:0;font-weight:700;letter-spacing:.01em}
+  .r-sub{margin:20px 0 0;font-size:15.5px;line-height:1.9;color:var(--paper-2);max-width:42em}
+  .r-meta{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0}
+  .r-meta span{
+    font:500 10px/1.5 var(--mono);letter-spacing:.05em;color:var(--paper-3);
+    border:1px solid var(--line-soft);border-radius:2px;padding:6px 9px;
+  }
+  .r-meta span:first-child{color:var(--accent);border-color:var(--accent-line)}
+  .r-abstract{
+    margin:30px 0 0;padding:18px 20px;border-left:2px solid var(--accent-line);
+    background:var(--ink-2);color:var(--paper-2);font-size:14px;line-height:1.95;border-radius:0 3px 3px 0;
+  }
+  .r-abstract p{margin:0 0 9px}
+  .r-abstract p:last-child{margin:0}
+  .r-abstract b{color:var(--paper)}
+
+  /* 目录 */
+  .r-toc{margin:34px 0 0;border:1px solid var(--line-soft);background:var(--ink-2);border-radius:3px;padding:16px 22px 8px}
+  .r-toc-head{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 10px;font:600 10.5px/1 var(--mono);letter-spacing:.18em;color:var(--accent);text-transform:uppercase}
+  .r-toc-head span{color:var(--paper-3);font-weight:500;letter-spacing:.1em}
+  .r-toc ol{list-style:none;margin:0;padding:0}
+  .r-toc > ol > li{border-top:1px solid var(--line-soft)}
+  .r-toc a{display:flex;align-items:baseline;gap:12px;padding:9px 2px;font-size:13.5px;color:var(--paper-2)}
+  .r-toc a:hover{color:var(--accent)}
+  .r-toc i{font:500 10px/1 var(--mono);letter-spacing:.1em;color:var(--paper-3);font-style:normal;flex:0 0 26px}
+  .r-toc a:hover i{color:var(--accent)}
+  .r-toc-sub{list-style:none;margin:0 0 2px;padding:0 0 4px 38px}
+  .r-toc-sub li{display:inline-block;margin:0 14px 4px 0}
+  .r-toc-sub a{padding:2px 0;font-size:11.5px;color:var(--paper-3);display:inline}
+  .r-toc-sub a:hover{color:var(--accent)}
+
+  /* 正文分节 */
+  .r-sec{padding:clamp(42px,5.5vw,60px) 0;border-top:1px solid var(--line-soft)}
+  .r-sec h2{font-family:var(--serif);font-size:clamp(23px,2.8vw,32px);line-height:1.32;margin:0 0 18px;display:flex;gap:14px;align-items:baseline;font-weight:700}
+  .r-no{font:600 11px/1 var(--mono);letter-spacing:.12em;color:var(--accent);flex:0 0 auto}
+  .r-sec h3{font-size:16px;font-weight:700;margin:32px 0 11px;color:var(--paper);letter-spacing:.01em}
+  .r-sec h3:first-of-type{margin-top:6px}
+  .r-lead{font-size:14.5px;line-height:1.95;color:var(--paper-2);margin:0 0 22px;max-width:44em}
+  .r-sec p{margin:0 0 14px;color:var(--paper-2);font-size:14px;line-height:1.92}
+  .r-sec p b,.r-sec li b{color:var(--paper);font-weight:600}
+  .r-sec ul,.r-sec ol{margin:0 0 16px;padding-left:22px;color:var(--paper-2);font-size:14px;line-height:1.9}
+  .r-sec li{margin:6px 0}
+  .r-dim{color:var(--paper-3);font-size:12.5px;line-height:1.85}
+
+  /* 法条引用 */
+  .r-law{border-left:2px solid var(--accent-line);background:var(--ink-2);padding:16px 18px;margin:16px 0;border-radius:0 3px 3px 0}
+  .r-law p{margin:0 0 7px;font-size:13.5px;line-height:1.95;color:var(--paper-2)}
+  .r-law p:last-of-type{margin:0}
+  .r-law cite{display:block;margin-top:11px;font:500 10px/1.6 var(--mono);letter-spacing:.05em;color:var(--paper-3);font-style:normal}
+
+  /* 表格 */
+  .r-table{width:100%;border-collapse:collapse;margin:16px 0 10px;font-size:13px;line-height:1.75}
+  .r-table th,.r-table td{border:1px solid var(--line-soft);padding:10px 12px;text-align:left;vertical-align:top}
+  .r-table thead th{background:var(--ink-3);font-size:12px;color:var(--paper);font-weight:600;white-space:nowrap}
+  .r-table td{color:var(--paper-2)}
+  .r-table td b{color:var(--paper)}
+  .r-table .num{font-family:var(--mono);color:var(--accent);white-space:nowrap}
+  .r-tbl-cap{margin:18px 0 8px;font:500 10.5px/1.6 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--paper-3)}
+  .r-tbl-cap b{color:var(--accent)}
+
+  /* 卡片 / 提示 */
+  .r-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0 6px}
+  .r-card{border:1px solid var(--line-soft);border-radius:3px;padding:16px 16px 15px;background:var(--ink-2)}
+  .r-card h4{margin:0 0 8px;font-size:13.5px;color:var(--paper);letter-spacing:.01em}
+  .r-card p{margin:0;font-size:12.5px;line-height:1.82;color:var(--paper-3)}
+  .r-warn{border:1px solid var(--line-soft);border-left:2px solid var(--warn);padding:14px 16px;margin:16px 0;font-size:13px;line-height:1.9;color:var(--paper-2);border-radius:0 3px 3px 0}
+  .r-warn b{color:var(--warn)}
+  .r-check{list-style:none;padding:0;margin:14px 0 6px;display:grid;grid-template-columns:1fr 1fr;gap:8px 20px}
+  .r-check li{position:relative;padding-left:22px;font-size:13px;color:var(--paper-2);line-height:1.7;margin:0}
+  .r-check li::before{content:"";position:absolute;left:0;top:.42em;width:10px;height:10px;border:1px solid var(--accent-line);border-radius:2px}
+
+  /* 页脚 */
+  .r-foot{border-top:1px solid var(--line);padding:28px 0 70px;color:var(--paper-3);font-size:12px;line-height:1.9}
+  .r-foot b{color:var(--paper-2)}
+  .r-back{display:inline-flex;align-items:center;gap:7px;color:var(--accent);font-size:13px;font-weight:600;margin-bottom:8px}
+
+  /* 响应式 */
+  @media (max-width:1024px){ .r-cards{grid-template-columns:1fr} }
+  @media (max-width:760px){
+    .r-wrap{padding:0 20px}
+    .r-table{font-size:12px}
+    .r-table th,.r-table td{padding:8px 9px}
+    .r-check{grid-template-columns:1fr}
+    .r-toc-sub{padding-left:26px}
+  }
+
+  /* ── 打印：白底黑字、A4、避免表格/引用被切断 ── */
+  @media print{
+    @page{size:A4;margin:16mm 15mm 15mm}
+    html,body{background:#fff!important;color:#111!important}
+    .r-top,.r-print{display:none!important}
+    .r-wrap{max-width:none;padding:0}
+    .r-head{padding:0 0 7mm;border-bottom:1.5pt solid #1a1a1a}
+    .r-kicker{color:#8a6a20}
+    .r-head h1{font-size:25pt;color:#111}
+    .r-sub{font-size:11pt;color:#333}
+    .r-meta span{color:#444;border-color:#bbb}
+    .r-meta span:first-child{color:#8a6a20;border-color:#c9a556}
+    .r-abstract{background:#f7f3ea;border-left:2pt solid #b8912f;color:#222}
+    .r-abstract b{color:#111}
+    .r-toc{background:#faf8f4;border-color:#ccc;page-break-inside:avoid}
+    .r-toc a,.r-toc i,.r-toc-sub a{color:#333}
+    .r-toc > ol > li{border-top-color:#ddd}
+    .r-sec{padding:7mm 0;border-top:1px solid #ddd;page-break-inside:auto}
+    .r-sec h2{font-size:16pt;color:#111;page-break-after:avoid}
+    .r-sec h3{font-size:11.5pt;color:#111;page-break-after:avoid;margin:5mm 0 2mm}
+    .r-no{color:#8a6a20}
+    .r-lead,.r-sec p,.r-sec ul,.r-sec ol{color:#222;font-size:10.2pt;line-height:1.75}
+    .r-sec p b,.r-sec li b{color:#111}
+    .r-dim{color:#555;font-size:9pt}
+    .r-law{background:#faf7f0;border-left:2pt solid #b8912f;page-break-inside:avoid}
+    .r-law p{color:#222;font-size:9.8pt}
+    .r-law cite{color:#666}
+    .r-table{font-size:8.8pt;page-break-inside:avoid}
+    .r-table th,.r-table td{border-color:#c8c2b6;color:#222;padding:2mm 2.4mm}
+    .r-table thead th{background:#efe9dd;color:#111}
+    .r-table .num{color:#8a6a20}
+    .r-cards,.r-warn,.r-check,.r-tbl-cap{page-break-inside:avoid}
+    .r-card{background:#faf8f4;border-color:#ccc}
+    .r-card h4{color:#111}
+    .r-card p{color:#333}
+    .r-warn{border-color:#ccc;border-left:2pt solid #b8862f;color:#222}
+    a{color:#111!important}
+    a[href^="http"]::after{content:" (" attr(href) ")";font-size:7.6pt;color:#666;word-break:break-all}
+    .r-foot{page-break-before:avoid;color:#555;padding:6mm 0 0;border-top:1px solid #ccc}
+    .r-foot b{color:#333}
+  }
+</style>
+</head>
+<body>
+
+<header class="r-top">
+  <a href="../zones/insight.html">← 回厅 08 行业洞察</a>
+  <span class="r-top-meta">个人研究 · 不含客户数据 · 2026.11</span>
+  <button class="r-print" id="printBtn" type="button">打印 / 存 PDF</button>
+</header>
+
+<main class="r-wrap">
+
+<header class="r-head">
+  <p class="r-kicker">INSIGHT-01 · 生活服务 · 医疗行业投放</p>
+  <h1>医疗行业投放：<br>合规边界与账户诊断</h1>
+  <p class="r-sub">一个效果广告投放从业者的行业调研笔记。从一张公开 JD 出发，看法条、看客户、看账户。</p>
+  <div class="r-meta">
+    <span>个人研究 · 基于公开 JD 与法规原文整理 · 不含客户数据</span>
+    <span>金佳信 · 2026.11</span>
+    <span>8 节 · 约 25 分钟</span>
+    <span>法规引用截至 2026-11</span>
+  </div>
+  <div class="r-abstract">
+    <p><b>先说结论。</b>医疗机构投放，难的不是把广告投出去，是投出去之后还站得住。机构想说的是疗效、专家、价格；平台能放的是过了审核的表达；监管允许的只有登记信息和一点科普空间。行业运营夹在中间，价值就在把这三者捏成一条能跑量的素材，同时盯着账户别空烧钱。</p>
+    <p>这份报告按八节走：岗位和平台背景、客户画像与决策链、核心矛盾、合规框架、投放诊断四层法、我能迁移过来的能力、方法论收口、来源与边界。<b>所有法规条款按原文引用并标注条款号，数字一个没改；不含任何客户数据。</b></p>
+  </div>
+</header>
+
+<nav class="r-toc" aria-label="报告目录">
+  <p class="r-toc-head">目录 <span>CONTENTS</span></p>
+  <ol>
+    <li><a href="#s1"><i>01</i><span>行业与平台背景：这个岗位到底在干什么</span></a></li>
+    <li><a href="#s2"><i>02</i><span>客户画像与决策链：五类机构，一条链</span></a></li>
+    <li><a href="#s3"><i>03</i><span>核心矛盾：越想要线索，越容易踩线</span></a></li>
+    <li>
+      <a href="#s4"><i>04</i><span>合规框架：五道必须过的关</span></a>
+      <ul class="r-toc-sub">
+        <li><a href="#s4-1">4.1 资质三道门</a></li>
+        <li><a href="#s4-2">4.2 医疗广告只能写这 8 项</a></li>
+        <li><a href="#s4-3">4.3《广告法》第 16 条：四条禁令</a></li>
+        <li><a href="#s4-4">4.4 医美特有的红线</a></li>
+        <li><a href="#s4-5">4.5 健康科普与变相广告</a></li>
+      </ul>
+    </li>
+    <li><a href="#s5"><i>05</i><span>投放诊断四层法：消耗、成本、素材、承接</span></a></li>
+    <li><a href="#s6"><i>06</i><span>我能迁移过来的能力，和还缺的那块</span></a></li>
+    <li><a href="#s7"><i>07</i><span>方法论收口：把规则变成清单</span></a></li>
+    <li><a href="#s8"><i>08</i><span>附录：来源清单、研究边界、自我说明</span></a></li>
+  </ol>
+</nav>
+
+<section class="r-sec" id="s1">
+  <h2><span class="r-no">01</span>行业与平台背景：这个岗位到底在干什么</h2>
+  <p class="r-lead">这一节只讲两件事：这个岗位在什么平台上、对谁负责；以及我为什么不写行业规模数字。</p>
+
+  <h3>岗位从哪来：一张公开 JD</h3>
+  <p>2026 年 11 月，快手官网在招「行业运营实习生（医疗机构）-【生活服务】」，市场类。JD 职责四条，我照录下来，不改写：</p>
+  <div class="r-law">
+    <p>① 医疗机构行业客户运营：结合平台流量资源和产品制定投放策略方案，指导客户高效管理投放账户，提供及时分析和诊断、定位并解决投放问题</p>
+    <p>② 探索不同阶段产品策略应用，打造细分行业营销场景下的最优产品组合，与内部产研团队协同推动行业广告投放专项进展和能力提升</p>
+    <p>③ 了解行业趋势，洞察客户目标和需求，分析行业/赛道/广告主痛点，挖掘增长点，沉淀行业优化方法论和案例并推进泛化应用</p>
+    <p>④ 高效协同内外部资源，横向主R专项，协助 team leader 完成行业业绩指标</p>
+    <cite>来源：快手官网招聘页 · 行业运营实习生（医疗机构）-【生活服务】· 2026-11 查阅</cite>
+  </div>
+  <p>要求四条：在读本科及以上；每周出勤 4 天以上、实习 3 个月以上；熟练使用 Excel、PPT、长图海报软件；主动性与学习力、文字能力、沟通力，有在校组织管理及活动统筹经验者优先。</p>
+  <p>把 JD 翻译成日常，就是下面四件事：</p>
+  <table class="r-table">
+    <caption class="r-tbl-cap">JD 职责 → <b>落到每天的动作</b></caption>
+    <thead><tr><th>JD 里的职责</th><th>日常对应什么</th></tr></thead>
+    <tbody>
+      <tr><td><b>制定投放策略、指导管理账户、分析诊断</b></td><td>接 brief、看账户报表、定位问题、给客户一版能执行的调整方案</td></tr>
+      <tr><td><b>探索产品组合、与产研协同推专项</b></td><td>不同阶段的客户配不同产品：冷启动期先跑表单还是先跑私信，成长期要不要加直播</td></tr>
+      <tr><td><b>分析行业痛点、方法论泛化</b></td><td>把一个客户的案例拆成可复制的打法，写成别的客户也能用的清单</td></tr>
+      <tr><td><b>横向主 R 专项、对行业业绩指标负责</b></td><td>不是交了素材就完事，要盯客户消耗和行业数字；跨部门拉资源</td></tr>
+    </tbody>
+  </table>
+  <p><b>一句话定性：</b>这是生活服务线的广告投流运营岗，不是内容入驻审核岗。客户是医疗机构广告主，活是帮他们在平台把广告投好——定策略、看数据、诊断问题、给方案，再把跑出来的经验写成方法。</p>
+
+  <h3>平台与四种投放形态</h3>
+  <p>平台是磁力引擎，快手的信息流广告投放平台。医疗健康类客户以本地生活服务商家为主，投放形态和考核口径大概四种：</p>
+  <table class="r-table">
+    <thead><tr><th>形态</th><th>主要考核什么</th><th>常见问题</th></tr></thead>
+    <tbody>
+      <tr><td><b>表单（留资）</b></td><td>表单成本、线索有效率</td><td>成本低但线索质量差；表单来了没人接</td></tr>
+      <tr><td><b>私信</b></td><td>开口率、留资率、回复时长</td><td>素材把人骗进来，私信话术接不住</td></tr>
+      <tr><td><b>直播</b></td><td>进入成本、平均停留、留资</td><td>直播间没内容，进来就走；脚本不合规</td></tr>
+      <tr><td><b>团购 / 到店券</b></td><td>核销率、到店率</td><td>券卖出去了没人核销；低价套餐拉来的不是目标客</td></tr>
+    </tbody>
+  </table>
+
+  <h3>事实纪律：这份报告为什么不写大盘数字</h3>
+  <p>行业报告常见的写法是先摆规模、增速、渗透率。这里不摆，原因是<b>我手上没有能公开引用的权威信源</b>，不同机构的数差得也远，写一个区间出来等于编了一个看起来专业的数。</p>
+  <p>所以这份报告里出现的每个数字，都能回到两类出处：JD 里的条数，或者法规条款里的条款号和白名单项数。<b>宁可短，不编数。</b></p>
+</section>
+
+
+<section class="r-sec" id="s2">
+  <h2><span class="r-no">02</span>客户画像与决策链：五类机构，一条链</h2>
+  <p class="r-lead">医疗客户都是 B 端生意，但掏钱的是 C 端用户。所以看客户要同时看两条链：机构内部的决策链，和机构到患者的转化链。</p>
+
+  <h3>五类机构，诉求不一样</h3>
+  <table class="r-table">
+    <caption class="r-tbl-cap">客户类型 · <b>投放项目 / 周期 / 目标 / 最易踩线的点</b></caption>
+    <thead><tr><th>类型</th><th>典型投放项目</th><th>决策周期</th><th>投放目标</th><th>最容易踩线的点</th></tr></thead>
+    <tbody>
+      <tr><td><b>口腔</b></td><td>种植、正畸、儿童齿科</td><td>长（比价、看案例）</td><td>到店咨询、留电话</td><td>疗效承诺、价格对比</td></tr>
+      <tr><td><b>眼科</b></td><td>近视手术、OK 镜、白内障</td><td>中</td><td>预约检查</td><td>向未成年人营销、绝对化用语</td></tr>
+      <tr><td><b>医美</b></td><td>注射、光电、整形</td><td>短（冲动 + 复购）</td><td>私信、到店</td><td>容貌焦虑、案例对比照、代言</td></tr>
+      <tr><td><b>体检</b></td><td>个人套餐、企业团检</td><td>中（季节性强）</td><td>团购券、预约</td><td>夸大检出率、价格误导</td></tr>
+      <tr><td><b>中医</b></td><td>理疗、调理、膏方</td><td>长（口碑驱动）</td><td>到店、加微信</td><td>宣称治愈慢性病、专家包装</td></tr>
+    </tbody>
+  </table>
+  <p class="r-dim">这张表里写的是「最容易出问题的地方」，不是「客户一定会出问题」。实际每一家的合规底线由它的资质范围和当地监管口径决定，不能按类型一刀切。</p>
+
+  <h3>决策链：谁掏钱、谁签字、谁接线索</h3>
+  <table class="r-table">
+    <thead><tr><th>角色</th><th>关心什么</th><th>跟他说话的正确方式</th></tr></thead>
+    <tbody>
+      <tr><td><b>机构负责人 / 院长</b></td><td>这个月投多少、能带多少到店；违规了谁担</td><td>先算账：哪几笔钱白花了、改成什么能少花；再谈合规</td></tr>
+      <tr><td><b>市场 / 投放负责人</b></td><td>计划怎么搭、素材过不过审、成本波动</td><td>给他能执行的清单：素材改哪条、定向调哪项、预算怎么分</td></tr>
+      <tr><td><b>咨询师 / 前台</b></td><td>来的线索好不好聊、成单难不难</td><td>问响应时长和第一句话怎么开口；他们会告诉你素材真假</td></tr>
+      <tr><td><b>客户本人 / 家属</b></td><td>靠不靠谱、贵不贵、有没有必要</td><td>别替他做医疗决定；素材只回答「什么情况该来看看」</td></tr>
+    </tbody>
+  </table>
+
+  <h3>一个反常识：先算账，再谈专业</h3>
+  <p>机构老板先是生意人。第一次见面跟他讲合规多重要，他听不进去；先帮他把「上个月哪几笔钱白花了」算清楚，他才愿意听你讲合规。这不是说要迎合，而是<b>先站到他的账本旁边，再站到规则这边</b>。</p>
+  <p>同一个道理反过来也成立：只帮他省钱、不管合规，下一个季度这家机构可能就不在平台上了。行业运营要同时保住这两头。</p>
+
+  <h3>为什么这一节没有客单价和成本区间</h3>
+  <p>口腔的种植和体检的入职套餐，客单价能差一个量级；同一个城市不同商圈的两家店，成本水位也不一样。写一个区间出来，看起来很专业，实际谁都知道不准。<b>我选择写结构：谁关心什么、谁签什么字、哪一步最容易掉链子。</b>这些不随城市变。</p>
+</section>
+
+
+<section class="r-sec" id="s3">
+  <h2><span class="r-no">03</span>核心矛盾：越想要线索，越容易踩线</h2>
+  <p class="r-lead">医疗投放的矛盾不是某一方贪心，是三方合法诉求挤在同一块屏幕上。</p>
+
+  <div class="r-cards">
+    <div class="r-card">
+      <h4>机构的诉求</h4>
+      <p>获客、差异化、说服。同行都在喊「技术好、专家多」，不喊就没人点；喊了又容易越过合规线。</p>
+    </div>
+    <div class="r-card">
+      <h4>平台的诉求</h4>
+      <p>收入、用户体验、内容合规。平台要赚钱，也要保证广告不是虚假医疗信息，还要应付监管检查。</p>
+    </div>
+    <div class="r-card">
+      <h4>监管的诉求</h4>
+      <p>患者不被误导。医疗广告能说什么、不能说什么，法规写得比大部分行业都细，而且罚得重。</p>
+    </div>
+  </div>
+
+  <h3>三层结构：前两层是墙，第三层才是活</h3>
+  <ul>
+    <li><b>法规底线</b>——不可越。写在《广告法》《医疗广告管理办法》里，越了就是违法，不是「审核严」。</li>
+    <li><b>平台审核</b>——不可绕。机器审加人审，绕过去的素材活不过冷却期，还会连累账户。</li>
+    <li><b>客户表达</b>——可以引导。客户真正想说的是「我这能解决问题」，合规禁止的是「保证解决问题」。这中间有大量可做的活儿。</li>
+  </ul>
+  <p>行业运营的空间只在第三层。<b>把「不能说」翻译成「能怎么说」，是这份工作最值钱的手艺。</b></p>
+
+  <h3>两个失败模式</h3>
+  <table class="r-table">
+    <thead><tr><th>模式</th><th>怎么发生</th><th>结果</th></tr></thead>
+    <tbody>
+      <tr><td><b>只追跑量</b></td><td>素材擦边：暗示疗效、举例「治好」、拿患者说事</td><td>拒审、下线、账户扣分；严重的按《医疗广告管理办法》第二十条处理：责令限期改正、警告，情节严重的责令停业整顿、吊销有关诊疗科目，直至吊销《医疗机构执业许可证》</td></tr>
+      <tr><td><b>只求合规</b></td><td>素材只剩机构名、地址、电话，没有信息量</td><td>没点击、没线索，客户下个月不续投，运营也没得优化</td></tr>
+    </tbody>
+  </table>
+
+  <h3>中间那条路：翻译表</h3>
+  <p>客户嘴里的话，很多不是「想说谎」，是「不会换个说法」。下面五组是这个类目里最常见的表达，左边是客户原话，中间是它踩了哪条，右边是我会给的替代方向。</p>
+  <table class="r-table">
+    <caption class="r-tbl-cap">常见表达 · <b>踩了哪条 / 可以怎么改</b></caption>
+    <thead><tr><th>客户想说</th><th>为什么不行</th><th>可以这么说（方向）</th></tr></thead>
+    <tbody>
+      <tr><td>「根治老胃病，永不复发」</td><td>表示功效、安全性的断言或者保证——《广告法》第 16 条第一项</td><td>「反复胃胀的人，先弄清是不是这个原因」——转到科普和检查流程，不讲结果</td></tr>
+      <tr><td>「治愈率 98%，有效率 95%」</td><td>说明治愈率或者有效率——第 16 条第二项</td><td>「这类手术的恢复周期和随访安排」——讲流程，不给数字承诺</td></tr>
+      <tr><td>「比 XX 医院更专业」</td><td>与其他医疗机构比较——第 16 条第三项</td><td>「本院开展的项目和设备清单」——讲登记信息里的科室与项目，不比别人</td></tr>
+      <tr><td>「患者现身说法：我在这治好了」</td><td>利用广告代言人作推荐、证明——第 16 条第四项；《医疗广告管理办法》第 7 条也禁止用患者的名义、形象作证明</td><td>「医生讲机制 + 就诊流程」——用专业身份，不用患者证言</td></tr>
+      <tr><td>「专家坐诊，包治」</td><td>保证治愈或者隐含保证治愈——《医疗广告管理办法》第 7 条第二项；同时踩绝对化用语</td><td>「出诊时间与科室介绍」——只写登记信息里的接诊时间</td></tr>
+    </tbody>
+  </table>
+  <div class="r-warn"><b>注意：</b>这张表只是表达方向的示意，不是可直接发布的文案模板。实际素材发布前仍须通过医疗广告审查和平台审核；具体到某一项诊疗项目能不能说，要看机构的《医疗机构执业许可证》科目范围和当地监管口径。</div>
+</section>
+
+
+<section class="r-sec" id="s4">
+  <h2><span class="r-no">04</span>合规框架：五道必须过的关</h2>
+  <p class="r-lead">这一节是整份报告最硬的部分。法规原文照录，条款号都标了，数字一个没改。五关依次是：资质、白名单、广告法第 16 条、医美红线、科普边界。</p>
+
+  <h3 id="s4-1">4.1 资质三道门</h3>
+  <table class="r-table">
+    <thead><tr><th>门</th><th>谁发 / 是什么</th><th>关键点</th><th>常见问题</th></tr></thead>
+    <tbody>
+      <tr><td><b>①《医疗机构执业许可证》</b></td><td>卫生健康行政部门核发，机构的基础资质</td><td>诊疗科目要对得上：做口腔的不能讲眼科；没证不得发布医疗广告</td><td>投放内容超出登记科目</td></tr>
+      <tr><td><b>②《医疗广告审查证明》</b></td><td>省级卫生行政部门、中医药管理部门审查后发给</td><td>有效期一年，到期重新申请；内容改动要重新申请；发布时要标注第一名称和证明文号</td><td>证明过期、投放样件和审查样件不一致</td></tr>
+      <tr><td><b>③ 医生个人认证</b></td><td>平台侧的医疗健康类账号认证要求</td><td>医师资格证 + 执业证 + 在职证明</td><td>只认证了机构、没认证出镜医生</td></tr>
+    </tbody>
+  </table>
+  <p class="r-dim">第三道门不是法规原文，是平台对医疗健康类内容的认证要求，单独列出来是因为它最常被漏：素材里出现了医生，医生的个人认证就要跟上。</p>
+  <div class="r-law">
+    <p><b>第三条</b> 医疗机构发布医疗广告，应当在发布前申请医疗广告审查。未取得《医疗广告审查证明》，不得发布医疗广告。</p>
+    <p><b>第十三条</b> 《医疗广告审查证明》的有效期为一年。到期后仍需继续发布医疗广告的，应重新提出审查申请。</p>
+    <p><b>第十四条</b> 发布医疗广告应当标注医疗机构第一名称和《医疗广告审查证明》文号。</p>
+    <p><b>第十七条</b> 医疗机构应当按照《医疗广告审查证明》核准的广告成品样件内容与媒体类别发布医疗广告。医疗广告内容需要改动或者医疗机构的执业情况发生变化，与经审查的医疗广告成品样件内容不符的，医疗机构应当重新提出审查申请。</p>
+    <cite>《医疗广告管理办法》（2006 年 11 月 10 日国家工商行政管理总局、卫生部第 26 号公布，2007 年 1 月 1 日起施行）</cite>
+  </div>
+  <div class="r-law">
+    <p><b>第四十六条</b> 发布医疗、药品、医疗器械、农药、兽药和保健食品广告，以及法律、行政法规规定应当进行审查的其他广告，应当在发布前由有关部门（以下称广告审查机关）对广告内容进行审查；未经审查，不得发布。</p>
+    <cite>《中华人民共和国广告法》</cite>
+  </div>
+
+  <h3 id="s4-2">4.2 医疗广告只能写这 8 项</h3>
+  <p>这是医疗广告最直接的操作边界。记住这八项，就记住了能写的全部范围：只有登记信息，没有疗效、没有技术、没有专家、没有价格、没有案例。</p>
+  <div class="r-law">
+    <p><b>第六条</b> 医疗广告内容仅限于以下项目：</p>
+    <p>（一）医疗机构第一名称；</p>
+    <p>（二）医疗机构地址；</p>
+    <p>（三）所有制形式；</p>
+    <p>（四）医疗机构类别；</p>
+    <p>（五）诊疗科目；</p>
+    <p>（六）床位数；</p>
+    <p>（七）接诊时间；</p>
+    <p>（八）联系电话。</p>
+    <p>（一）至（六）项发布的内容必须与卫生行政部门、中医药管理部门核发的《医疗机构执业许可证》或其副本载明的内容一致。</p>
+    <cite>《医疗广告管理办法》第六条</cite>
+  </div>
+  <p>八项之外，法规第七条还列了表现形式上的禁止情形。这两条一起看，才构成完整的「能写什么」和「怎么写」：</p>
+  <div class="r-law">
+    <p><b>第七条</b> 医疗广告的表现形式不得含有以下情形：</p>
+    <p>（一）涉及医疗技术、诊疗方法、疾病名称、药物的；</p>
+    <p>（二）保证治愈或者隐含保证治愈的；</p>
+    <p>（三）宣传治愈率、有效率等诊疗效果的；</p>
+    <p>（四）淫秽、迷信、荒诞的；</p>
+    <p>（五）贬低他人的；</p>
+    <p>（六）利用患者、卫生技术人员、医学教育科研机构及人员以及其他社会社团、组织的名义、形象作证明的；</p>
+    <p>（七）使用解放军和武警部队名义的；</p>
+    <p>（八）法律、行政法规规定禁止的其他情形。</p>
+    <cite>《医疗广告管理办法》第七条</cite>
+  </div>
+
+  <h3 id="s4-3">4.3《广告法》第 16 条：四条禁令</h3>
+  <div class="r-law">
+    <p><b>第十六条</b> 医疗、药品、医疗器械广告不得含有下列内容：</p>
+    <p>（一）表示功效、安全性的断言或者保证；</p>
+    <p>（二）说明治愈率或者有效率；</p>
+    <p>（三）与其他药品、医疗器械的功效和安全性或者其他医疗机构比较；</p>
+    <p>（四）利用广告代言人作推荐、证明；</p>
+    <p>（五）法律、行政法规规定禁止的其他内容。</p>
+    <cite>《中华人民共和国广告法》第十六条第一款。第二、三款是关于药品与医疗器械广告必须显著标明禁忌、不良反应、处方药/非处方药提示等内容，属于素材审核的配套要求，本节不展开。</cite>
+  </div>
+  <table class="r-table">
+    <thead><tr><th>禁令</th><th>最容易踩线的表达</th></tr></thead>
+    <tbody>
+      <tr><td><b>断言功效、安全性</b></td><td>根治、彻底解决、零风险、永不复发、无痛无副作用</td></tr>
+      <tr><td><b>说明治愈率、有效率</b></td><td>治愈率 98%、有效率 95%、术后满意度九成以上</td></tr>
+      <tr><td><b>与其他机构比较</b></td><td>比 XX 医院更专业、本地最好的眼科、业内第一</td></tr>
+      <tr><td><b>利用代言人推荐、证明</b></td><td>患者现身说法、网红探店说「我在这做好的」、明星推荐</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="s4-4">4.4 医美特有的红线</h3>
+  <p>医美是医疗广告里被盯得最紧的类目之一。按 2026 年北京市朝阳区《医疗美容行业广告宣传合规指引》的公开口径，除了《广告法》和《医疗广告管理办法》的通用要求，还有三条要单独记住：</p>
+  <ul>
+    <li><b>制造「容貌焦虑」</b>——把容貌和负面评价挂钩，比如「长得不好看，工作恋爱都吃亏」。</li>
+    <li><b>向未成年人投放</b>——医美广告不得面向未成年人。</li>
+    <li><b>虚假宣传、诱导消费、违规代言</b>——包括伪造案例、低价引流后加价、用不符合规定的人做推荐。</li>
+  </ul>
+  <div class="r-warn"><b>提醒：</b>这三条是地方监管指引的口径，不是全部。医美同时受《广告法》第 16 条约束，平台的社区规则往往比法规更细。做素材时按「更严的那一条」执行。</div>
+
+  <h3 id="s4-5">4.5 健康科普与变相广告</h3>
+  <p>医疗客户最想做、也最容易做歪的一类内容，就是科普。科普本身是允许的，甚至是平台鼓励的；但科普一旦变成广告的壳，性质就变了。</p>
+  <div class="r-law">
+    <p><b>第十九条</b> 广播电台、电视台、报刊音像出版单位、互联网信息服务提供者不得以介绍健康、养生知识等形式变相发布医疗、药品、医疗器械、保健食品广告。</p>
+    <cite>《中华人民共和国广告法》第十九条</cite>
+  </div>
+  <div class="r-law">
+    <p><b>第十六条</b> 禁止利用新闻形式、医疗资讯服务类专题节（栏）目发布或变相发布医疗广告。</p>
+    <p>有关医疗机构的人物专访、专题报道等宣传内容，可以出现医疗机构名称，但不得出现有关医疗机构的地址、联系方式等医疗广告内容；不得在同一媒介的同一时间段或者版面发布该医疗机构的广告。</p>
+    <cite>《医疗广告管理办法》第十六条</cite>
+  </div>
+  <table class="r-table">
+    <caption class="r-tbl-cap">科普的边界 · <b>能做什么 / 不能做什么</b></caption>
+    <thead><tr><th>可以做</th><th>不能做</th></tr></thead>
+    <tbody>
+      <tr><td>客观的疾病科普：什么情况需要就诊、常见误区</td><td>科普里夹带「我们这儿能治好」「来我们院做」</td></tr>
+      <tr><td>诊疗流程说明：来了会做哪些检查、大概几步</td><td>以科普形式变相发布医疗广告（第 19 条明确禁止）</td></tr>
+      <tr><td>医生讲机制：为什么会这样、身体里发生了什么</td><td>科普内容里挂地址、电话、二维码引导到院</td></tr>
+      <tr><td>检查项目的科普解释：这个检查查的是什么</td><td>用科普的名义做治疗项目推销，说疗效</td></tr>
+    </tbody>
+  </table>
+  <p><b>一个可操作的判断方法：</b>把这条内容里的机构名、地址、电话、诊疗科目遮掉，看它还剩多少信息量。如果剩下的只是「哪里不舒服该来看看」的常识，它是科普；如果剩下的核心意思是「来我们这」，它事实上就是广告，要按广告的规矩来。</p>
+
+  <h3>五关压成一页</h3>
+  <table class="r-table">
+    <thead><tr><th>关卡</th><th>一句话记法</th><th>落到工作里的动作</th></tr></thead>
+    <tbody>
+      <tr><td><b>资质</b></td><td>三张纸：执业许可证、广告审查证明、医生认证</td><td>接客户先要资质清单，过期的先提醒续审</td></tr>
+      <tr><td><b>8 项白名单</b></td><td>只能写登记信息，不写疗效</td><td>把八项做成表，客户来问直接对表</td></tr>
+      <tr><td><b>广告法第 16 条</b></td><td>四条禁令：断言、治愈率、比较、代言</td><td>素材自检时按四条逐一划掉踩线表达</td></tr>
+      <tr><td><b>医美红线</b></td><td>容貌焦虑、未成年人、虚假与诱导</td><td>医美客户的素材单独过一遍，按更严的规则执行</td></tr>
+      <tr><td><b>科普边界</b></td><td>遮掉机构信息，还剩多少信息量</td><td>科普向内容先做这个遮挡测试，再决定走不走广告审核</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<section class="r-sec" id="s5">
+  <h2><span class="r-no">05</span>投放诊断四层法：消耗、成本、素材、承接</h2>
+  <p class="r-lead">账户出问题的时候，没人会主动告诉你问题在哪。四层是从上往下排除的顺序，不是四个并列的指标。顺序反了，优化就是在错误的地方使劲。</p>
+
+  <table class="r-table">
+    <caption class="r-tbl-cap">四层诊断 · <b>看什么 / 异常长什么样 / 先动哪里</b></caption>
+    <thead><tr><th>层</th><th>先看什么</th><th>异常长什么样</th><th>先动哪里</th></tr></thead>
+    <tbody>
+      <tr><td><b>① 消耗</b></td><td>预算能不能花出去</td><td>预算花不掉：素材大批拒审、定向过窄、出价低于竞争水位、账户资质到期、预算或排期设错</td><td>先查资质和拒审明细，再碰出价和定向</td></tr>
+      <tr><td><b>② 成本</b></td><td>表单 / 私信成本在不在行业水位上</td><td>成本明显高于同类客户：素材钩子不对、定向太泛、落地页或私信话术接不住</td><td>先分清「贵但有效」和「便宜但无效」，拉到店率和接通率，不只看表单成本</td></tr>
+      <tr><td><b>③ 素材生命周期</b></td><td>是不是靠一两条素材硬撑</td><td>Top 素材消耗占比过高、新素材起量率低、老素材衰减前没有替代</td><td>衰减前做变体，一次只换一个变量（开头/封面/音乐/断点）</td></tr>
+      <tr><td><b>④ 线索承接</b></td><td>线索来了有没有人接、多久回、怎么开口</td><td>表单成本还行但到店率低；响应慢；咨询师话术又承诺疗效</td><td>从账户看到承接：核响应时长、接通率、话术清单</td></tr>
+    </tbody>
+  </table>
+
+  <h3>为什么这个顺序不能反</h3>
+  <ul>
+    <li><b>资质和拒审不解决，优化出价就是白费。</b>素材根本投不出去的时候，调出价只会更快烧掉试错预算。</li>
+    <li><b>成本要先分层看。</b>便宜但没人到店的线索，比贵但能成交的线索更贵——它把咨询师的时间和投放预算一起浪费掉。</li>
+    <li><b>素材层要提前动。</b>素材衰减是必然的，等数据掉了再做变体，追不回来。</li>
+    <li><b>承接层最容易被漏。</b>平台内数据只能解释一半，另一半在客户的电话、微信和前台。不走出后台，永远看不到那一半。</li>
+  </ul>
+
+  <h3>诊断清单：八条</h3>
+  <ul class="r-check">
+    <li>资质是否在有效期内，投放科目是否和许可证一致</li>
+    <li>近 7 天拒审明细，按原因归类，看是不是集中在一类</li>
+    <li>消耗是不是卡在某一条计划上，是否有账户结构问题</li>
+    <li>表单成本、线索有效率、到店率三个数一起看</li>
+    <li>Top 3 素材的消耗占比和发布时间</li>
+    <li>近 30 天新建素材数量和起量率</li>
+    <li>线索响应时长、接通率、咨询话术是否合规</li>
+    <li>这个月的调整动作有没有对照清单，还是凭感觉改的</li>
+  </ul>
+
+  <h3>从我做过的事看这套方法</h3>
+  <p>在七度做千川素材那一段，我支撑的是日耗 10 万、月耗 60 万账户的素材供给端，也做过 20 多家商家的直播诊断。那时的定位法是先分话术、货盘、节奏三类，再逐类排查——搬到这里，就是素材、定向、承接三类。<b>平台换了，诊断的动作是同一套。</b></p>
+</section>
+
+
+<section class="r-sec" id="s6">
+  <h2><span class="r-no">06</span>我能迁移过来的能力，和还缺的那块</h2>
+  <p class="r-lead">这一节写自己，但只写能查证的部分。做过什么写什么，没做过就明说。</p>
+
+  <h3>同工种迁移：千川 → 磁力引擎</h3>
+  <p>千川和磁力引擎都是效果广告投放平台。我在七度做的是素材供给端，服务的是商家；这个岗位是平台侧，服务的是客户。视角换了，诊断逻辑没换：先看数据异常落在哪个环节，再定位到具体动作。</p>
+  <table class="r-table">
+    <thead><tr><th>我在七度做过的</th><th>迁移到医疗投放对应什么</th></tr></thead>
+    <tbody>
+      <tr><td>支撑日耗 10 万、月耗 60 万账户的素材供给端</td><td>理解客户预算节奏，知道素材断供比成本高几个点更致命</td></tr>
+      <tr><td>素材过审率从 70% 提到 82%</td><td>过审归因的方法：把拒审原因拆成可统计的类别，而不是一条条猜</td></tr>
+      <tr><td>上千条拒审反馈归因成 27 类字段标签，做成规则库</td><td>医疗素材审核同款活：把「什么能说」变成可核对的清单</td></tr>
+      <tr><td>20+ 家商家直播诊断，话术 / 货盘 / 节奏三类定位</td><td>医疗客户诊断：素材 / 定向 / 承接三类定位</td></tr>
+      <tr><td>2 套 SOP 全团队在用</td><td>能把个人经验写成别人也能执行的文件</td></tr>
+    </tbody>
+  </table>
+
+  <h3>还缺的那块，我不装</h3>
+  <ul>
+    <li><b>医疗行业经验是零。</b>诊疗科目怎么分、不同项目的决策链细节、哪些表达在行业里已经形成默契，这些要真正跟客户聊过才知道，这份报告只补了法规和结构的部分。</li>
+    <li><b>没操作过磁力引擎后台。</b>我在千川后台做过素材和账户，磁力引擎的界面、出价产品、报表口径要重新学。给两天对着帮助文档和真实账户，能上手基础操作；复杂产品组合要跟。</li>
+    <li><b>没有医疗行业的投放数据。</b>成本水位、线索有效率这些数，只有真实账户能给。我不会拿别人类目的数来套。</li>
+  </ul>
+
+  <h3>上手路径：30 / 60 / 90 天</h3>
+  <table class="r-table">
+    <thead><tr><th>阶段</th><th>做什么</th><th>交出什么</th></tr></thead>
+    <tbody>
+      <tr><td><b>30 天</b></td><td>过帮助文档和真实账户；跟 3–5 场客户沟通做记录；把资质清单和 8 项白名单做成一张随身表</td><td>一页「客户接洽前必查表」</td></tr>
+      <tr><td><b>60 天</b></td><td>把所接客户的拒审原因归因成类别；跟一遍完整诊断流程</td><td>一份医疗素材拒审归因表</td></tr>
+      <tr><td><b>90 天</b></td><td>挑一个跑得好的客户案例拆开，写成可复制的打法</td><td>一份能给别人用的行业打法清单</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<section class="r-sec" id="s7">
+  <h2><span class="r-no">07</span>方法论收口：把规则变成清单</h2>
+  <p class="r-lead">这份报告写的都是医疗，但底下有三条方法和行业无关，换任何强监管类目都成立。</p>
+
+  <h3>一、规则要变成清单</h3>
+  <p>规则只存在脑子里，等于没有。清单有两个用处：交给下一个人能接着干，跟客户对话时能直接翻到那一页。<b>《广告法》第 16 条和 8 项白名单，我不是背下来的，是做成表对出来的。</b></p>
+
+  <h3>二、诊断要从账户看到承接</h3>
+  <p>平台内的数据只能解释一半，另一半在客户自己的电话、微信和前台。只看后台，很容易得出「这个客户成本高」的结论，但真正的问题可能是「表单来了两天没人打」。</p>
+
+  <h3>三、把「不能说」翻译成「能怎么说」</h3>
+  <p>这是行业运营最值钱的手艺，也是医疗这个类目最难的地方。客户不是要故意违规，多数是不知道换个说法。能听懂他想表达什么，再找到合规的表达方式，这个能力跟平台无关，跟行业理解有关。</p>
+
+  <div class="r-warn"><b>边界说明：</b>这份报告不含任何客户数据，不是法律意见，所有法规引用都可回到原文核对。法规会修订，实际使用前请查现行有效版本。</div>
+
+  <h3>这套结构还能用在哪</h3>
+  <p>把「规则清单 + 四层诊断 + 表达翻译」这三件套搬到别的强监管行业也成立：教育、金融、保健品，都是「想说的」和「能说的」之间有一道墙，都需要把规则落成清单、把诊断做到承接端。换的只是法条和客户类型。</p>
+</section>
+
+
+<section class="r-sec" id="s8">
+  <h2><span class="r-no">08</span>附录：来源清单、研究边界、自我说明</h2>
+
+  <h3>来源清单</h3>
+  <table class="r-table">
+    <thead><tr><th>文件 / 来源</th><th>本报告引用的条款</th><th>用途</th></tr></thead>
+    <tbody>
+      <tr><td><b>《中华人民共和国广告法》</b></td><td>第 16 条、第 19 条、第 46 条</td><td>四条禁令、变相广告、发布前审查</td></tr>
+      <tr><td><b>《医疗广告管理办法》</b><br>（2006 年 11 月 10 日国家工商行政管理总局、卫生部第 26 号公布，2007 年 1 月 1 日起施行）</td><td>第 3、6、7、13、14、16、17、20 条</td><td>资质与审查、8 项白名单、表现形式禁令、有效期、新闻形式变相广告、罚则</td></tr>
+      <tr><td><b>《北京市朝阳区医疗美容行业广告宣传合规指引》</b><br>（2026 年，按公开报道口径整理）</td><td>容貌焦虑、未成年人、虚假宣传与诱导消费</td><td>医美类目的额外红线</td></tr>
+      <tr><td><b>快手官网招聘页</b><br>行业运营实习生（医疗机构）-【生活服务】</td><td>职责四条、要求四条</td><td>岗位与平台背景</td></tr>
+      <tr><td><b>《医疗广告管理办法》官方原文</b><br><a href="https://www.gov.cn/zhengce/2019-06/03/content_5723750.htm" target="_blank" rel="noopener">中国政府网 · 国家规章库</a></td><td>全文核对</td><td>条款原文逐字核对</td></tr>
+      <tr><td><b>《中华人民共和国广告法》原文</b><br><a href="https://flk.npc.gov.cn/" target="_blank" rel="noopener">国家法律法规数据库</a></td><td>全文核对</td><td>条款原文逐字核对</td></tr>
+    </tbody>
+  </table>
+
+  <h3>研究边界</h3>
+  <ul>
+    <li><b>不含客户数据。</b>没有消耗、成本、ROI、投放策略等任何客户或前雇主的内部数据。</li>
+    <li><b>不是法律意见。</b>法规在哪一条、怎么写，以官方原文为准；实际投放的合规判断由机构和平台审核方作出。</li>
+    <li><b>不写查不到的数。</b>行业规模、客单价、成本水位一概不写，前文已说明原因。</li>
+    <li><b>引用时间。</b>法规与 JD 引用截至 2026 年 11 月，法规可能修订，使用前核对现行版本。</li>
+  </ul>
+
+  <h3>自我说明</h3>
+  <p>这份报告最初是我为一场面试准备的功课——把公开 JD、法规原文和行业信息整理成一页页笔记。后来按「报告体」重写了一遍：调整了结构、补了判断和边界说明，<b>法规条款一字没改，数字一个没动</b>。</p>
+  <p>重写时我特意保留了两处「空」：一是大盘数据，二是客单价与成本区间。不是忘了写，是手上没有能公开引用的信源。把空着的地方标出来，比填一个看起来专业的数字更靠得住。</p>
+
+  <footer class="r-foot">
+    <a class="r-back" href="../zones/insight.html">← 回厅 08 行业洞察</a>
+    <p><b>医疗行业投放调研 · 合规边界与账户诊断</b><br>金佳信 · 2026.11 · 个人研究 · 基于公开 JD 与法规原文整理 · 不含客户数据</p>
+  </footer>
+</section>
+
+</main>
+
+<script>
+(function () {
+  var btn = document.getElementById('printBtn');
+  if (btn) {
+    btn.addEventListener('click', function () { window.print(); });
+  }
+})();
+</script>
+</body>
+</html>
