@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>便利店 3D · MODEL-01 — 金佳信作品集</title>
+<meta name="description" content="全程序化建模的 24h 便利店：能走进去、开冷柜、拿货、扫码结账，昼夜两套布光。">
+<meta name="theme-color" content="#0A0B0D">
+<script>
+window.__ERRORS = [];
+window.addEventListener('error', e => window.__ERRORS.push('error: ' + (e.message || e.type)));
+window.addEventListener('unhandledrejection', e => window.__ERRORS.push('reject: ' + (e.reason && e.reason.message || e.reason)));
+</script>
+<style>
+  html,body{margin:0;height:100%;background:#0A0B0D;color:#F2EDE4;overflow:hidden;
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+  #c{position:fixed;inset:0;width:100%;height:100%;display:block;outline:none}
+  .hud{position:fixed;inset:0;pointer-events:none;z-index:5}
+  .top{position:absolute;left:22px;top:18px;display:flex;align-items:center;gap:12px}
+  .top b{font-size:13px;letter-spacing:.18em;font-weight:600}
+  .top i{font:10px/1 ui-monospace,monospace;color:#847F76;letter-spacing:.14em;font-style:normal}
+  .hint{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);font-size:12.5px;color:#B9B3A7;
+    background:rgba(10,11,13,.72);border:1px solid rgba(242,237,228,.12);border-radius:8px;padding:8px 14px;backdrop-filter:blur(8px)}
+  .hint kbd{font:10.5px/1 ui-monospace,monospace;background:rgba(232,178,92,.16);border:1px solid rgba(232,178,92,.35);
+    color:#E8B25C;border-radius:4px;padding:3px 5px;margin:0 2px}
+  .loading{position:fixed;inset:0;z-index:20;background:#0A0B0D;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:16px;transition:opacity .6s}
+  .loading.done{opacity:0;pointer-events:none}
+  .loading b{font-size:12px;letter-spacing:.5em;color:#E8B25C;font-weight:600;padding-left:.5em}
+  .loading span{font:10.5px/1 ui-monospace,monospace;color:#847F76;letter-spacing:.18em}
+  #bar{width:180px;height:2px;background:rgba(242,237,228,.12);overflow:hidden}
+  #bar i{display:block;height:100%;width:0;background:#E8B25C;transition:width .3s}
+  .exit{position:absolute;right:22px;top:18px;pointer-events:auto;font:11px/1 ui-monospace,monospace;
+    color:#B9B3A7;letter-spacing:.1em;text-decoration:none;border:1px solid rgba(242,237,228,.16);
+    padding:8px 12px;border-radius:6px;background:rgba(10,11,13,.5)}
+  .exit:hover{color:#F2EDE4;border-color:rgba(242,237,228,.32)}
+</style>
+</head>
+<body>
+<canvas id="c" tabindex="0"></canvas>
+
+<div class="hud">
+  <div class="top"><b>MODEL-01</b><i>24H CONVENIENCE STORE</i></div>
+  <a class="exit" href="../zones/model.html">← 退出回厅 07</a>
+  <div class="hint" id="hint">拖拽环视 · <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 走动 · <kbd>B</kbd> 昼夜 · <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> 机位</div>
+</div>
+
+<div class="loading" id="loading"><b>JJ MART</b><span>BUILDING STORE…</span><div id="bar"><i></i></div></div>
+
+<script src="../assets/vendor/three.min.js"></script>
+<script>
+'use strict';
+/* ===== boot ===== */
+const $ = s => document.querySelector(s);
+const params = new URLSearchParams(location.search);
+const SHOT = params.get('shot') === '1';
+const RENDERER = new THREE.WebGLRenderer({ canvas: $('#c'), antialias: true, powerPreference: 'high-performance' });
+RENDERER.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+RENDERER.setSize(innerWidth, innerHeight);
+RENDERER.outputEncoding = THREE.sRGBEncoding;
+RENDERER.shadowMap.enabled = true;
+RENDERER.shadowMap.type = THREE.PCFSoftShadowMap;
+
+const SCENE = new THREE.Scene();
+SCENE.background = new THREE.Color(0x0A0B0D);
+SCENE.fog = new THREE.Fog(0x0A0B0D, 6, 26);
+const CAMERA = new THREE.PerspectiveCamera(62, innerWidth / innerHeight, 0.05, 80);
+CAMERA.position.set(0, 1.6, 4.4);
+
+/* ===== quick light + test geometry ===== */
+SCENE.add(new THREE.HemisphereLight(0x9fb6d6, 0x2a231d, 0.9));
+const sun = new THREE.DirectionalLight(0xffe7c4, 2.0);
+sun.position.set(4, 7, 5); sun.castShadow = true;
+sun.shadow.mapSize.set(1024, 1024);
+SCENE.add(sun);
+
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(20, 20), new THREE.MeshStandardMaterial({ color: 0x2b2e33, roughness: 0.25, metalness: 0.3 }));
+floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; SCENE.add(floor);
+for (let i = 0; i < 3; i++) {
+  const b = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 1), new THREE.MeshStandardMaterial({ color: [0xE8B25C, 0x5cc9e8, 0xe85c8a][i], roughness: .4, metalness: .2 }));
+  b.position.set((i - 1) * 2, 1, 0); b.castShadow = true; b.receiveShadow = true; SCENE.add(b);
+}
+
+function resize() {
+  CAMERA.aspect = innerWidth / innerHeight; CAMERA.updateProjectionMatrix();
+  RENDERER.setSize(innerWidth, innerHeight);
+}
+addEventListener('resize', resize);
+let frames = 0;
+function loop() {
+  requestAnimationFrame(loop);
+  frames++;
+  RENDERER.render(SCENE, CAMERA);
+  if (frames === 3) {
+    $('#loading').classList.add('done');
+    window.__READY = true;
+    window.__INFO = { frames, calls: RENDERER.info.render.calls, tris: RENDERER.info.render.triangles, three: THREE.REVISION };
+  }
+}
+loop();
+setTimeout(() => { $('#hint').style.opacity = '0'; }, 5000);
+</script>
+</body>
+</html>

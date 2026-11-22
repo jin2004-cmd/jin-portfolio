@@ -105,6 +105,19 @@
   .foot a:hover{color:var(--accent)}
   .foot .who{font-family:var(--serif);font-size:15px;letter-spacing:.06em;color:var(--paper)}
 
+  /* ---- 掠影 ---- */
+  .shots{margin-top:clamp(22px,3.2vw,30px)}
+  .shots-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .shot{display:flex;flex-direction:column;gap:7px;text-decoration:none;color:inherit}
+  .shot img{
+    width:100%;aspect-ratio:16/10;object-fit:cover;display:block;
+    border:1px solid var(--line);border-radius:2px;
+    filter:saturate(.92) brightness(.94);transition:.25s ease;
+  }
+  .shot:hover img{filter:none;border-color:rgba(232,178,92,.45)}
+  .shot i{font:600 9px/1 var(--mono);letter-spacing:.16em;color:var(--accent);font-style:normal}
+  .shot b{font-size:11.5px;font-weight:600;color:var(--paper2);letter-spacing:.02em}
+
   @media (max-width:640px){
     .nums{grid-template-columns:repeat(2,1fr)}
     .hgrid{grid-template-columns:repeat(2,1fr)}
@@ -162,6 +175,24 @@
       <a class="hcell" href="zones/games.html"><i>06</i><b>游戏实验室</b><span>Games</span></a>
       <a class="hcell" href="zones/model.html"><i>07</i><b>建模工坊</b><span>Modeling</span></a>
       <a class="hcell" href="zones/insight.html"><i>08</i><b>行业洞察</b><span>Insight</span></a>
+    </div>
+  </div>
+
+  <div class="shots">
+    <div class="halls-h"><p>A Glimpse</p><span>三件先看这个</span></div>
+    <div class="shots-grid">
+      <a class="shot" href="zones/operations.html">
+        <img src="shots/ops2-dashboard.png" alt="内容运营工作台 2.0 的总览页">
+        <i>OPS-01</i><b>运营工作台 2.0</b>
+      </a>
+      <a class="shot" href="zones/film.html">
+        <img src="shots/compare.jpg" alt="《比较》快剪短片的画面">
+        <i>FILM-01</i><b>《比较》81 秒</b>
+      </a>
+      <a class="shot" href="zones/growth.html">
+        <img src="media/covers/growth/qianchuan-01.jpg" alt="千川投放素材封面">
+        <i>GROWTH</i><b>千川素材</b>
+      </a>
     </div>
   </div>
 
